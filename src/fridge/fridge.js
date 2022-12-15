@@ -14,7 +14,7 @@ const center = {
 export default function CommunityFridge() {
     return (
       <LoadScript
-        googleMapsApiKey="AIzaSyAdCFMt6UUFFUpOFQVu3s8wmgrmbTfglbg"
+        // googleMapsApiKey="AIzaSyAdCFMt6UUFFUpOFQVu3s8wmgrmbTfglbg"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
