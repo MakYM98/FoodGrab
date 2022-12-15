@@ -1,7 +1,14 @@
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import data from "../products";
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+
+  // let navigate = useNavigate()
+  // const loginPath = () => {
+  //     let path= `/login`
+  //     navigate(path)
+  // }
 
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -52,7 +59,9 @@ function Header() {
           />
         </div>
         <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'10%'}}>Register</h5>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}>Login</h5>
+        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}>
+            Login
+        </h5>
         
       </div>
     );

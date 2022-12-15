@@ -9,11 +9,6 @@ import { CardGroup } from "react-bootstrap";
 
 function Home() {
 
-    const slideLeft = () => {
-        var slider = document.getElementById('slider');
-        slider.scrollLeft = slider.scrollLeft - 500;
-    }
-
     var settings = {
       dots: true,
       infinite: false,

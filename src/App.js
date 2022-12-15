@@ -9,7 +9,9 @@ import {
   Link
 } from "react-router-dom";
 import Header from './global/nav';
+import Login from './account/login';
 import Home from './home/home';
+import CommunityFridge from './fridge/fridge';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <div>
           <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/communityfridge" element={<CommunityFridge/>}/>
           </Routes>
         </div>
       </Router>
