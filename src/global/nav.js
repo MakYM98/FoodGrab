@@ -32,8 +32,8 @@ function Header() {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#D3D3D3'}}>
-        <h1>FoodGrab</h1>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}>Community Fridge</h5>
+        <h1><a href='/'>FoodGrab</a></h1>
+        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}><a href='/communityfridge'>Community Fridge</a></h5>
         <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%', marginRight:'2%'}}>Food Listings</h5>
         <div style={{width:'40%'}}>
           <ReactSearchAutocomplete

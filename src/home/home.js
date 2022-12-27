@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { CardGroup } from "react-bootstrap";
 
+var listingData = require('../data/test_listing.json')['listings']
+
 function Home() {
 
     var settings = {
@@ -30,11 +32,12 @@ function Home() {
             <Col>
             <h5 style={{textAlign:'left'}}>Discounted Food Near You</h5>
               <Slider {...settings}>
-                <ListingCard/>
-                <ListingCard/>
-                <ListingCard/>
-                <ListingCard/>
-                <ListingCard/>
+                {
+                  listingData.map(listing => 
+                      <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
+                                  price={listing["price"]} location={listing["location"]}/>
+                  )
+                }
               </Slider>
             </Col>
           </Row>
