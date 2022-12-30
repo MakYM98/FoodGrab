@@ -1,3 +1,19 @@
 #imageCol {
     background-color: #D3D3D3;
 }
+  
+#columnCover {
+    border-radius: 4px;
+    height:100%;
+    width:50%;
+    background-color: teal;
+    position: absolute;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition: transform 500ms ease-in-out;
+}
+
+#columnCover.right {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+}

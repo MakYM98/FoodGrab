@@ -1,14 +1,23 @@
+import React, {useState} from 'react';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import data from "../products";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Hamburger from 'hamburger-react'
+import SlideDrawer from './sidebar';
 
-function Header() {
+function Header(props) {
+  const [isOpen, setOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // let navigate = useNavigate()
-  // const loginPath = () => {
-  //     let path= `/login`
-  //     navigate(path)
-  // }
+  function handleOpenDrawerButton() {
+    setDrawerOpen(!drawerOpen);
+  }
+
+  function handleBackdropClick() {
+    setDrawerOpen(false);
+    setOpen(false);
+  }
 
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -32,10 +41,12 @@ function Header() {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#D3D3D3'}}>
-        <h1><a href='/'>FoodGrab</a></h1>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}><a href='/communityfridge'>Community Fridge</a></h5>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%', marginRight:'2%'}}>Food Listings</h5>
-        <div style={{width:'40%'}}>
+        <h1><a href='/' className='navLinks'>FoodGrab</a></h1>
+        <div>
+          <SlideDrawer show={drawerOpen} close={handleBackdropClick}/>
+          {drawerOpen}
+        </div>
+        <div style={{width:'100%', marginLeft:'2%'}}>
           <ReactSearchAutocomplete
             items={data}
             maxResults={15}
@@ -45,7 +56,7 @@ function Header() {
             onFocus={handleOnFocus}
             placeholder="Search for food, location and more"
             onClear={handleOnClear}
-            fuseOptions={{ keys: ["name", "description"] }} // Search in the description text as well
+            fuseOptions={{ keys: ["name", "description"] }}
             styling={{
               zIndex: 100,
               borderRadius: "5px",
@@ -55,14 +66,13 @@ function Header() {
               placeholderFontSize: "2.5vh",
               fontSize: "2.2vh",
             }}
-            className="search" // To display it on top of the search box below
+            className="search"
           />
         </div>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'10%'}}>Register</h5>
-        <h5 style={{display:'flex', alignItems:'center',justifyContent:'center', marginLeft:'1%'}}>
-            Login
-        </h5>
-        
+
+        <div style={{width:'100%', display:'flex', justifyContent:'end', marginRight:'3%', verticalAlign:'middle'}}>
+          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton}/>
+        </div>
       </div>
     );
   }
