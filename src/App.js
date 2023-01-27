@@ -16,6 +16,7 @@ import FoodListings from './listing/listing';
 import React, {useState} from 'react';
 import IndvListing from './listing/indv_listing'
 import Footer from './global/footer';
+import AboutUs from './aboutus/aboutus';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/communityfridge" element={<CommunityFridge/>}/>
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing" element={<IndvListing/>}/>
+            <Route path="/aboutus" element={<AboutUs/>}/>
           </Routes>
         </div>
       <Footer/>

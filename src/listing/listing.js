@@ -17,7 +17,9 @@ for (let i = 0; i < listingData.length; i += chunkSize) {
     listingChunks.push(chunk)
 }
 
-const uniqueLocations = listingData.map(function(listing){ return {value:listing.location, label:listing.location}})
+const uniqueLocations = listingData.map(function(listing){ 
+    return {value:listing.location, label:listing.location}
+})
 
 const sortOptions = [
     {value:'location', label:'Location'},
@@ -30,7 +32,7 @@ function FoodListings() {
     const [visibleData, setVisibleData] = useState([])
 
     return (
-      <div style={{display:'flex', justifyContent:'center', marginTop:'3%'}}>
+      <div style={{display:'flex', justifyContent:'center', marginTop:'3%', marginBottom:'3%'}}>
         <div style={{width:'80%'}}>
             <h3 style={{textAlign:'left'}}>Food Listings</h3>
             <div style={{display:'flex', marginBottom:'2%'}}>

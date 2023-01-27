@@ -30,7 +30,21 @@ function Login(props) {
             {/* Area that Slides */}
             <Col className='align-items-center' xs={6} style={{padding:0, display:'grid'}}> 
               <div id="columnCover" className={positionLeft?'null':'right'} onClick={myMove}>
-                
+                {
+                  positionLeft == true ?
+                  <div style={{verticalAlign:'middle  ', height:'100%'}}>
+                    <h1>Don't have an account?</h1>
+                    <p>Click the button below to register for one now!</p>
+                    <button class="btn btn-primary" onClick={myMove}>Register Now!</button>
+                  </div>
+                  :
+                  <div>
+                    <h1>Have an account already?</h1>
+                    <p>Click the button below to login now!</p>
+                    <button class="btn btn-primary" onClick={myMove}>Login</button>
+                  </div>
+                }
+                  
               </div>
               <Container>
                 {/* Email Form */}
