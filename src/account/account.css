@@ -1,12 +1,11 @@
 #imageCol {
-    background-color: #D3D3D3;
+    background-color: #5F9EA0;
 }
   
 #columnCover {
-    border-radius: 4px;
     height:100%;
     width:50%;
-    background-color: teal;
+    background-color: #5F9EA0;
     position: absolute;
     -webkit-transform: translateX(0);
     transform: translateX(0);

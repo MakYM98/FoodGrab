@@ -3,7 +3,6 @@ import AboutUsOne from '../img/aboutus1.jpg'
 import './aboutus.css';
 
 function AboutUs() {
-    
     return (
       <div style={{height:'100%', width:'100%'}}>
         <div style={{display:'table',height:'100%', width:'100%',justifyContent:'center', paddingLeft:'7%', paddingRight:'10%',

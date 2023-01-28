@@ -11,7 +11,6 @@ import {SiGooglemybusiness} from 'react-icons/si';
 
 
 function IndvListing() {
-    // Remove ?id= from ?id=5 from url parameter
     const queryID = (window.location.search).substring(4);
     var allListingData = require('../data/test_listing.json')['listings']
     var indvListingData = allListingData.filter(function(listing){

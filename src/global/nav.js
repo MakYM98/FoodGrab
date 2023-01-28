@@ -40,7 +40,7 @@ function Header(props) {
   };
 
     return (
-      <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#D3D3D3'}}>
+      <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#5F9EA0'}}>
         <h1><a href='/' className='navLinks'>FoodGrab</a></h1>
         <div>
           <SlideDrawer show={drawerOpen} close={handleBackdropClick}/>
@@ -71,7 +71,7 @@ function Header(props) {
         </div>
 
         <div style={{width:'100%', display:'flex', justifyContent:'end', marginRight:'3%', verticalAlign:'middle'}}>
-          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton}/>
+          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton} color={"white"}/>
         </div>
       </div>
     );

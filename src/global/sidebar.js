@@ -14,8 +14,8 @@ function SlideDrawer(props){
       <div style={{display:'flex', height:'100%'}}>
         <div style={{position:'absolute', bottom:0, width:'100%'}}>
             <div style={{display:'flex', justifyContent:'center'}}>
-            <a href="/login" class="btn btn-primary">Login</a>
-            <a href="/register" class="btn btn-primary">Register</a>
+            <a href="/login" className="btn btn-primary" color="white">Login</a>
+            <a href="/register" className="btn btn-primary">Register</a>
             </div>
 
         </div>

@@ -2,7 +2,7 @@
     /* In commentaries are the way to make it slide from left to right */
     position: fixed;
     height: 100%;
-    background: black;
+    background: #5F9EA0;
     top: 0;
     right: 0;
     /* right: 100%; */
@@ -15,12 +15,11 @@
   }
   .side-drawer.open {
     transform: translateX(0);
-    /* transform: translateX(100%); */
   }
   
 #sideBarX{
   text-align: right;
-  color:lightgrey;
+  color:white;
   margin-top: 3%;
   margin-right: 5%;
   cursor: pointer;
