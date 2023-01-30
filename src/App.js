@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Header from './global/nav';
 import Login from './account/login';
+import Profile from './account/profile';
 import Home from './home/home';
 import CommunityFridge from './fridge/fridge';
 import FoodListings from './listing/listing';
@@ -31,6 +32,7 @@ function App() {
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing" element={<IndvListing/>}/>
             <Route path="/aboutus" element={<AboutUs/>}/>
+            <Route path="/profile" element={<Profile/>}/>
           </Routes>
         </div>
       <Footer/>
