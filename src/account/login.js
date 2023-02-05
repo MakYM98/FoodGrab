@@ -36,7 +36,9 @@ function Login(props) {
     axios
         .get(queryString)
         .then(response => {
-          console.log(response)
+          
+
+
           if('status' in response.data){
             setAccountError(true)
           }else{
@@ -48,68 +50,77 @@ function Login(props) {
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
   }
 
-  const regFormValidation = async () => {
+  const pwFormCheck = () => {
     var formPassed = true
 
-    var userQuery = "http://localhost:4001/foodgrab/username"
+    if(loginDetails.regPw.length < 8){
+      setPasswordError(true)
+    }else{
+      setPasswordError(false)
+    }
+
+    if(loginDetails.regPw != loginDetails.regConfPw){
+      setConfPasswordError(true)
+      formPassed = false
+    }else{
+      setConfPasswordError(false)
+    }
+
+    if(loginDetails.regType === undefined){
+      setTypeError(true)
+      formPassed = false
+    }else{
+      setTypeError(false)
+    }
+
+    return formPassed
+  }
+
+  const regFormValidation = async () => {
+    var formPassed = pwFormCheck()
+
+    var params = new URLSearchParams();
+    params.append('username',loginDetails.regUser)
+    params.append('email', loginDetails.regEmail)
+
+    var userQuery = "http://127.0.0.1:8000/api/form_validation"
     axios
-        .post(userQuery,{username:loginDetails.regUser})
+        .get(userQuery, {params:params})
         .then(response => {
-            console.log(response.data.status)
-            if(response.data.status == 'Username Taken'){
-              setUserNameError(true)
-              formPassed = false
-            }else{
-              setUserNameError(false)
-            }
+          const checkUsername = response.data.find((e) => e.username == loginDetails.regUser)
+          const checkEmail = response.data.find((e) => e.email == loginDetails.regEmail)
 
-            var emailQuery = "http://localhost:4001/foodgrab/email"
+          if(checkUsername){
+            setUserNameError(true)
+            formPassed = false
+          }else{
+            setUserNameError(false)
+          }
+
+          if(checkEmail){
+            setEmailError(true)
+            formPassed = false
+          }else{
+            setEmailError(false)
+          }
+          console.log(formPassed)
+          if(formPassed){
+            var queryString = "http://127.0.0.1:8000/api/register"
             axios
-              .post(emailQuery,{email:loginDetails.regEmail})
+              .post(queryString, {
+                username:loginDetails.regUser,
+                email:loginDetails.regEmail,
+                password:loginDetails.regPw,
+                type:loginDetails.regType
+              })
               .then(response => {
-                  if(response.data.status == 'Email Used'){
-                    setEmailError(true)
-                    formPassed = false
-                  }else{
-                    setEmailError(false)
-                  }
-
-                  if(loginDetails.regPw.length < 8){
-                    setPasswordError(true)
-                  }else{
-                    setPasswordError(false)
-                  }
-              
-                  if(loginDetails.regPw != loginDetails.regConfPw){
-                    setConfPasswordError(true)
-                    formPassed = false
-                  }else{
-                    setConfPasswordError(false)
-                  }
-              
-                  console.log(loginDetails.regType)
-                  if(loginDetails.regType === undefined){
-                    setTypeError(true)
-                    formPassed = false
-                  }else{
-                    setTypeError(false)
-                  }
-                
-                  if(formPassed == true){
-                    var queryString = "http://localhost:4001/foodgrab/register"
-                    axios
-                        .post(queryString,{username:loginDetails.regUser, 
-                                            email:loginDetails.regEmail, 
-                                            password:loginDetails.regPw,
-                                            type:loginDetails.regType})
-                        .then(response => {
-                            console.log(response)
-                        })
-                        .catch(error => console.error(`Error retrieving Registering: ${error}`))
-                  }
+                console.log(response.status)
+                if(response.status == 200){
+                  myMove()
+                }
               })
               .catch(error => console.error(`Error retrieving Registering: ${error}`))
-
+          }
         })
         .catch(error => console.error(`Error retrieving Registering: ${error}`))
   }
