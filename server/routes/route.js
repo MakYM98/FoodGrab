@@ -44,5 +44,43 @@ const router = express.Router()
             })
     })
 
+    router.post('/username',  (req, res) => {
+        knex
+            .select('*') 
+            .from('User')
+            .where('username', req.body.username)
+            .then(userData => {
+                if(userData.length == 0){
+                    res.json({status:"Username Available"})
+                }else{
+                    res.json({status:"Username Taken"})
+                }
+                
+            })
+            .catch(err => {
+                // Send a error message in response
+                res.json({status:"Error"})
+            })
+    })
+
+    router.post('/email',  (req, res) => {
+        knex
+            .select('*') 
+            .from('User')
+            .where('email', req.body.email)
+            .then(userData => {
+                if(userData.length == 0){
+                    res.json({status:"Email Available"})
+                }else{
+                    res.json({status:"Email Used"})
+                }
+                
+            })
+            .catch(err => {
+                // Send a error message in response
+                res.json({status:"Error"})
+            })
+    })
+
 // Export router
 module.exports = router

@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import data from "../products";
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
+import "./Header.css";
 import Hamburger from 'hamburger-react'
 import SlideDrawer from './sidebar';
+import { AiOutlineUser } from 'react-icons/ai';
 
 function Header(props) {
   const [isOpen, setOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate()
 
   function handleOpenDrawerButton() {
     setDrawerOpen(!drawerOpen);
@@ -19,6 +21,7 @@ function Header(props) {
     setOpen(false);
   }
 
+  
   const handleOnSearch = (string, results) => {
     console.log(string, results);
   };
@@ -41,12 +44,14 @@ function Header(props) {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#5F9EA0'}}>
-        <h1><a href='/' className='navLinks'>FoodGrab</a></h1>
+        <div style={{display:'flex', justifyContent:'start', marginRight:'3%', verticalAlign:'middle'}}>
+          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton} color={"white"}/>
+        </div>
         <div>
           <SlideDrawer show={drawerOpen} close={handleBackdropClick}/>
           {drawerOpen}
         </div>
-        <div style={{width:'100%', marginLeft:'2%'}}>
+        {/* <div style={{width:'100%', marginLeft:'2%'}}>
           <ReactSearchAutocomplete
             items={data}
             maxResults={15}
@@ -68,11 +73,30 @@ function Header(props) {
             }}
             className="search"
           />
-        </div>
+        </div> */}
 
-        <div style={{width:'100%', display:'flex', justifyContent:'end', marginRight:'3%', verticalAlign:'middle'}}>
-          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton} color={"white"}/>
-        </div>
+          <div style={{width:'100%'}}>
+              {
+                props.loginFunc() === true? 
+
+                <div style={{display:'flex', justifyContent:'end'}}>
+                  <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                  <div style={{display:'flex', marginRight:'2%', alignItems:'center'}}>
+                    <AiOutlineUser size={30} color='white' style={{paddingRight:'5%'}}/>
+                    <h5 id="userName">Username</h5>
+                  </div>
+                </div>
+                : 
+                <div style={{display:'flex', justifyContent:'end'}}>
+                  <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                  <a href="/login" className="accountBtn" id="loginBtn">Login</a>
+                  <a href="/register" className="accountBtn" id="regBtn">Register</a>
+                </div>
+              }
+          </div>
+
+
+        
       </div>
     );
   }

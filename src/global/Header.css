@@ -1,15 +1,13 @@
 .side-drawer {
-    /* In commentaries are the way to make it slide from left to right */
     position: fixed;
     height: 100%;
     background: #5F9EA0;
     top: 0;
-    right: 0;
-    /* right: 100%; */
+    left: 0;
     width:15%;
     z-index: 1100;
     box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
-    transform: translateX(100%);
+    transform: translateX(-100%);
     /* transform: translateX(0%); */
     transition: transform 0.3s ease-out;
   }
@@ -25,3 +23,37 @@
   cursor: pointer;
 }
 
+.accountBtn{
+  color:white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+#loginBtn{
+  margin-right:2%;
+}
+
+#regBtn{
+  margin-right:2%;
+}
+
+#userName{
+  display:flex;
+  align-items: center;
+  color:white;
+  margin:0;
+}
+
+#navHeader{
+  color:white;
+  width:100%;
+  justify-content: center;
+}
+
+.sideBarName{
+  text-align: left;
+  margin-top: 10%;
+  margin-left: 5%;
+  color:white;
+}

@@ -20,14 +20,26 @@ import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState()
+
+  const logInFunc = (e) => {
+    setLoggedIn(e)
+  }
+
+  const getLoggedIn =()=>{
+    return loggedIn
+  }
+
+  console.log(loggedIn)
+
   return (
     <div className="App">
-      <Header/>
+      <Header loggedIn={loggedIn} loginFunc={getLoggedIn}/>
         <div>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/login" element={<Login cover="register"/>}/>
-            <Route path="/register" element={<Login cover="login"/>}/>
+            <Route path="/login" element={<Login cover="register" loginFunc={logInFunc}/>}/>
+            <Route path="/register" element={<Login cover="login" loginFunc={logInFunc}/>}/>
             <Route path="/communityfridge" element={<CommunityFridge/>}/>
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing" element={<IndvListing/>}/>
