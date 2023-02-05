@@ -32,19 +32,28 @@ function Login(props) {
 
   const fetchLogin = async (e) => {
     e.preventDefault();
-    var queryString = "http://127.0.0.1:8000/api/user/1"
+
+    var queryString = "http://127.0.0.1:8000/api/login"
     axios
-        .get(queryString)
+        .post(queryString,{
+          email:loginDetails.loginEmail,
+          pw:loginDetails.loginPw
+        })
         .then(response => {
-          
-
-
-          if('status' in response.data){
-            setAccountError(true)
-          }else{
+          if(response.status == 200){
             props.loginFunc(true)
-            navigate("/profile");
-
+            console.log(response.data)
+            var redirect_url = "/profile/" + response.data.username
+            navigate(redirect_url, {
+              state:{
+                user_id:response.data.user_id,
+                username:response.data.username,
+                rating:response.data.rating,
+                type:response.data.type.name,
+              }
+            });
+          }else{
+            setAccountError(true)
           }
         })
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
@@ -260,8 +269,8 @@ function Login(props) {
                             isInvalid={typeError}
                             >
                             <option key='blankChoice' hidden value />
-                            <option value="User">User</option>
-                            <option value="Business">Business</option>
+                            <option value="individual">Individual</option>
+                            <option value="business">Business</option>
                           </Form.Control>
                           <Form.Control.Feedback type="invalid">
                             Please select an account type

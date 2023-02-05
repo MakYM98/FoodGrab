@@ -44,7 +44,7 @@ function App() {
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing" element={<IndvListing/>}/>
             <Route path="/aboutus" element={<AboutUs/>}/>
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile/:username" element={<Profile/>}/>
           </Routes>
         </div>
       <Footer/>
