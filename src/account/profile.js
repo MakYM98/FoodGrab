@@ -65,7 +65,9 @@ function Profile(props) {
                     <div>
                         <Rating rating={routerLoc.state.rating}/>
                     </div>
-                        <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>User's Details</h5>
+                        <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                        {routerLoc.state.type}
+                        </h5>
                     </Col>
                     <Col xs={9}>
                     <div>

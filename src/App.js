@@ -42,7 +42,7 @@ function App() {
             <Route path="/register" element={<Login cover="login" loginFunc={logInFunc}/>}/>
             <Route path="/communityfridge" element={<CommunityFridge/>}/>
             <Route path="/listings" element={<FoodListings/>}/>
-            <Route path="/indvListing" element={<IndvListing/>}/>
+            <Route path="/indvListing/:listing" element={<IndvListing/>}/>
             <Route path="/aboutus" element={<AboutUs/>}/>
             <Route path="/profile/:username" element={<Profile/>}/>
           </Routes>

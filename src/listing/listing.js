@@ -47,6 +47,7 @@ function FoodListings() {
                 allData = allData.concat(response.data)
                 setAvailableData(allData)
 
+                console.log(response.data)
                 // Create a Nested Array to create Rows of 4 Listings
                 var dataInChunks = []
                 for (let i = 0; i < response.data.length; i += chunkSize) {
@@ -186,7 +187,11 @@ function FoodListings() {
                                             description={listing["description"]}
                                             price={'$' + String(listing["price"])} 
                                             location={listing["location"]} 
-                                            id={listing["listing_id"]}/>
+                                            id={listing["listing_id"]}
+                                            image={listing["image"]}
+                                            user_rating={listing['seller']['rating']}
+                                            type={listing['seller']['type']['name']}
+                                        />
                                     </td>
                                 )
                             }
