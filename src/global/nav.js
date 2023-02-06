@@ -6,6 +6,8 @@ import "./Header.css";
 import Hamburger from 'hamburger-react'
 import SlideDrawer from './sidebar';
 import { AiOutlineUser } from 'react-icons/ai';
+import { IoChatboxOutline } from 'react-icons/io5';
+import { Button } from 'react-bootstrap';
 
 function Header(props) {
   const [isOpen, setOpen] = useState(false)
@@ -81,9 +83,11 @@ function Header(props) {
 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                  <div style={{display:'flex', marginRight:'2%', alignItems:'center'}}>
-                    <AiOutlineUser size={30} color='white' style={{paddingRight:'5%'}}/>
+                  <div style={{display:'flex', marginRight:'1%', alignItems:'center'}}>
+                    <AiOutlineUser size={40} color='white' style={{}}/>
                     <h5 id="userName">Username</h5>
+                    <Button style={{marginRight:'2%'}}>Chats</Button>
+                    <Button>Sell</Button>
                   </div>
                 </div>
                 : 

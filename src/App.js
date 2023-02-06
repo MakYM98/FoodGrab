@@ -19,6 +19,7 @@ import IndvListing from './listing/indv_listing'
 import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
 import Article from './home/article';
+import Sell from './listing/create_listing';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
@@ -47,6 +48,7 @@ function App() {
             <Route path="/aboutus" element={<AboutUs/>}/>
             <Route path="/profile/:username" element={<Profile/>}/>
             <Route path="/article/:articleid" element={<Article/>}/>
+            <Route path="/sell" element={<Sell/>}/>
           </Routes>
         </div>
       <Footer/>

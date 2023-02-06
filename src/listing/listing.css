@@ -1,0 +1,30 @@
+#createListing{
+    margin:3% 5% 3% 5%;
+}
+
+#detailsArea{
+    margin-top: 0%;
+}
+
+#imageArea{
+    margin-top: 0%;
+}
+
+#listingTitle{
+    margin-bottom: 10%;
+}
+
+#priceTitle{
+    text-align: left;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#saleToggle{
+    float: left;
+    padding-bottom: 2%;
+}
+
+#imageToggle{
+    padding-top: 2%;
+}
