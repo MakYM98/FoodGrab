@@ -42,7 +42,6 @@ function Login(props) {
         .then(response => {
           if(response.status == 200){
             props.loginFunc(true)
-            console.log(response.data)
             var redirect_url = "/profile/" + response.data.username
             navigate(redirect_url, {
               state:{

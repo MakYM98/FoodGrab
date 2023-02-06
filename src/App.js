@@ -18,6 +18,7 @@ import React, {useState} from 'react';
 import IndvListing from './listing/indv_listing'
 import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
+import Article from './home/article';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
@@ -45,6 +46,7 @@ function App() {
             <Route path="/indvListing/:listing" element={<IndvListing/>}/>
             <Route path="/aboutus" element={<AboutUs/>}/>
             <Route path="/profile/:username" element={<Profile/>}/>
+            <Route path="/article/:articleid" element={<Article/>}/>
           </Routes>
         </div>
       <Footer/>

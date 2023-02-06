@@ -43,11 +43,20 @@ function FoodListings() {
             .get(queryString)
             .then(response => {
                 // Save all the data in a Normal Array (For Sorting)
+                if(response.data.length == 0){
+                    setMoreData(false)
+                    return
+                }else if(response.data.length < 8){
+                    setMoreData(false)
+                }else{
+                    setMoreData(true)
+                }
+
+
                 var allData = availableData
                 allData = allData.concat(response.data)
                 setAvailableData(allData)
 
-                console.log(response.data)
                 // Create a Nested Array to create Rows of 4 Listings
                 var dataInChunks = []
                 for (let i = 0; i < response.data.length; i += chunkSize) {
@@ -72,23 +81,28 @@ function FoodListings() {
         axios
             .get(queryString,{params:params})
             .then(response => {
-                if(response.data.length == 0){
-                    setMoreData(false)
-                    return
-                }else if(response.data.length < 8){
-                    setMoreData(false)
-                }else{
+                var chunkVisible = chunkCount * 8
+                var newDataList = filteredData.concat(response.data) 
+                var uniqueListings = [...new Map(newDataList.map(item => [item['listing_id'],item])).values()]
+                setFilteredData(uniqueListings)
+
+                if(uniqueListings.length > chunkVisible){
                     setMoreData(true)
+                }else{
+                    setMoreData(false)
                 }
-                setAvailableData(response.data)
-                console.log(response.data)
-                var newDataList = filteredData
-                newDataList = newDataList.concat(response.data)
-                setFilteredData(newDataList)
-                console.log(newDataList)
+                
+                var dataInChunks = []
+                for (let i = 0; i < uniqueListings.length; i += chunkSize) {
+                    const chunk = uniqueListings.slice(i, i + chunkSize);
+                    dataInChunks.push(chunk)
+                }
+
+                setVisibleData(dataInChunks)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
+
 
       const fetchAvailableLocation = async () => {
         var queryString = "http://127.0.0.1:8000/api/locations"
@@ -109,7 +123,7 @@ function FoodListings() {
         if(locFilter.length != 0){
             fetchListingsLoc(locFilter)
         }else{
-            fetchListingsAll(chunkCount)
+            fetchListingsAll()
         }
         
     },[chunkCount])
@@ -137,11 +151,22 @@ function FoodListings() {
     }
 
     const locationFilterFunc = (filters) => {
-        var locationValue = filters.map(e => {
-            return e.value
-        })
-
-        fetchListingsLoc(locationValue)
+        if(filters.length == 0){
+            setChunkCount(1)
+            setLocFilter([])
+            setFilteredData([])
+            setVisibleData([])
+            fetchListingsAll()
+        }else{
+            if(filters.length == 1){
+                setChunkCount(1)
+            }
+            var locationValue = filters.map(e => {
+                return e.value
+            })
+    
+            fetchListingsLoc(locationValue)
+        }        
     }
 
     return (

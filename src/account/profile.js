@@ -10,10 +10,6 @@ import { useLocation } from "react-router-dom";
 import Rating from '../global/rating_system';
 import axios from 'axios';
 
-var listingData = require('../data/test_listing.json')['listings']
-var first4Listings = listingData.slice(0, 3);
-
-
 function Profile(props) {
     const [latestListing, setLatestListing] = useState([])
     const [latestReview, setLatestReview] = useState([])
