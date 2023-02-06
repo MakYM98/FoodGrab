@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
@@ -12,7 +12,6 @@ import ListingImgOne from '../img/listing_1.jpg';
 import ListingImgTwo from '../img/listing_2.jpg';
 import ListingImgThree from '../img/listing_3.jpg';
 import ListingImgFour from '../img/listing_4.jpg';
-import ListingImgFive from '../img/listing_5.jpg';
 import { Button } from 'react-bootstrap';
 
 function Sell(props) {
@@ -21,7 +20,7 @@ function Sell(props) {
   const [radioValue, setRadioValue] = useState('For Sale');
   const [imgValue, setImgValue] = useState(1)
   const [listingDetails, setListingDetails] = useState({})
-
+  const navigate = useNavigate()
 
   const radios = [
     { name: 'For Sale', value: 'For Sale' },
@@ -60,7 +59,19 @@ function Sell(props) {
             seller:routerCreate.state.user_id
         })
         .then(response => {
-            console.log(response)
+            console.log(listingDetails)
+            if(response.status == 200){
+                navigate('/created', {
+                    state:{
+                        title:listingDetails.title,
+                        description:listingDetails.description,
+                        location:listingDetails.location,
+                        price:price,
+                        image:imgValue,
+                        seller:routerCreate.state.username,
+                    }
+                })
+            }
         })
         .catch(error => console.error(`Error retrieving Registering: ${error}`))
   }

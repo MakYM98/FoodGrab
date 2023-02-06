@@ -20,6 +20,7 @@ import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
 import Article from './home/article';
 import Sell from './listing/create_listing';
+import CreatedListing from './listing/listing_created';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
@@ -48,6 +49,7 @@ function App() {
             <Route path="/profile/:username" element={<Profile/>}/>
             <Route path="/article/:articleid" element={<Article/>}/>
             <Route path="/sell" element={<Sell/>}/>
+            <Route path="/created" element={<CreatedListing/>}/>
           </Routes>
         </div>
       <Footer/>

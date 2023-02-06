@@ -59,8 +59,6 @@ function IndvListing() {
                 </Col>
             </Row>
         </Container>
-        
-
         </div>
       </div>
     )
