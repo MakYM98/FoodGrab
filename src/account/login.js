@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -23,6 +23,7 @@ function Login(props) {
   const [typeError, setTypeError] = useState(false)
   const [regForm, setRegForm] = useState()
   const navigate = useNavigate()
+  const routerDetails = useLocation()
 
   const onFormChange = (e, updatedAt) => {
     const name = e.target.name;
@@ -32,7 +33,6 @@ function Login(props) {
 
   const fetchLogin = async (e) => {
     e.preventDefault();
-
     var queryString = "http://127.0.0.1:8000/api/login"
     axios
         .post(queryString,{
@@ -41,7 +41,7 @@ function Login(props) {
         })
         .then(response => {
           if(response.status == 200){
-            props.loginFunc(true)
+            props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
             navigate(redirect_url, {
               state:{
@@ -111,7 +111,7 @@ function Login(props) {
           }else{
             setEmailError(false)
           }
-          console.log(formPassed)
+
           if(formPassed){
             var queryString = "http://127.0.0.1:8000/api/register"
             axios
@@ -139,10 +139,11 @@ function Login(props) {
   }
 
   useEffect(()=>{
-    if(props.cover == 'login'){
-      setPositionLeft(false)
-    }else{
+    console.log(routerDetails.state.type)
+    if(routerDetails.state.type == 'login'){
       setPositionLeft(true)
+    }else{
+      setPositionLeft(false)
     }
   },[])
 

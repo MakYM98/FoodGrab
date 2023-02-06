@@ -16,7 +16,7 @@ import ListingImgFive from '../img/listing_5.jpg';
 import { Button } from 'react-bootstrap';
 
 function Sell(props) {
-  const routerNews = useLocation()
+  const routerCreate = useLocation()
   const [checked, setChecked] = useState(false);
   const [radioValue, setRadioValue] = useState('For Sale');
   const [imgValue, setImgValue] = useState(1)
@@ -43,7 +43,26 @@ function Sell(props) {
 
 
   const createFunc = () => {
-    console.log(listingDetails)
+    var queryString = "http://127.0.0.1:8000/api/create"
+    if('price' in listingDetails){
+        var price = listingDetails.price
+    }else{
+        var price = 0
+    }
+    axios
+        .post(queryString, {
+            title:listingDetails.title,
+            description:listingDetails.description,
+            location:listingDetails.location,
+            price:price,
+            image:imgValue,
+            date_posted:new Date().toLocaleDateString(),
+            seller:routerCreate.state.user_id
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => console.error(`Error retrieving Registering: ${error}`))
   }
 
   return (

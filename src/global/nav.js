@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import data from "../products";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,12 @@ import { Button } from 'react-bootstrap';
 function Header(props) {
   const [isOpen, setOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [userDetails, setUserDetails] = useState(props.details)
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    setUserDetails(props.details)
+  },[props.details])
 
   function handleOpenDrawerButton() {
     setDrawerOpen(!drawerOpen);
@@ -23,6 +28,21 @@ function Header(props) {
     setOpen(false);
   }
 
+  function redirect(type){
+    navigate('/login', {
+      state:{
+        type:type
+      }
+    });
+  }
+
+  function sellPage(){
+    navigate('/sell', {
+      state:{
+        user_id:userDetails.user_id
+      }
+    });
+  }
   
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -84,17 +104,17 @@ function Header(props) {
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
                   <div style={{display:'flex', marginRight:'1%', alignItems:'center'}}>
-                    <AiOutlineUser size={40} color='white' style={{}}/>
-                    <h5 id="userName">Username</h5>
+                    <AiOutlineUser size={40} color='white'/>
+                    <h5 id="userName">{userDetails === undefined? 'Username': userDetails.username}</h5>
                     <Button style={{marginRight:'2%'}}>Chats</Button>
-                    <Button>Sell</Button>
+                    <Button onClick={()=>{sellPage()}}>Sell</Button>
                   </div>
                 </div>
                 : 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                  <a href="/login" className="accountBtn" id="loginBtn">Login</a>
-                  <a href="/register" className="accountBtn" id="regBtn">Register</a>
+                  <h4 onClick={()=>{redirect('login')}} className="accountBtn" id="loginBtn">Login</h4>
+                  <h4 onClick={()=>{redirect('register')}} className="accountBtn" id="regBtn">Register</h4>
                 </div>
               }
           </div>

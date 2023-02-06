@@ -23,25 +23,24 @@ import Sell from './listing/create_listing';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
+  const [userDetails, setUserDetails] = useState()
 
-  const logInFunc = (e) => {
+  const logInFunc = (e, details) => {
     setLoggedIn(e)
+    setUserDetails(details)
   }
 
   const getLoggedIn =()=>{
     return loggedIn
   }
 
-  console.log(loggedIn)
-
   return (
     <div className="App">
-      <Header loggedIn={loggedIn} loginFunc={getLoggedIn}/>
+      <Header loggedIn={loggedIn} loginFunc={getLoggedIn} details={userDetails}/>
         <div>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/login" element={<Login cover="register" loginFunc={logInFunc}/>}/>
-            <Route path="/register" element={<Login cover="login" loginFunc={logInFunc}/>}/>
+            <Route path="/login" element={<Login loginFunc={logInFunc}/>}/>
             <Route path="/communityfridge" element={<CommunityFridge/>}/>
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing/:listing" element={<IndvListing/>}/>
