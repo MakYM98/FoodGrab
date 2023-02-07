@@ -21,6 +21,7 @@ import AboutUs from './aboutus/aboutus';
 import Article from './home/article';
 import Sell from './listing/create_listing';
 import CreatedListing from './listing/listing_created';
+import Chats from './chat/chats';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
@@ -50,6 +51,7 @@ function App() {
             <Route path="/article/:articleid" element={<Article/>}/>
             <Route path="/sell" element={<Sell/>}/>
             <Route path="/created" element={<CreatedListing/>}/>
+            <Route path="/chats" element={<Chats/>}/>
           </Routes>
         </div>
       <Footer/>

@@ -106,7 +106,9 @@ function Header(props) {
                   <div style={{display:'flex', marginRight:'1%', alignItems:'center'}}>
                     <AiOutlineUser size={40} color='white'/>
                     <h5 id="userName">{userDetails === undefined? 'Username': userDetails.username}</h5>
-                    <Button style={{marginRight:'2%'}}>Chats</Button>
+                    <Button style={{marginRight:'2%'}} onClick={()=>{navigate('/chats')}}>
+                      Chats
+                    </Button>
                     <Button onClick={()=>{sellPage()}}>Sell</Button>
                   </div>
                 </div>
