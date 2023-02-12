@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,9 +7,75 @@ import ChatCard from "./chat_card";
 import ListingImgOne from '../img/listing_1.jpg';
 import MessageBubble from "./message_bubble";
 import Form from 'react-bootstrap/Form';
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Chats(props){
+    const [chats, setChats] = useState([])
+    const routerLoc = useLocation()
 
+    const fetchChats = async () => {
+        var params = new URLSearchParams();
+        params.append('user', routerLoc.state.user_id)
+        var queryString = "http://127.0.0.1:8000/api/chats"
+        axios
+            .get(queryString,{
+              params:params
+            })
+            .then(response => {
+                var chatData = routerLoc.state
+                var allChats = response.data
+                setChats(allChats)
+                if(chatData.seller_id !== null && chatData.listing_id !== null){
+                    console.log(chatData.seller_id)
+                    var filtered = allChats.filter(function(v,i) {
+                        return ((
+                            (v['seller_id'] == chatData.seller_id || 
+                                v['receiver_id'] == chatData.seller_id)
+                            &&
+                                v['listing'] == chatData.listing_id
+                            &&
+                            (v['seller_id'] == chatData.user_id || 
+                            v['receiver_id'] == chatData.user_id)
+                        ))
+                    })
+        
+                    if(filtered.length > 0) {
+                        console.log("Chat available")
+                    }else{
+                        createChat()
+                    }
+                }
+                return response.data
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
+    const createChat = async () => {
+        var chatData = routerLoc.state
+        var queryString = "http://127.0.0.1:8000/api/create_chat"
+        console.log(chatData)
+        axios
+            .post(queryString,{
+                user:chatData.user_id,
+                seller:chatData.seller_id,
+                listing:chatData.listing_id
+            })
+            .then(response => {
+              console.log(response.data)
+              return response.data
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
+
+
+    useEffect(()=>{
+        var chatData = routerLoc.state
+        var allChats = fetchChats()
+        console.log(allChats)
+        
+    },[])
 
   return (
     <div id="chatOuter">
@@ -19,10 +84,9 @@ function Chats(props){
                 <Row style={{height:'100%'}}>
                     <Col id="cardCol" xs={4}>
                         <h4 className="chatTitle">Chats</h4>
-                        <ChatCard/>
-                        <ChatCard/>
-                        <ChatCard/>
-                        <ChatCard/>
+                        {
+                            chats.map(chat => <ChatCard/>)
+                        }
                         
                     </Col>
                     <Col id="boxCol" xs={8}>

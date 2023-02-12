@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
-
 function Login(props) {
   const ref = useRef(null);
   const [accountError, setAccountError] = useState(false)
@@ -43,6 +42,11 @@ function Login(props) {
           if(response.status == 200){
             props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
+            localStorage.setItem('account', JSON.stringify({
+              user_id:response.data.user_id,
+              username:response.data.username,
+            }));
+
             navigate(redirect_url, {
               state:{
                 user_id:response.data.user_id,

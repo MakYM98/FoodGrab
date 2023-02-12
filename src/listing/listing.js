@@ -16,6 +16,11 @@ const sortOptions = [
     {value:'Location', label:'Location'},
 ]
 
+const priceOptions = [
+    {value:'For Sale', label:'For Sale'},
+    {value:'For Free', label:'For Free'},
+]
+
 // Sort By(Location, Price) Filter By(Location, Price)
 function FoodListings() {
     const [availableData, setAvailableData] = useState([])
@@ -81,27 +86,27 @@ function FoodListings() {
         axios
             .get(queryString,{params:params})
             .then(response => {
-                var chunkVisible = chunkCount * 8
-                var newDataList = filteredData.concat(response.data) 
-                var uniqueListings = [...new Map(newDataList.map(item => [item['listing_id'],item])).values()]
-                setFilteredData(uniqueListings)
+                var newDataList = response.data
 
-                if(uniqueListings.length > chunkVisible){
-                    setMoreData(true)
-                }else{
-                    setMoreData(false)
-                }
-                
                 var dataInChunks = []
-                for (let i = 0; i < uniqueListings.length; i += chunkSize) {
-                    const chunk = uniqueListings.slice(i, i + chunkSize);
+                for (let i = 0; i < newDataList.length; i += chunkSize) {
+                    const chunk = newDataList.slice(i, i + chunkSize);
                     dataInChunks.push(chunk)
                 }
-
-                setVisibleData(dataInChunks)
+                setFilteredData(dataInChunks)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
+
+      useEffect(()=>{
+        if(filteredData.length > chunkCount+1){
+            setMoreData(true)
+        }else{
+            setMoreData(false)
+        }
+
+        setVisibleData(filteredData.slice(0,chunkCount+1))
+      },[filteredData])
 
 
       const fetchAvailableLocation = async () => {
@@ -121,7 +126,12 @@ function FoodListings() {
     // Query for more queries after User presses "Show More"
     useEffect(()=>{
         if(locFilter.length != 0){
-            fetchListingsLoc(locFilter)
+            setVisibleData(filteredData.slice(0,chunkCount+1))
+            if(filteredData.length > chunkCount+1){
+                setMoreData(true)
+            }else{
+                setMoreData(false)
+            }
         }else{
             fetchListingsAll()
         }
@@ -164,6 +174,8 @@ function FoodListings() {
             var locationValue = filters.map(e => {
                 return e.value
             })
+
+
     
             fetchListingsLoc(locationValue)
         }        
@@ -179,6 +191,7 @@ function FoodListings() {
                         options={sortOptions} 
                         name="Sorting" 
                         styles={dropdownStyles}
+                        placeholder='Sorting'
                         onChange={(e) => {sortFunc(e)}}
                     />    
                 </div>
@@ -191,10 +204,19 @@ function FoodListings() {
                             options={locationOptions} 
                             isMulti 
                             styles={dropdownStyles}
+                            placeholder='Location'
                             onChange={(e)=>{locationFilterFunc(e)}}
                             />
                     </div>
-                    {/* <div style={{marginLeft:'2%',minWidth:200}}><Select  native name="amount" styles={dropdownStyles}/></div> */}
+                    <div style={{marginLeft:'2%',minWidth:200}}>
+                        <Select 
+                            options={priceOptions} 
+                            isMulti 
+                            styles={dropdownStyles}
+                            placeholder='Price'
+                            onChange={(e)=>{locationFilterFunc(e)}}
+                        />
+                    </div>
                 </div>
 
             </div>
@@ -207,6 +229,7 @@ function FoodListings() {
                                 listingList.map(listing => 
                                     <td>
                                         <ListingCard 
+                                            user_id={listing["seller"]['user_id']}
                                             name={listing["seller"]['username']}
                                             title={listing["title"]} 
                                             description={listing["description"]}

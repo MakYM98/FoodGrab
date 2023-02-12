@@ -8,12 +8,27 @@ import ListingImage from '../img/login.jpg'
 import {BiUser} from 'react-icons/bi';
 import {ImLocation} from 'react-icons/im';
 import {SiGooglemybusiness} from 'react-icons/si';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BsStarFill} from 'react-icons/bs';
 
 function IndvListing() {
     const routerLoc = useLocation()
-    console.log(routerLoc)
+    const navigate = useNavigate()
+
+    const chatFunc = () => {
+        var account = JSON.parse(localStorage.getItem("account"));
+        console.log(routerLoc.state)
+        if(localStorage.getItem('account') !== null){
+            navigate('/chats', {
+                state:{
+                  seller_id:routerLoc.state.user_id,
+                  user_id: account.user_id,
+                  listing_id:routerLoc.state.listing_id,
+                }
+              });
+        }
+    }
+
     return (
       <div style={{display:'flex', justifyContent:'center', marginTop:'3%', height:'600px'}}>
         <div style={{width:'80%'}}>
@@ -51,7 +66,7 @@ function IndvListing() {
                             <p style={{textAlign:'left'}}><ImLocation size={28}/>
                                 Location: {routerLoc.state.location}
                             </p>
-                            <a href="/" class="btn btn-primary" style={{width:500}}>Chat Now</a>
+                            <a onClick={chatFunc}>Chat Now</a>
                         </div>
                     </div>
                 </Col>

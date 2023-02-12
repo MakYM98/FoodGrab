@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './chat.css'
 
 function MessageBubble(props){
-    console.log(props)
+    // console.log(props)
     if(props.user == 'me'){
         return(
             <p id="messagePara" className="from-me">

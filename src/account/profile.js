@@ -74,6 +74,7 @@ function Profile(props) {
                                 latestListing.map(listing => 
                                     <Col xs={3} style={{marginRight:'7%'}}>
                                         <ListingCard 
+                                            user_id={listing["seller"]['user_id']} 
                                             name={listing["seller"]['username']} 
                                             title={listing["title"]} 
                                             description={listing["description"]}
