@@ -120,11 +120,17 @@
     height: 25px;
 }
 
+#messageDiv{
+    display: flex;
+    justify-content: end;
+}
+
 .from-me {
     color: white; 
     background: #0B93F6;
     align-self: flex-end;
-    float: right;
+    width: 100%;
+    /* float: right; */
 }
 
 .from-me:before{
