@@ -166,3 +166,17 @@
     background-color: white;
     border-bottom-right-radius: 10px;
 }
+
+#starButton{
+    background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.on {
+    color: #000;
+  }
+  .off {
+    color: #ccc;
+  }

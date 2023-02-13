@@ -10,6 +10,10 @@ import Form from 'react-bootstrap/Form';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import moment from 'moment';
+import { Button } from 'react-bootstrap';
+import ReviewModal from "./review_modal";
+import ReserveModal from "./reserve_modal";
+
 
 function Chats(props){
     const [chats, setChats] = useState([])
@@ -18,6 +22,8 @@ function Chats(props){
     const [selectedDetails, setSelectedDetails] = useState()
     const [message, setMessage] = useState('')
     const [allMessages, setAllMessages] = useState([])
+    const [reviewVisible, setReviewVisible] = useState(false)
+    const [reserveVisible, setReserveVisible] = useState(false)
 
     const routerLoc = useLocation()
 
@@ -48,8 +54,6 @@ function Chats(props){
                 var chatData = routerLoc.state
                 var allChats = response.data
                 setChats(allChats)
-                console.log(allChats)
-                console.log(chatData)
                 if(chatData.seller_id !== null && chatData.listing_id !== null){
                     var filtered = allChats.filter(function(v,i) {
                         return ((
@@ -83,6 +87,7 @@ function Chats(props){
               params:params
             })
             .then(response => {
+                console.log(response.data)
                 setAllMessages(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
@@ -132,7 +137,19 @@ function Chats(props){
     const messageChange = (e, updatedAt) => {
         const value = e.target.value;
         setMessage(value);
-      };
+    };
+
+    const offerFunc = () => {
+
+    }
+
+    const openReview = (visible) => {
+        setReviewVisible(visible)
+    }
+
+    const openReserve = (visible) => {
+        setReserveVisible(visible)
+    }
 
     useEffect(()=>{
         var allChats = fetchChats()
@@ -162,9 +179,9 @@ function Chats(props){
                         {
                             selectedDetails == null? <div></div>:
                             <Container id="boxCon" style={{minWidth:'100%'}}>
-                            <Row id="boxDetails" style={{height:'15%'}}>
-                                <Col xs={2} id="imgCol" style={{maxWidth:120}}>
-                                    <img src={ListingImgOne} style={{maxWidth:100}}/>
+                            <Row id="boxDetails" style={{height:'20%'}}>
+                                <Col xs={2} id="imgCol" style={{maxWidth:140}}>
+                                    <img src={ListingImgOne} style={{maxWidth:120}}/>
                                 </Col>
 
                                 <Col xs={10} id="detailsCol">
@@ -174,15 +191,33 @@ function Chats(props){
                                     <h4 className="chatDetails">
                                         {selectedDetails['listing']['title']}
                                     </h4>
+                                    <div>
+                                        
+                                            {
+            selectedDetails['listing']['seller']['user_id'] == routerLoc.state.user_id? 
+            selectedDetails['listing']['status'] == 'available?'? 
+                                                <div></div>: 
+                                                <Button style={{float:'left'}} onClick={()=>openReview(true)}>
+                                                    Review
+                                                </Button>:
+
+                                                selectedDetails['listing']['status'] == 'available?'? 
+                                                <Button style={{float:'left'}} onClick={()=>openReview(true)}>
+                                                    Review
+                                                </Button>:
+                                                <Button style={{float:'left'}} onClick={()=>openReserve(true)}>
+                                                    Reserve
+                                                </Button>
+                                            }
+                                        
+                                    </div>
                                 </Col>
                             </Row>
 
-                            <Row xs={7} style={{height:'75%'}}>
+                            <Row xs={7} style={{height:'70%'}}>
                             <div id="messageOuter">
                                 <div id="messageArea">
                                 <div style={{width:'100%', minHeight:50}}>
-                                    <MessageBubble from="them" message="Test"/>
-                                    <MessageBubble from="them" message="Test"/>
                                     {
                                         allMessages.map(message => 
                                             <MessageBubble 
@@ -194,9 +229,7 @@ function Chats(props){
                                             />
                                         )
                                     }
-                                   
                                 </div>
-
                                 </div>
                             </div>
                         </Row>
@@ -220,6 +253,10 @@ function Chats(props){
                     </Col>
                 </Row>
             </Container>
+
+
+            <ReviewModal visible={reviewVisible} openFunc={openReview}/>
+            <ReserveModal visible={reserveVisible} openFunc={openReserve}/>
         </div>
     </div>
     
