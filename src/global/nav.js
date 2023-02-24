@@ -8,11 +8,16 @@ import SlideDrawer from './sidebar';
 import { AiOutlineUser } from 'react-icons/ai';
 import { IoChatboxOutline } from 'react-icons/io5';
 import { Button } from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Header(props) {
   const [isOpen, setOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(props.details)
+  const [loginDrop, setLoginDrop] = useState(false)
+
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -26,6 +31,13 @@ function Header(props) {
   function handleBackdropClick() {
     setDrawerOpen(false);
     setOpen(false);
+  }
+
+  const showDropdown = (e)=>{
+    setLoginDrop(!loginDrop);
+  }
+  const hideDropdown = e => {
+    setLoginDrop(false);
   }
 
   function redirect(type){
@@ -53,6 +65,11 @@ function Header(props) {
         listing_id:null,
       }
     });
+  }
+
+  function logoutFunc(){
+    localStorage.removeItem("account");
+    navigate('/');
   }
 
   
@@ -115,13 +132,32 @@ function Header(props) {
 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                  <div style={{display:'flex', marginRight:'1%', alignItems:'center'}}>
-                    <AiOutlineUser size={40} color='white'/>
-                    <h5 id="userName">{userDetails === undefined? 'Username': userDetails.username}</h5>
-                    <Button style={{marginRight:'2%'}} onClick={()=>{chatPage()}}>
-                      Chats
-                    </Button>
-                    <Button onClick={()=>{sellPage()}}>Sell</Button>
+                  <Nav onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
+                    <NavDropdown
+                      id="nav-dropdown-dark-example"
+                      title={<div><AiOutlineUser size={40} color='white'/>
+                      <h5 id="userName">{userDetails === undefined? 'Username': userDetails.username}</h5></div>}
+                      menuVariant="dark"
+                      show={loginDrop}
+                    >
+                      <NavDropdown.Item href="#action/3.1">
+                        Profile
+                      </NavDropdown.Item>
+                      <NavDropdown.Item onClick={()=>{chatPage()}}>
+                        Chats
+                      </NavDropdown.Item>
+                      <NavDropdown.Item onClick={()=>{sellPage()}}>
+                        Sell
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item onClick={()=>{logoutFunc()}}>
+                        Logout
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </Nav>
+
+
+                  <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                   </div>
                 </div>
                 : 
