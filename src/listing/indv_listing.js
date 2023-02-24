@@ -29,45 +29,63 @@ function IndvListing() {
         }
     }
 
+    const profileFunc = () => {
+        console.log(routerLoc.state)
+        if(localStorage.getItem('account') !== null){
+            navigate(`/profile/${routerLoc.state.user_name}`, {
+                state:{
+                  username:routerLoc.state.user_name,
+                  type: routerLoc.state.user_type,
+                  rating:routerLoc.state.user_rating,
+                }
+              });
+        }
+    }
+
     return (
-      <div style={{display:'flex', justifyContent:'center', marginTop:'3%', height:'600px'}}>
-        <div style={{width:'80%'}}>
+      <div style={{display:'flex', justifyContent:'center', marginTop:'3%', height:'800px'}}>
+        <div style={{width:'90%'}}>
         <Container>
             <Row>
-                <Col>
+                <Col style={{borderRight:"1px solid #eae8e4"}}>
                     <img
                         className="d-block w-100"
                         src={ListingImage}
                         alt="First slide"
-                        width='1500px'
-                        height='500px'
+                        height='750px'
                         />
                 </Col>
                 
                 <Col>
-                    <h3 style={{textAlign:'left'}}>
+                    <h3 style={{textAlign:'left', borderBottom:'1px solid #eae8e4'}}>
                         {routerLoc.state.title}
                     </h3>
                     <div>
                         <h4 style={{textAlign:'left'}}>Description</h4>
-                        <p style={{textAlign:'left'}}>
+                        <p style={{textAlign:'left', marginBottom:'25%'}}>
                             {routerLoc.state.description}
                         </p>
                     </div>
-                    <div>
-                        <h4 style={{textAlign:'left'}}>Seller</h4>
-                        <div>
-                            <p style={{textAlign:'left'}}>
-                                <BiUser size={28}/>
-                                User: {routerLoc.state.user_name} ({routerLoc.state.user_rating} <BsStarFill size={14} style={{marginBottom:'1%'}}/>)
-                                <SiGooglemybusiness size={28} style={{marginLeft:'5%'}}/>
-                                Type: {routerLoc.state.user_type}
+                    <div style={{border:'1px solid #eae8e4'}}>
+                        <div style={{padding:'2%'}}>
+                            <h4 style={{textAlign:'left'}}>Seller</h4>
+                            <div onClick={profileFunc}>
+                                <p style={{textAlign:'left'}}>
+                                    <BiUser size={28}/>
+                                        User: {routerLoc.state.user_name}
+                                        ({routerLoc.state.user_rating}
+                                        <BsStarFill size={14}
+                                        style={{marginBottom:'1%'}}/>)
+                                    <SiGooglemybusiness size={28} style={{marginLeft:'5%'}}/>
+                                    Type: {routerLoc.state.user_type}
+                                    </p>
+                                <p style={{textAlign:'left'}}><ImLocation size={28}/>
+                                    Location: {routerLoc.state.location}
                                 </p>
-                            <p style={{textAlign:'left'}}><ImLocation size={28}/>
-                                Location: {routerLoc.state.location}
-                            </p>
-                            <a onClick={chatFunc}>Chat Now</a>
+                                <a onClick={chatFunc}>Chat Now</a>
+                            </div>
                         </div>
+                        
                     </div>
                 </Col>
             </Row>

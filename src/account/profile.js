@@ -54,7 +54,7 @@ function Profile(props) {
             <Container>
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
-                    <img src={Avatar} style={{borderRadius:"50%", height:'50%',width:'70%'}}/>
+                    <img src={Avatar} style={{borderRadius:"50%", height:'70%',width:'70%'}}/>
                     <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
                         {routerLoc.state.username}
                     </h1>
@@ -71,6 +71,9 @@ function Profile(props) {
                         <Container>
                             <Row>
                             {
+                                latestListing.length == 0? 
+                                <h5>User has not posted any listing yet</h5>
+                                :
                                 latestListing.map(listing => 
                                     <Col xs={3} style={{marginRight:'7%'}}>
                                         <ListingCard 
@@ -98,7 +101,9 @@ function Profile(props) {
                         <h1 style={{textAlign:"left"}}>User Reviews</h1>
                         <Container>
                             <Row>
-                            {
+                            {latestReview.length == 0? 
+                                <h5>User has not receive any reviews yet</h5>
+                                :
                                 latestReview.map(listing => 
                                     <Col xs={3} style={{marginRight:'7%'}}>
                                         <ReviewCard
