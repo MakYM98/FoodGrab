@@ -9,9 +9,6 @@ import { CardGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
-var listingData = require('../data/test_listing.json')['listings']
-var first6Listings = listingData.slice(0, 7);
-
 function Home() {
   const [latestListings, setLatestListings] = useState([]);
 
@@ -31,10 +28,10 @@ function Home() {
                 description: element.description,
                 price: element.price,
                 location: element.location,
-                id: element.listing_id
+                id: element.listing_id,
+                seller_id:element.seller.user_id
               }
             })
-
             setLatestListings(newListings)
         })
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
@@ -65,7 +62,8 @@ function Home() {
                 {
                   latestListings.map(listing => 
                       <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
-                                  price={listing["price"]} location={listing["location"]} id={listing["id"]}/>
+                                  price={listing["price"]} location={listing["location"]} id={listing["id"]}
+                                  user_id={listing["seller_id"]}/>
                   )
                 }
               </Slider>

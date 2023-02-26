@@ -17,6 +17,7 @@ function Header(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(props.details)
   const [loginDrop, setLoginDrop] = useState(false)
+  const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
 
   const navigate = useNavigate()
 
@@ -57,7 +58,6 @@ function Header(props) {
   }
 
   function chatPage(){
-    var account = JSON.parse(localStorage.getItem("account"));
     navigate('/chats', {
       state:{
         seller_id:null,
@@ -70,6 +70,16 @@ function Header(props) {
   function logoutFunc(){
     localStorage.removeItem("account");
     navigate('/');
+  }
+
+  function profileFunc(){
+    navigate(`/profile/${account.username}`, {
+      state:{
+        username:account.username,
+        user_id: account.user_id,
+        listing_id:null,
+      }
+    });
   }
 
   
@@ -136,11 +146,11 @@ function Header(props) {
                     <NavDropdown
                       id="nav-dropdown-dark-example"
                       title={<div><AiOutlineUser size={40} color='white'/>
-                      <h5 id="userName">{userDetails === undefined? 'Username': userDetails.username}</h5></div>}
+                      <h5 id="userName">{account.username}</h5></div>}
                       menuVariant="dark"
                       show={loginDrop}
                     >
-                      <NavDropdown.Item href="#action/3.1">
+                      <NavDropdown.Item onClick={()=>{profileFunc()}}>
                         Profile
                       </NavDropdown.Item>
                       <NavDropdown.Item onClick={()=>{chatPage()}}>

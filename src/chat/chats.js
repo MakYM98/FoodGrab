@@ -13,6 +13,7 @@ import moment from 'moment';
 import { Button } from 'react-bootstrap';
 import ReviewModal from "./review_modal";
 import ReserveModal from "./reserve_modal";
+import ChatBox from "./chatbox";
 
 
 function Chats(props){
@@ -24,8 +25,15 @@ function Chats(props){
     const [allMessages, setAllMessages] = useState([])
     const [reviewVisible, setReviewVisible] = useState(false)
     const [reserveVisible, setReserveVisible] = useState(false)
+    const [chatDetails, setChatDetails] = useState()
 
     const routerLoc = useLocation()
+
+    
+    useEffect(()=>{
+        const found = chats.find(element => element.chat_id == selectedChat);
+        setChatDetails(found)
+    },[selectedChat])
 
     const chooseChat = (chat) => {
         setSelectedChat(chat)
@@ -155,6 +163,9 @@ function Chats(props){
         var allChats = fetchChats()
     },[])
 
+    console.log(selectedChat)
+    console.log(chats)
+
   return (
     <div id="chatOuter">
         <div id="chatInner">
@@ -213,8 +224,12 @@ function Chats(props){
                                     </div>
                                 </Col>
                             </Row>
+                            <Row xs={8} style={{height:'80%'}}>
+                                <ChatBox chatRoom={chatDetails.chat_id}/>
+                            </Row>
 
-                            <Row xs={7} style={{height:'70%'}}>
+                        
+                            {/* <Row xs={7} style={{height:'70%'}}>
                             <div id="messageOuter">
                                 <div id="messageArea">
                                 <div style={{width:'100%', minHeight:50}}>
@@ -246,7 +261,7 @@ function Chats(props){
                                 onKeyDown={sendMessage}
                             />
                             </Form.Group>
-                        </Row>
+                        </Row> */}
 
                         </Container>
                         }

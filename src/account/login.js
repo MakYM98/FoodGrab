@@ -39,6 +39,7 @@ function Login(props) {
           pw:loginDetails.loginPw
         })
         .then(response => {
+          console.log(response.data)
           if(response.status == 200){
             props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
@@ -55,11 +56,12 @@ function Login(props) {
                 type:response.data.type.name,
               }
             });
-          }else{
-            setAccountError(true)
           }
         })
-        .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+        .catch((error) => {
+          setAccountError(true)
+          console.error(`Error retrieving Login Info: ${error}`)
+        })
   }
 
   const pwFormCheck = () => {
@@ -117,6 +119,7 @@ function Login(props) {
           }
 
           if(formPassed){
+            console.log(loginDetails.regType)
             var queryString = "http://127.0.0.1:8000/api/register"
             axios
               .post(queryString, {

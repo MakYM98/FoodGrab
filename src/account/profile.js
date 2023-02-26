@@ -14,8 +14,15 @@ function Profile(props) {
     const [latestListing, setLatestListing] = useState([])
     const [latestReview, setLatestReview] = useState([])
     const routerLoc = useLocation()
+    const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+    const [accountDetails, setAccountDetails] = useState({
+        username:'',
+        rating:0,
+        type:''
+    })
 
     useEffect(()=>{
+        fetchUserDetails()
         fetchReviews()
         fetchListings()
     },[])
@@ -48,6 +55,21 @@ function Profile(props) {
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
 
+    const fetchUserDetails = async () => {
+        var params = new URLSearchParams();
+        params.append('user', account.user_id)
+        var queryString = "http://127.0.0.1:8000/api/profile"
+        axios
+            .get(queryString,{
+              params:params
+            })
+            .then(response => {
+              setAccountDetails(response.data)
+              console.log(response.data)
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
 
     return (
        <div style={{marginTop:'2%',marginBottom:'2%'}}>
@@ -56,13 +78,13 @@ function Profile(props) {
                     <Col xs={3} style={{marginTop:'3%'}}>
                     <img src={Avatar} style={{borderRadius:"50%", height:'70%',width:'70%'}}/>
                     <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
-                        {routerLoc.state.username}
+                        {accountDetails.username}
                     </h1>
                     <div>
-                        <Rating rating={routerLoc.state.rating}/>
+                        <Rating rating={accountDetails.rating}/>
                     </div>
                         <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
-                        {routerLoc.state.type}
+                        {accountDetails.type.name}
                         </h5>
                     </Col>
                     <Col xs={9}>

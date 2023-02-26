@@ -69,16 +69,19 @@ function IndvListing() {
                     <div style={{border:'1px solid #eae8e4'}}>
                         <div style={{padding:'2%'}}>
                             <h4 style={{textAlign:'left'}}>Seller</h4>
-                            <div onClick={profileFunc}>
-                                <p style={{textAlign:'left'}}>
-                                    <BiUser size={28}/>
-                                        User: {routerLoc.state.user_name}
-                                        ({routerLoc.state.user_rating}
-                                        <BsStarFill size={14}
-                                        style={{marginBottom:'1%'}}/>)
-                                    <SiGooglemybusiness size={28} style={{marginLeft:'5%'}}/>
-                                    Type: {routerLoc.state.user_type}
+                            <div >
+                                <div onClick={profileFunc}>
+                                    <p style={{textAlign:'left'}} >
+                                        <BiUser size={28}/>
+                                            User: {routerLoc.state.user_name}
+                                            ({routerLoc.state.user_rating}
+                                            <BsStarFill size={14}
+                                            style={{marginBottom:'1%'}}/>)
+                                        <SiGooglemybusiness size={28} style={{marginLeft:'5%'}}/>
+                                        Type: {routerLoc.state.user_type}
                                     </p>
+                                </div>
+                                
                                 <p style={{textAlign:'left'}}><ImLocation size={28}/>
                                     Location: {routerLoc.state.location}
                                 </p>
