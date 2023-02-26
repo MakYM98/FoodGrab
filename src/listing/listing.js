@@ -24,11 +24,13 @@ const priceOptions = [
 // Sort By(Location, Price) Filter By(Location, Price)
 function FoodListings() {
     const [availableData, setAvailableData] = useState([])
+    const [filteredData, setFilteredData] = useState([])
     const [visibleData, setVisibleData] = useState([])
-    const [chunkCount, setChunkCount] = useState(1)
+    const [chunkCount, setChunkCount] = useState(2)
     // Store all User selected locations in Filter
     const [locFilter, setLocFilter] = useState([])
-    const [filteredData, setFilteredData] = useState([])
+    const [priceFilter, setPriceFilter] = useState('')
+    const [sortFilter, setSortFilter] = useState('')
     // Used to Determine the visiblility of "Show More" Button
     const [moreData, setMoreData] = useState(true)  
     // Store all Dropdown values for Location Filter
@@ -39,146 +41,108 @@ function FoodListings() {
     // Initial Population of 8 Listings
     useEffect(()=>{
         fetchAvailableLocation()
-        fetchListingsAll(1)
+        fetchListingsAll()
     },[])
 
     const fetchListingsAll = async () => {
-        var queryString = "http://127.0.0.1:8000/api/listing/" + String(chunkCount)
+        var queryString = "http://127.0.0.1:8000/api/listing"
         axios
             .get(queryString)
             .then(response => {
-                // Save all the data in a Normal Array (For Sorting)
-                if(response.data.length == 0){
-                    setMoreData(false)
-                    return
-                }else if(response.data.length < 8){
-                    setMoreData(false)
-                }else{
-                    setMoreData(true)
-                }
-
-
-                var allData = availableData
-                allData = allData.concat(response.data)
-                setAvailableData(allData)
-
-                // Create a Nested Array to create Rows of 4 Listings
-                var dataInChunks = []
-                for (let i = 0; i < response.data.length; i += chunkSize) {
-                    const chunk = response.data.slice(i, i + chunkSize);
-                    dataInChunks.push(chunk)
-                }
-                var newDataList = visibleData
-                newDataList = newDataList.concat(dataInChunks)
-                setVisibleData(newDataList)
+                setAvailableData(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
 
-      const fetchListingsLoc = async (locations) => {
-        setLocFilter(locations)
-        var params = new URLSearchParams();
-        for (let i = 0; i < locations.length; i += 1) {
-            params.append("location", locations[i])
-        }
-        setLocFilter(locations)
-        var queryString = "http://127.0.0.1:8000/api/listing/loc/" + String(chunkCount)
-        axios
-            .get(queryString,{params:params})
-            .then(response => {
-                var newDataList = response.data
-
-                var dataInChunks = []
-                for (let i = 0; i < newDataList.length; i += chunkSize) {
-                    const chunk = newDataList.slice(i, i + chunkSize);
-                    dataInChunks.push(chunk)
-                }
-                setFilteredData(dataInChunks)
-            })
-            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
-      }
-
-      useEffect(()=>{
-        if(filteredData.length > chunkCount+1){
-            setMoreData(true)
-        }else{
-            setMoreData(false)
-        }
-
-        setVisibleData(filteredData.slice(0,chunkCount+1))
-      },[filteredData])
-
-
-      const fetchAvailableLocation = async () => {
-        var queryString = "http://127.0.0.1:8000/api/locations"
-        axios
-            .get(queryString)
-            .then(response => {
-                var locationArray = response.data.map(element =>{
-                    return {label:element.location, value:element.location}
-                })
-
-                setLocationOptions(locationArray)
-            })
-            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
-      }
-
-    // Query for more queries after User presses "Show More"
     useEffect(()=>{
-        if(locFilter.length != 0){
-            setVisibleData(filteredData.slice(0,chunkCount+1))
-            if(filteredData.length > chunkCount+1){
-                setMoreData(true)
-            }else{
-                setMoreData(false)
-            }
-        }else{
-            fetchListingsAll()
-        }
-        
-    },[chunkCount])
-
-    const sortFunc = (sort) => {
         var allData = availableData
 
-        if(sort.value == 'Recent'){
+        if(sortFilter === null || sortFilter == 'Recent'){
             allData = allData.sort((a,b) => (a.date_posted > b.date_posted) ? 1 : ((b.date_posted > a.date_posted) ? -1 : 0))
-        }else if(sort.value == 'Price - Low to High'){
+        }else if(sortFilter == 'Price - Low to High'){
             allData = allData.sort((a,b) => (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0))
-        }else if(sort.value == 'Price - High to Low'){
+        }else if(sortFilter == 'Price - High to Low'){
             allData = allData.sort((a,b) => (a.price < b.price) ? 1 : ((b.price < a.price) ? -1 : 0))
-        }else if(sort.value == 'Location'){
+        }else if(sortFilter == 'Location'){
             allData = allData.sort((a,b) => (a.location > b.location) ? 1 : ((b.location > a.location) ? -1 : 0))
         }
 
+        if(locFilter.length !=0){
+            allData = allData.filter((element) => {
+                return locFilter.includes(element.location) 
+            })
+        }
+
+        if(priceFilter == 'For Sale'){
+            allData = allData.filter((element) => {
+                return element.price > 0
+            })
+        }else if(priceFilter == 'For Free'){
+            allData = allData.filter((element) => {
+                return element.price == 0
+            })
+        }
+
+        // Create a Nested Array to create Rows of 4 Listings
         var dataInChunks = []
         for (let i = 0; i < allData.length; i += chunkSize) {
             const chunk = allData.slice(i, i + chunkSize);
             dataInChunks.push(chunk)
         }
         
-        setVisibleData(dataInChunks)
+        setFilteredData(dataInChunks)
+    },[availableData, sortFilter, locFilter, priceFilter])
+
+    useEffect(()=>{
+        if(filteredData.length > chunkCount){
+            setMoreData(true)
+        }else{
+            setMoreData(false)
+        }
+        setVisibleData(filteredData.slice(0,chunkCount))
+    },[filteredData, chunkCount])
+
+    const fetchAvailableLocation = async () => {
+    var queryString = "http://127.0.0.1:8000/api/locations"
+    axios
+        .get(queryString)
+        .then(response => {
+            var locationArray = response.data.map(element =>{
+                return {label:element.location, value:element.location}
+            })
+
+            setLocationOptions(locationArray)
+        })
+        .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
+    const sortFunc = (sort) => {
+        if(sort === null){
+            setChunkCount(2)
+            setSortFilter(sort)
+        }else{
+            setSortFilter(sort.value)
+        }
+        
     }
 
     const locationFilterFunc = (filters) => {
         if(filters.length == 0){
-            setChunkCount(1)
+            setChunkCount(2)
             setLocFilter([])
-            setFilteredData([])
-            setVisibleData([])
-            fetchListingsAll()
         }else{
-            if(filters.length == 1){
-                setChunkCount(1)
-            }
-            var locationValue = filters.map(e => {
-                return e.value
-            })
+            var newLoc = filters.map(element => element.value)
+            setLocFilter(newLoc)
+        }
+    }
 
-
-    
-            fetchListingsLoc(locationValue)
-        }        
+    const priceFilterFunc = (filters) => {
+        if(filters===null){
+            setChunkCount(2)
+            setPriceFilter('')
+        }else {
+            setPriceFilter(filters.value)
+        }
     }
 
     return (
@@ -190,6 +154,7 @@ function FoodListings() {
                     <Select 
                         options={sortOptions} 
                         name="Sorting" 
+                        isClearable={true}
                         styles={dropdownStyles}
                         placeholder='Sorting'
                         onChange={(e) => {sortFunc(e)}}
@@ -211,11 +176,12 @@ function FoodListings() {
                     <div style={{marginLeft:'2%',minWidth:200}}>
                         <Select 
                             options={priceOptions} 
-                            isMulti 
+                            name="Price" 
                             styles={dropdownStyles}
                             placeholder='Price'
-                            onChange={(e)=>{locationFilterFunc(e)}}
-                        />
+                            isClearable={true}
+                            onChange={(e) => {priceFilterFunc(e)}}
+                        /> 
                     </div>
                 </div>
 

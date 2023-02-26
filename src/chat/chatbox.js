@@ -45,8 +45,6 @@ function ChatBox(props){
         console.log(user)
     },[])
 
-    
-
     useEffect(()=>{
         
     },[client])
