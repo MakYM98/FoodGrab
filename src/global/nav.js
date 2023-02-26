@@ -52,7 +52,7 @@ function Header(props) {
   function sellPage(){
     navigate('/sell', {
       state:{
-        user_id:userDetails.user_id
+        user_id:account.user_id
       }
     });
   }

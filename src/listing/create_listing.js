@@ -13,6 +13,8 @@ import ListingImgTwo from '../img/listing_2.jpg';
 import ListingImgThree from '../img/listing_3.jpg';
 import ListingImgFour from '../img/listing_4.jpg';
 import { Button } from 'react-bootstrap';
+import Dropzone from 'react-dropzone-uploader'
+import 'react-dropzone-uploader/dist/styles.css'
 
 function Sell(props) {
   const routerCreate = useLocation()
@@ -20,7 +22,36 @@ function Sell(props) {
   const [radioValue, setRadioValue] = useState('For Sale');
   const [imgValue, setImgValue] = useState(1)
   const [listingDetails, setListingDetails] = useState({})
+  const [imgFile, setImgFile] = useState()
   const navigate = useNavigate()
+
+    const fileParams = ({ meta }) => {
+        return { url: 'https://httpbin.org/post' }
+    }
+    const onFileChange = ({ meta, file }, status) => { 
+        setImgFile(file)
+    }
+    const onSubmit = (files, allFiles) => {
+        allFiles.forEach(f => {
+            console.log(f)
+        })
+
+
+        allFiles.forEach(f => f.remove())
+    }
+    // const getFilesFromEvent = e => {
+    //     return new Promise(resolve => {
+    //         getDroppedOrSelectedFiles(e).then(chosenFiles => {
+    //             resolve(chosenFiles.map(f => f.fileObject))
+    //         })
+    //     })
+    // }
+
+    // const getUploadParams = ({ file, meta }) => {
+    //     const body = new FormData()
+    //     body.append('fileField', file)
+    //     return { url: 'https://httpbin.org/post', body }
+    //   }
 
   const radios = [
     { name: 'For Sale', value: 'For Sale' },
@@ -48,16 +79,18 @@ function Sell(props) {
     }else{
         var price = 0
     }
+
+    let form_data = new FormData();
+    form_data.append('image', imgFile);
+    form_data.append('title',listingDetails.title);
+    form_data.append('description',listingDetails.description);
+    form_data.append('location',listingDetails.location);
+    form_data.append('price',price);
+    form_data.append('date_posted',new Date().toLocaleDateString());
+    form_data.append('seller',routerCreate.state.user_id);
+
     axios
-        .post(queryString, {
-            title:listingDetails.title,
-            description:listingDetails.description,
-            location:listingDetails.location,
-            price:price,
-            image:imgValue,
-            date_posted:new Date().toLocaleDateString(),
-            seller:routerCreate.state.user_id
-        })
+        .post(queryString,form_data)
         .then(response => {
             console.log(listingDetails)
             if(response.status == 200){
@@ -67,7 +100,7 @@ function Sell(props) {
                         description:listingDetails.description,
                         location:listingDetails.location,
                         price:price,
-                        image:imgValue,
+                        image:imgFile,
                         seller:routerCreate.state.username,
                     }
                 })
@@ -108,6 +141,21 @@ function Sell(props) {
                                 </ToggleButton>
                             ))}
                         </ButtonGroup>
+
+                        <Dropzone
+                            onSubmit={onSubmit}
+                            onChangeStatus={onFileChange}
+                            getUploadParams={fileParams}
+                            // getFilesFromEvent={getFilesFromEvent}
+                            accept="image/*"
+                            maxFiles={1}
+                            inputContent="Drop A File"
+                            styles={{
+                                dropzone: { width: '100%', height: 200 },
+                                dropzoneActive: { borderColor: 'green' },
+                            }}            
+                        />
+                        
 
                     </div>
                 </Col>

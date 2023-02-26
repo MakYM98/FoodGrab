@@ -21,6 +21,7 @@ function Home() {
     axios
         .get(queryString)
         .then(response => {
+          console.log(response.data)
             var newListings = response.data.slice(2).map(element => {
               return {
                 name: element.seller['username'],
@@ -57,7 +58,7 @@ function Home() {
           </Row>
           <Row style={{marginTop:'3%'}}>
             <Col>
-            <h5 style={{textAlign:'left'}}>Discounted Food Near You</h5>
+              <h5 style={{textAlign:'left'}}>Discounted Food Near You</h5>
               <Slider {...settings}>
                 {
                   latestListings.map(listing => 

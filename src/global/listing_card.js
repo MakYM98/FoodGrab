@@ -29,7 +29,7 @@ function ListingCard(props) {
     return (
       <Card style={{ width: '300px' }} onClick={function(){selectFunc()}}>
         <CardHeader>{props.name}</CardHeader>
-        <Card.Img variant="top" src={CardImage} />
+        <Card.Img variant="top" src="http://127.0.0.1:8000/media/post_images/anh-nguyen-kcA-c3f_3FE-unsplash.jpg" />
         <Card.Body>
           <Card.Title style={{textAlign:'left'}}>{props.title}</Card.Title>
           <Card.Text style={{textAlign:'left'}}>

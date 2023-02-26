@@ -36,6 +36,7 @@ function Profile(props) {
               params:params
             })
             .then(response => {
+                console.log(response.data)
               setLatestListing(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
