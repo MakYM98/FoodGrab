@@ -60,13 +60,12 @@ function FoodListings() {
 
     useEffect(()=>{
         var allData = availableData
-
-        console.log(availableData)
-
+        
         if(setToSearch){
+            var searchText = searchFilter.toLowerCase()
             allData = allData.filter((element) => {
-                return (element.title.includes(searchFilter) || 
-                        element.description.includes(searchFilter))
+                return (element.title.toLowerCase().includes(searchText) || 
+                        element.description.toLowerCase().includes(searchText))
             })
         }
 

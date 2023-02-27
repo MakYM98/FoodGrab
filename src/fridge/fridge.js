@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios'
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -16,7 +19,10 @@ L.Icon.Default.mergeOptions({
 const singaporePostion = [1.3521, 103.8198]
 
 function CommunityFridge() {
+  const [allFridges, setAllFridges] = useState([])
   const [fridgeLocations, setFridgeLocations] = useState([])
+  const [searchFilter, setSearchFilter] = useState('')
+  const [toSearch, setToSearch] = useState(false)
 
   const fetchFridges = async () => {
     var queryString = "http://127.0.0.1:8000/api/fridges"
@@ -24,6 +30,7 @@ function CommunityFridge() {
         .get(queryString)
         .then(response => {
             setFridgeLocations(response.data)
+            setAllFridges(response.data)
         })
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
   }
@@ -31,6 +38,28 @@ function CommunityFridge() {
   useEffect(()=>{
     fetchFridges()
   },[])
+
+  const searchFunc = ()=>{
+    setToSearch(true)
+  }
+
+  const clearSearch = () => {
+      setSearchFilter('')
+      setToSearch(false)
+  }
+
+  useEffect(()=>{
+    if(toSearch){
+      var existingFridges = allFridges
+        if(setToSearch){
+          existingFridges = existingFridges.filter((element) => {
+            console.log(element.street)
+                return element.street.toLowerCase().includes(searchFilter.toLowerCase())
+            })
+          setFridgeLocations(existingFridges)
+        }
+    }
+  },[toSearch])
 
   return (
     <div style={{display:'flex', justifyContent:'center', marginTop:'3%'}}>
@@ -53,6 +82,29 @@ function CommunityFridge() {
 
         <div style={{marginTop:'5%', marginBottom:'5%'}}>
           <h3 style={{textAlign:'left'}}>List of Locations</h3>
+          <InputGroup className="mb-3">
+                <Form.Control
+                    placeholder="Search for Fridge"
+                    aria-label="Search"
+                    onChange={(e) => {setSearchFilter(e.target.value)}}
+                    value={searchFilter}
+                />
+                {
+                    toSearch === false? 
+                    <Button type="submit" id="button-addon2"
+                            onClick={()=>{searchFunc()}}
+                            >
+                        Search
+                    </Button>
+                    :
+                    <Button type="submit" id="button-addon2"
+                            onClick={()=>{clearSearch()}}
+                            >
+                        Clear
+                    </Button>
+                }
+                
+            </InputGroup>
           <Table striped bordered hover>
             <thead>
               <tr>
