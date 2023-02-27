@@ -2,17 +2,59 @@ import React, { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 export default function ReviewModal(props){
     const [show, setShow] = useState(props.visible);
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
+    const [comment, setComment] = useState('');
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("account")))
 
     useEffect(()=>{setShow(props.visible)},[props.visible])
 
     const handleClose = () => {
         setShow(false)
         props.openFunc(false)
+        console.log(comment)
+    }
+
+    const getReviewee = () => {
+      if(props.buyer == user.user_id){
+        return props.seller
+      }else{
+        return props.buyer
+      }
+    }
+
+    const getUserRole = () => {
+      if(props.buyer == user.user_id){
+        return 'Buyer'
+      }else{
+        return 'Seller'
+      }
+    }
+
+
+
+    const reviewFunc = async () => {
+      var queryString = "http://127.0.0.1:8000/api/create_review"
+      axios
+          .post(queryString,{
+            reviewer: user.user_id,
+            reviewee:getReviewee(),
+            rating: rating,
+            comment:comment,
+            user: getUserRole(),
+            chat_id:props.chat_id
+          })
+          .then(response => {
+            if(response.data == 'Success'){
+              setShow(false)
+            props.openFunc(false)
+            }
+          })
+          .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
 
     return (
@@ -22,16 +64,19 @@ export default function ReviewModal(props){
           <Modal.Title>How was your experience?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        Leave a Review for the seller
+        Leave a Review for the user
 
         <Form.Group className="mb-3" controlId="message">
-                            <Form.Control 
-                                name="message" 
-                                type="text" 
-                                placeholder="Message"
-                                required
-                            />
-                            </Form.Group>
+          <Form.Control 
+              name="message" 
+              type="text" 
+              placeholder="Message"
+              onChange={(e) => {
+                setComment(e.target.value);
+            }}
+              required
+          />
+        </Form.Group>
 
         <div className="star-rating">
         {[...Array(5)].map((star, index) => {
@@ -56,7 +101,7 @@ export default function ReviewModal(props){
           <Button variant="secondary" onClick={()=>handleClose()}>
             Close
           </Button>
-          <Button variant="primary" >
+          <Button variant="primary" onClick={()=>reviewFunc()}>
             Save Changes
           </Button>
         </Modal.Footer>

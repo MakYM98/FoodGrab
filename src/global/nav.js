@@ -82,6 +82,11 @@ function Header(props) {
     });
   }
 
+  const navigateFunc = (loc) => {
+    navigate(loc)
+    props.close()
+  }
+
   
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -105,13 +110,13 @@ function Header(props) {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#5F9EA0'}}>
-        <div style={{display:'flex', justifyContent:'start', marginRight:'3%', verticalAlign:'middle'}}>
+        {/* <div style={{display:'flex', justifyContent:'start', marginRight:'3%', verticalAlign:'middle'}}>
           <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton} color={"white"}/>
         </div>
         <div>
           <SlideDrawer show={drawerOpen} close={handleBackdropClick}/>
           {drawerOpen}
-        </div>
+        </div> */}
         {/* <div style={{width:'100%', marginLeft:'2%'}}>
           <ReactSearchAutocomplete
             items={data}
@@ -141,7 +146,14 @@ function Header(props) {
                 localStorage.getItem('account') !== null? 
 
                 <div style={{display:'flex', justifyContent:'end'}}>
+                  <div id="navArea">
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                  <h5 id="homeHeader" onClick={()=>{navigateFunc('/')}}>Home</h5>
+                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
+                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
+                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
+                  </div>
+                  
                   <Nav onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                     <NavDropdown
                       id="nav-dropdown-dark-example"
@@ -173,6 +185,7 @@ function Header(props) {
                 : 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                  
                   <h4 onClick={()=>{redirect('login')}} className="accountBtn" id="loginBtn">Login</h4>
                   <h4 onClick={()=>{redirect('register')}} className="accountBtn" id="regBtn">Register</h4>
                 </div>

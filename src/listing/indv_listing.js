@@ -10,6 +10,7 @@ import {ImLocation} from 'react-icons/im';
 import {SiGooglemybusiness} from 'react-icons/si';
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsStarFill} from 'react-icons/bs';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 function IndvListing() {
     const routerLoc = useLocation()
@@ -46,7 +47,9 @@ function IndvListing() {
       <div style={{display:'flex', justifyContent:'center', marginTop:'3%', height:'800px'}}>
         <div style={{width:'90%'}}>
         <Container>
+        <h4 id="backButton"onClick={()=>{navigate('/listings')}}><AiOutlineArrowLeft/>Back</h4>
             <Row>
+                
                 <Col style={{borderRight:"1px solid #eae8e4"}}>
                     <img
                         className="d-block w-100"

@@ -41,3 +41,21 @@
   color: white;
   text-decoration: none;
 }
+
+#chatBubble{
+  z-index: 100;
+  position: sticky;
+  bottom:0;
+  float: right;
+  transform: scaleX(-1);
+  margin-right: 2%;
+  margin-bottom:2%;
+  /* transform: translate(50%, -50%); */
+    /* zIndex: -1,
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    fontSize: '18px',
+    width: '50px',
+    transform: 'translate(50%, -50%)', */
+}

@@ -14,6 +14,9 @@ import { Button } from 'react-bootstrap';
 import ReviewModal from "./review_modal";
 import ReserveModal from "./reserve_modal";
 import ChatBox from "./chatbox";
+import ReviewButton from "./reviewButton";
+import AcceptModal from "./accept_modal";
+import CompleteModal from "./complete_modal";
 
 
 function Chats(props){
@@ -25,6 +28,8 @@ function Chats(props){
     const [allMessages, setAllMessages] = useState([])
     const [reviewVisible, setReviewVisible] = useState(false)
     const [reserveVisible, setReserveVisible] = useState(false)
+    const [acceptVisible, setAcceptVisible] = useState(false)
+    const [completeVisible, setCompleteVisible] = useState(false)
     const [chatDetails, setChatDetails] = useState()
 
     const routerLoc = useLocation()
@@ -64,13 +69,14 @@ function Chats(props){
                 setChats(allChats)
                 if(chatData.seller_id !== null && chatData.listing_id !== null){
                     var filtered = allChats.filter(function(v,i) {
+                        console.log(v)
                         return ((
-                            (v['seller_id']['user_id'] == chatData.seller_id || 
+                            (v['sender_id']['user_id'] == chatData.seller_id || 
                                 v['receiver_id']['user_id'] == chatData.seller_id)
                             &&
                                 v['listing']['listing_id'] == chatData.listing_id
                             &&
-                            (v['seller_id']['user_id'] == chatData.user_id || 
+                            (v['sender_id']['user_id'] == chatData.user_id || 
                             v['receiver_id']['user_id'] == chatData.user_id)
                         ))
                     })
@@ -159,12 +165,17 @@ function Chats(props){
         setReserveVisible(visible)
     }
 
+    const openAccept = (visible) => {
+        setAcceptVisible(visible)
+    }
+
+    const openComplete = (visible) => {
+        setCompleteVisible(visible)
+    }
+
     useEffect(()=>{
         var allChats = fetchChats()
     },[])
-
-    console.log(selectedChat)
-    console.log(chats)
 
   return (
     <div id="chatOuter">
@@ -203,75 +214,78 @@ function Chats(props){
                                         {selectedDetails['listing']['title']}
                                     </h4>
                                     <div>
-                                        
-                                            {
-            selectedDetails['listing']['seller']['user_id'] == routerLoc.state.user_id? 
-            selectedDetails['listing']['status'] == 'available?'? 
-                                                <div></div>: 
-                                                <Button style={{float:'left'}} onClick={()=>openReview(true)}>
-                                                    Review
-                                                </Button>:
-
-                                                selectedDetails['listing']['status'] == 'available?'? 
-                                                <Button style={{float:'left'}} onClick={()=>openReview(true)}>
-                                                    Review
-                                                </Button>:
-                                                <Button style={{float:'left'}} onClick={()=>openReserve(true)}>
-                                                    Reserve
-                                                </Button>
-                                            }
-                                        
+                                        <ReviewButton
+                                            listing={selectedDetails['listing']['listing_id']}
+                                            seller={selectedDetails['receiver_id']['user_id']}
+                                            buyer={selectedDetails['sender_id']['user_id']}
+                                            status={selectedDetails['listing']['status']}
+                                            interested={selectedDetails['interested']}
+                                            chat_id={selectedDetails['chat_id']}
+                                            openReview={openReview}
+                                            openReserve={openReserve}
+                                            openAccept={openAccept}
+                                            openComplete={openComplete}
+                                        />
                                     </div>
                                 </Col>
                             </Row>
                             <Row xs={8} style={{height:'80%'}}>
                                 <ChatBox chatRoom={chatDetails.chat_id}/>
                             </Row>
-
-                        
-                            {/* <Row xs={7} style={{height:'70%'}}>
-                            <div id="messageOuter">
-                                <div id="messageArea">
-                                <div style={{width:'100%', minHeight:50}}>
-                                    {
-                                        allMessages.map(message => 
-                                            <MessageBubble 
-                                                user={
-                                                    message.sender.user_id == 
-                                                    routerLoc.state.user_id? 'me': 'seller'
-                                                } 
-                                                message={message.message}
-                                            />
-                                        )
-                                    }
-                                </div>
-                                </div>
-                            </div>
-                        </Row>
-
-                        <Row xs={1} id="" style={{height:'10%'}}>
-                        <Form.Group className="mb-3" controlId="message">
-                            <Form.Control 
-                                name="message" 
-                                type="text" 
-                                placeholder="Message"
-                                value={message} 
-                                required
-                                onChange={messageChange}
-                                onKeyDown={sendMessage}
-                            />
-                            </Form.Group>
-                        </Row> */}
-
                         </Container>
                         }
                     </Col>
                 </Row>
             </Container>
+        
+            {
+                selectedDetails == null? <div></div>:<ReviewModal 
+                visible={reviewVisible} 
+                openFunc={openReview}
+                listing={selectedDetails['listing']['listing_id']}
+                seller={selectedDetails['receiver_id']['user_id']}
+                buyer={selectedDetails['sender_id']['user_id']}
+                status={selectedDetails['listing']['status']}
+                interested={selectedDetails['listing']['interested']}
+                chat_id={selectedDetails['chat_id']}/>
+            }
 
 
-            <ReviewModal visible={reviewVisible} openFunc={openReview}/>
-            <ReserveModal visible={reserveVisible} openFunc={openReserve}/>
+            {
+                selectedDetails == null? <div></div>:<ReserveModal 
+                visible={reserveVisible} 
+                openFunc={openReserve}
+                listing={selectedDetails['listing']['listing_id']}
+                seller={selectedDetails['receiver_id']['user_id']}
+                buyer={selectedDetails['sender_id']['user_id']}
+                status={selectedDetails['listing']['status']}
+                interested={selectedDetails['listing']['interested']}
+                chat_id={selectedDetails['chat_id']}/>
+            }
+
+            {
+                selectedDetails == null? <div></div>:<AcceptModal 
+                visible={acceptVisible} 
+                openFunc={openAccept}
+                listing={selectedDetails['listing']['listing_id']}
+                seller={selectedDetails['receiver_id']['user_id']}
+                buyer={selectedDetails['sender_id']['user_id']}
+                status={selectedDetails['listing']['status']}
+                interested={selectedDetails['listing']['interested']}
+                chat_id={selectedDetails['chat_id']}/>
+            }
+
+{
+                selectedDetails == null? <div></div>:<CompleteModal 
+                visible={completeVisible} 
+                openFunc={openComplete}
+                listing={selectedDetails['listing']['listing_id']}
+                seller={selectedDetails['receiver_id']['user_id']}
+                buyer={selectedDetails['sender_id']['user_id']}
+                status={selectedDetails['listing']['status']}
+                interested={selectedDetails['listing']['interested']}
+                chat_id={selectedDetails['chat_id']}/>
+            }
         </div>
     </div>
     

@@ -22,10 +22,24 @@ import Article from './home/article';
 import Sell from './listing/create_listing';
 import CreatedListing from './listing/listing_created';
 import Chats from './chat/chats';
+import { BsFillChatFill } from 'react-icons/bs';
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
   const [userDetails, setUserDetails] = useState()
+  const navigate = useNavigate()
+
+  function chatPage(){
+    var account = JSON.parse(localStorage.getItem("account"))
+    navigate('/chats', {
+      state:{
+        seller_id:null,
+        user_id: account.user_id,
+        listing_id:null,
+      }
+    });
+  }
 
   const logInFunc = (e, details) => {
     setLoggedIn(e)
@@ -54,7 +68,10 @@ function App() {
             <Route path="/chats" element={<Chats/>}/>
           </Routes>
         </div>
+        <BsFillChatFill id="chatBubble" size={50} onClick={()=>{chatPage()}}/>
       <Footer/>
+      
+      
     </div>
   );
 }

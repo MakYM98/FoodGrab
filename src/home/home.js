@@ -17,12 +17,12 @@ function Home() {
   },[])
 
   const fetchListingsAll = async () => {
-    var queryString = "http://127.0.0.1:8000/api/listing/2"
+    var queryString = "http://127.0.0.1:8000/api/listing"
     axios
         .get(queryString)
         .then(response => {
           console.log(response.data)
-            var newListings = response.data.slice(2).map(element => {
+            var newListings = response.data.slice(0,8).map(element => {
               return {
                 name: element.seller['username'],
                 title: element.title,

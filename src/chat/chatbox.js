@@ -24,40 +24,45 @@ function ChatBox(props){
     const [value, setValue] = useState('')
     const [name, setName] = useState('')
     const [chatRoom, setChatRoom] = useState()
+    const [time, setTime] = useState(Date.now());
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("account")))
-    const client = new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`); //gets room_name from the state and connects to the backend server 
+    const client = React.useRef(new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`));
+
+    useEffect(()=>{
+        console.log(props.chatRoom)
+        setMessages([])
+    },[props.chatRoom])
+
+
+    const newMessage = (dataFromServer) => {
+        var curMessages = messages
+        curMessages.push({
+            message: dataFromServer.message,
+            name: dataFromServer.username
+        })
+        setMessages(curMessages)
+    }
 
     useEffect(()=>{     
         if(client!=undefined){
-            client.onmessage = (message) => {
+            client.current.onmessage = (message) => {
                 const dataFromServer = JSON.parse(message.data);
                 if (dataFromServer) {
-                    var curMessages = messages
-                    curMessages.push({
-                        message: dataFromServer.message,
-                        name: dataFromServer.username
-                    })
-                    setMessages(curMessages)
+                    newMessage(dataFromServer)
                 }
             }
         }
 
-        console.log(user)
+        const interval = setInterval(() => setTime(Date.now()), 500);
+        return () => {
+            clearInterval(interval);
+        };
     },[])
-
-    useEffect(()=>{
-        
-    },[client])
-
-    useEffect(()=>{
-        console.log(messages)
-    },[messages])
 
     const onButtonClicked = (e) => {
         if(e.code == "Enter"){
-            console.log(user['user_id'])
             // e.prevenDefault()
-            client.send(
+            client.current.send(
                 JSON.stringify({
                     type:"message",
                     text:value,
@@ -73,7 +78,7 @@ function ChatBox(props){
         <div style={{height:'88%'}}>
             <div id="messageOuter">
                 <div id="messageArea">
-                    <div style={{width:'100%', minHeight:50}}>
+                    <div style={{width:'100%', maxHeight:'500px',minHeight:50}}>
                         {
                             messages.map(message => 
                                 <MessageBubble 

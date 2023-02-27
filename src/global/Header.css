@@ -49,7 +49,6 @@
 
 #navHeader{
   color:white;
-  width:100%;
   justify-content: center;
 }
 
@@ -58,4 +57,22 @@
   margin-top: 10%;
   margin-left: 5%;
   color:white;
+}
+
+#navArea{
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+#homeHeader{
+  margin-left: 3%;
+  color: white;
+  cursor: pointer;
+}
+
+.allHeaders{
+  margin-left: 1%;
+  color: white;
+  cursor: pointer;
 }
