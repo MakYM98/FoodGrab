@@ -4,7 +4,6 @@ import data from "../products";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import Hamburger from 'hamburger-react'
-import SlideDrawer from './sidebar';
 import { AiOutlineUser } from 'react-icons/ai';
 import { IoChatboxOutline } from 'react-icons/io5';
 import { Button } from 'react-bootstrap';
@@ -110,36 +109,7 @@ function Header(props) {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#5F9EA0'}}>
-        {/* <div style={{display:'flex', justifyContent:'start', marginRight:'3%', verticalAlign:'middle'}}>
-          <Hamburger toggled={isOpen} toggle={setOpen} onToggle={handleOpenDrawerButton} color={"white"}/>
-        </div>
-        <div>
-          <SlideDrawer show={drawerOpen} close={handleBackdropClick}/>
-          {drawerOpen}
-        </div> */}
-        {/* <div style={{width:'100%', marginLeft:'2%'}}>
-          <ReactSearchAutocomplete
-            items={data}
-            maxResults={15}
-            onSearch={handleOnSearch}
-            onHover={handleOnHover}
-            onSelect={handleOnSelect}
-            onFocus={handleOnFocus}
-            placeholder="Search for food, location and more"
-            onClear={handleOnClear}
-            fuseOptions={{ keys: ["name", "description"] }}
-            styling={{
-              zIndex: 100,
-              borderRadius: "5px",
-              boxShadow: "none",
-              border: "1px solid #e5e5e5",
-              height: "5vh",
-              placeholderFontSize: "2.5vh",
-              fontSize: "2.2vh",
-            }}
-            className="search"
-          />
-        </div> */}
+
 
           <div style={{width:'100%'}}>
               {

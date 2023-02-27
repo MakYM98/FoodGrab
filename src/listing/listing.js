@@ -4,6 +4,8 @@ import ListingCard from '../global/listing_card';
 import Select from 'react-select'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const dropdownStyles = {
     control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
@@ -31,6 +33,8 @@ function FoodListings() {
     const [locFilter, setLocFilter] = useState([])
     const [priceFilter, setPriceFilter] = useState('')
     const [sortFilter, setSortFilter] = useState('')
+    const [searchFilter, setSearchFilter] = useState('')
+    const [toSearch, setToSearch] = useState(false)
     // Used to Determine the visiblility of "Show More" Button
     const [moreData, setMoreData] = useState(true)  
     // Store all Dropdown values for Location Filter
@@ -56,6 +60,15 @@ function FoodListings() {
 
     useEffect(()=>{
         var allData = availableData
+
+        console.log(availableData)
+
+        if(setToSearch){
+            allData = allData.filter((element) => {
+                return (element.title.includes(searchFilter) || 
+                        element.description.includes(searchFilter))
+            })
+        }
 
         if(sortFilter === null || sortFilter == 'Recent'){
             allData = allData.sort((a,b) => (a.date_posted > b.date_posted) ? 1 : ((b.date_posted > a.date_posted) ? -1 : 0))
@@ -91,7 +104,7 @@ function FoodListings() {
         }
         
         setFilteredData(dataInChunks)
-    },[availableData, sortFilter, locFilter, priceFilter])
+    },[availableData, sortFilter, locFilter, priceFilter, toSearch])
 
     useEffect(()=>{
         if(filteredData.length > chunkCount){
@@ -145,10 +158,44 @@ function FoodListings() {
         }
     }
 
+    const searchFunc = ()=>{
+        setToSearch(true)
+    }
+
+    const clearSearch = () => {
+        setSearchFilter('')
+        setToSearch(false)
+    }
+
     return (
       <div style={{display:'flex', justifyContent:'center', marginTop:'3%', marginBottom:'3%'}}>
         <div style={{width:'80%'}}>
             <h3 style={{textAlign:'left'}}>Food Listings</h3>
+
+            <InputGroup className="mb-3">
+                <Form.Control
+                    placeholder="Search for Products"
+                    aria-label="Search"
+                    onChange={(e) => {setSearchFilter(e.target.value)}}
+                    value={searchFilter}
+                />
+                {
+                    toSearch === false? 
+                    <Button type="submit" id="button-addon2"
+                            onClick={()=>{searchFunc()}}
+                            >
+                        Search
+                    </Button>
+                    :
+                    <Button type="submit" id="button-addon2"
+                            onClick={()=>{clearSearch()}}
+                            >
+                        Clear
+                    </Button>
+                }
+                
+            </InputGroup>
+
             <div style={{display:'flex', marginBottom:'2%'}}>
                 <div style={{minWidth:200}}>
                     <Select 
