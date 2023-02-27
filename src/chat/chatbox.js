@@ -20,10 +20,7 @@ function ChatBox(props){
     // const [client, setClient] = useState()
     // For Chat Box
     const [messages, setMessages] = useState([])
-    const [filledForm, setFilledForm] = useState(false)
     const [value, setValue] = useState('')
-    const [name, setName] = useState('')
-    const [chatRoom, setChatRoom] = useState()
     const [time, setTime] = useState(Date.now());
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("account")))
     const client = React.useRef(new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`));
@@ -33,6 +30,12 @@ function ChatBox(props){
         setMessages([])
     },[props.chatRoom])
 
+    useEffect(()=>{
+        if(props.pastMsgs.length!=0){
+            var allMessages = props.pastMsgs.concat(messages)
+            setMessages(allMessages)
+        }
+    },[props.pastMsgs])
 
     const newMessage = (dataFromServer) => {
         var curMessages = messages
@@ -41,22 +44,36 @@ function ChatBox(props){
             name: dataFromServer.username
         })
         setMessages(curMessages)
+        var queryString = "http://127.0.0.1:8000/api/new_message"
+        axios
+            .post(queryString,{
+                chat: props.chatRoom,
+                user:user.user_id,
+                message:dataFromServer.message,
+                date:new Date()
+            })
+            .then(response => {
+              console.log(response)
+              
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
 
     useEffect(()=>{     
         if(client!=undefined){
             client.current.onmessage = (message) => {
                 const dataFromServer = JSON.parse(message.data);
+                console.log(dataFromServer)
                 if (dataFromServer) {
                     newMessage(dataFromServer)
                 }
             }
         }
 
-        const interval = setInterval(() => setTime(Date.now()), 500);
-        return () => {
-            clearInterval(interval);
-        };
+        // const interval = setInterval(() => setTime(Date.now()), 500);
+        // return () => {
+        //     clearInterval(interval);
+        // };
     },[])
 
     const onButtonClicked = (e) => {

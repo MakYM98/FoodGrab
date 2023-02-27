@@ -23,35 +23,22 @@ function Sell(props) {
   const [imgValue, setImgValue] = useState(1)
   const [listingDetails, setListingDetails] = useState({})
   const [imgFile, setImgFile] = useState()
+  const [imgDisplay, setImgDisplay] = useState()
   const navigate = useNavigate()
 
     const fileParams = ({ meta }) => {
         return { url: 'https://httpbin.org/post' }
     }
     const onFileChange = ({ meta, file }, status) => { 
+        if (FileReader) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                document.getElementById('imgDisplay').src = fr.result;
+            }
+            fr.readAsDataURL(file);
+        }
         setImgFile(file)
     }
-    const onSubmit = (files, allFiles) => {
-        allFiles.forEach(f => {
-            console.log(f)
-        })
-
-
-        allFiles.forEach(f => f.remove())
-    }
-    // const getFilesFromEvent = e => {
-    //     return new Promise(resolve => {
-    //         getDroppedOrSelectedFiles(e).then(chosenFiles => {
-    //             resolve(chosenFiles.map(f => f.fileObject))
-    //         })
-    //     })
-    // }
-
-    // const getUploadParams = ({ file, meta }) => {
-    //     const body = new FormData()
-    //     body.append('fileField', file)
-    //     return { url: 'https://httpbin.org/post', body }
-    //   }
 
   const radios = [
     { name: 'For Sale', value: 'For Sale' },
@@ -117,41 +104,20 @@ function Sell(props) {
                     <div id="imageArea">
                         <h4 style={{textAlign:'left'}}>Item Image</h4>
                         <img 
-                            src={imgValue==1? ListingImgOne: 
-                                    imgValue==2? ListingImgTwo:
-                                    imgValue==3? ListingImgThree:ListingImgFour}
-                            width={500}
+                            id="imgDisplay"
+                            // src={imgFile!==null? imgFile: null}
+                            src={imgDisplay}
+                            width={400}
                         />
-                        <ButtonGroup className="mb-2" id="imageToggle">
-                            {imgRadios.map((radio, idx) => (
-                                <ToggleButton
-                                    key={idx}
-                                    id={`img-radio-${idx}`}
-                                    type="radio"
-                                    variant="none"
-                                    name="imgRadio"
-                                    value={radio.value}
-                                    checked={imgValue == radio.value}
-                                    onChange={(e) => setImgValue(e.currentTarget.value)}
-                                >
-                                    <img src={radio.value==1? ListingImgOne: 
-                                                radio.value==2? ListingImgTwo:
-                                                radio.value==3? ListingImgThree:ListingImgFour} 
-                                    width={100}/>
-                                </ToggleButton>
-                            ))}
-                        </ButtonGroup>
 
                         <Dropzone
-                            onSubmit={onSubmit}
                             onChangeStatus={onFileChange}
                             getUploadParams={fileParams}
-                            // getFilesFromEvent={getFilesFromEvent}
                             accept="image/*"
                             maxFiles={1}
                             inputContent="Drop A File"
                             styles={{
-                                dropzone: { width: '100%', height: 200 },
+                                dropzone: { width: '100%', height: 200, marginTop:'1%' },
                                 dropzoneActive: { borderColor: 'green' },
                             }}            
                         />

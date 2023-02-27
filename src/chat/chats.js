@@ -101,8 +101,13 @@ function Chats(props){
               params:params
             })
             .then(response => {
-                console.log(response.data)
-                setAllMessages(response.data)
+                var pastMessages = response.data.map(msg => {
+                    return {
+                        name:msg.sender.user_id,
+                        message:msg.message
+                    }
+                })
+                setAllMessages(pastMessages)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
@@ -121,40 +126,6 @@ function Chats(props){
               fetchChats()
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
-    }
-
-    const newMessage = async () => {
-        var chatData = routerLoc.state
-        var queryString = "http://127.0.0.1:8000/api/new_message"
-        console.log(chatData)
-        axios
-            .post(queryString,{
-                user:chatData.user_id,
-                chat:selectedChat,
-                message:message,
-                date: moment().format('YYYY-MM-DD HH:mm:ss')
-            })
-            .then(response => {
-              setMessage('')
-              fetchMessages(selectedChat)
-            })
-            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
-    }
-
-    const sendMessage = (target) => {
-        if(target.code == "Enter"){
-            newMessage()
-            
-        }
-    }
-
-    const messageChange = (e, updatedAt) => {
-        const value = e.target.value;
-        setMessage(value);
-    };
-
-    const offerFunc = () => {
-
     }
 
     const openReview = (visible) => {
@@ -201,38 +172,40 @@ function Chats(props){
                         {
                             selectedDetails == null? <div></div>:
                             <Container id="boxCon" style={{minWidth:'100%'}}>
-                            <Row id="boxDetails" style={{height:'20%'}}>
-                                <Col xs={2} id="imgCol" style={{maxWidth:140}}>
-                                    <img src={ListingImgOne} style={{maxWidth:120}}/>
-                                </Col>
+                                <Row id="boxDetails" style={{height:'20%'}}>
+                                    <Col xs={2} id="imgCol" style={{maxWidth:140}}>
+                                        <img src={ListingImgOne} style={{maxWidth:120}}/>
+                                    </Col>
 
-                                <Col xs={10} id="detailsCol">
-                                    <h4 className="chatDetails">
-                                        {selectedDetails['receiver_id']['username']}
-                                    </h4>
-                                    <h4 className="chatDetails">
-                                        {selectedDetails['listing']['title']}
-                                    </h4>
-                                    <div>
-                                        <ReviewButton
-                                            listing={selectedDetails['listing']['listing_id']}
-                                            seller={selectedDetails['receiver_id']['user_id']}
-                                            buyer={selectedDetails['sender_id']['user_id']}
-                                            status={selectedDetails['listing']['status']}
-                                            interested={selectedDetails['interested']}
-                                            chat_id={selectedDetails['chat_id']}
-                                            openReview={openReview}
-                                            openReserve={openReserve}
-                                            openAccept={openAccept}
-                                            openComplete={openComplete}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row xs={8} style={{height:'80%'}}>
-                                <ChatBox chatRoom={chatDetails.chat_id}/>
-                            </Row>
-                        </Container>
+                                    <Col xs={10} id="detailsCol">
+                                        <h4 className="chatDetails">
+                                            {selectedDetails['receiver_id']['username']}
+                                        </h4>
+                                        <h4 className="chatDetails">
+                                            {selectedDetails['listing']['title']}
+                                        </h4>
+                                        <div>
+                                            <ReviewButton
+                                                listing={selectedDetails['listing']['listing_id']}
+                                                seller={selectedDetails['receiver_id']['user_id']}
+                                                buyer={selectedDetails['sender_id']['user_id']}
+                                                status={selectedDetails['listing']['status']}
+                                                interested={selectedDetails['interested']}
+                                                chat_id={selectedDetails['chat_id']}
+                                                openReview={openReview}
+                                                openReserve={openReserve}
+                                                openAccept={openAccept}
+                                                openComplete={openComplete}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row xs={8} style={{height:'80%'}}>
+                                    <ChatBox 
+                                        chatRoom={chatDetails.chat_id}
+                                        pastMsgs={allMessages}/>
+                                </Row>
+                            </Container>
                         }
                     </Col>
                 </Row>
