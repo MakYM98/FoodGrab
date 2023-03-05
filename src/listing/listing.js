@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useNavigate } from "react-router-dom";
 
 const dropdownStyles = {
     control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
@@ -39,7 +40,7 @@ function FoodListings() {
     const [moreData, setMoreData] = useState(true)  
     // Store all Dropdown values for Location Filter
     const [locationOptions, setLocationOptions] = useState([])
-
+    const navigate = useNavigate()
     const chunkSize = 4;
 
     // Initial Population of 8 Listings
@@ -234,7 +235,13 @@ function FoodListings() {
             </div>
             <Table>
                 {
-                    visibleData.length == 0 ? <h1>No Data</h1>:
+                    visibleData.length == 0 ? <h2>
+                        There are not listings for the time being, please check
+                        back again later! Alternatively, you can 
+                        click <span id="listingHere" onClick={()=>{
+                            navigate('/sell')}
+                        }>here</span> to create a listing!
+                    </h2>:
                     visibleData.map(listingList => 
                         <tr>
                             {

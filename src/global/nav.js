@@ -6,6 +6,7 @@ import "./Header.css";
 import Hamburger from 'hamburger-react'
 import { AiOutlineUser } from 'react-icons/ai';
 import { IoChatboxOutline } from 'react-icons/io5';
+import { AiOutlineArrowDown } from 'react-icons/ai';
 import { Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -127,10 +128,15 @@ function Header(props) {
                   <Nav onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                     <NavDropdown
                       id="nav-dropdown-dark-example"
-                      title={<div><AiOutlineUser size={40} color='white'/>
-                      <h5 id="userName">{account.username}</h5></div>}
+                      title={
+                      <div id="profDiv">
+                        <AiOutlineUser size={40} color='white'/>
+                        <h5 id="userName">{account.username}</h5>
+                        <AiOutlineArrowDown size={15} color='white' id='profArrow'/>
+                      </div>}
                       menuVariant="dark"
                       show={loginDrop}
+                      
                     >
                       <NavDropdown.Item onClick={()=>{profileFunc()}}>
                         Profile

@@ -8,10 +8,11 @@ import Col from 'react-bootstrap/Col';
 import { CardGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [latestListings, setLatestListings] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(()=>{
     fetchListingsAll()
   },[])
@@ -59,15 +60,27 @@ function Home() {
           <Row style={{marginTop:'3%'}}>
             <Col>
               <h5 style={{textAlign:'left'}}>Discounted Food Near You</h5>
-              <Slider {...settings}>
-                {
-                  latestListings.map(listing => 
-                      <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
-                                  price={listing["price"]} location={listing["location"]} id={listing["id"]}
-                                  user_id={listing["seller_id"]}/>
-                  )
-                }
-              </Slider>
+              {
+                latestListings.length == 0? <h5>
+                There are not listings for the time being, please check
+                back again later! Alternatively, you can 
+                click <span id="listingHere" onClick={()=>{
+                    navigate('/sell')}
+                }>here</span> to create a listing!
+            </h5>:
+            <Slider {...settings}>
+            {
+              latestListings.map(listing => 
+                  <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
+                              price={listing["price"]} location={listing["location"]} id={listing["id"]}
+                              user_id={listing["seller_id"]}/>
+              )
+            }
+          </Slider>
+              }
+
+
+              
             </Col>
           </Row>
         </Container>

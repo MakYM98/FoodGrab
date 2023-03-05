@@ -76,3 +76,16 @@
   color: white;
   cursor: pointer;
 }
+
+.dropdown-toggle::after{
+  display: none;
+}
+
+#profDiv:hover #profArrow{
+  transform: scaleY(-1);
+}
+
+#profDiv{
+  display: flex;
+  align-items: center;
+}

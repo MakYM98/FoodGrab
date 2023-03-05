@@ -28,3 +28,8 @@
 #imageToggle{
     padding-top: 2%;
 }
+
+#listingHere{
+    color: blue;
+    cursor: pointer;
+}

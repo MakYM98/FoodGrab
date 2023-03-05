@@ -69,11 +69,10 @@ function ChatBox(props){
                 }
             }
         }
-
-        // const interval = setInterval(() => setTime(Date.now()), 500);
-        // return () => {
-        //     clearInterval(interval);
-        // };
+        const interval = setInterval(() => setTime(Date.now()), 500);
+        return () => {
+            clearInterval(interval);
+        };
     },[])
 
     const onButtonClicked = (e) => {
