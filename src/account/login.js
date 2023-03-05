@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
+import Dropzone from 'react-dropzone-uploader'
+import 'react-dropzone-uploader/dist/styles.css'
 
 function Login(props) {
   const ref = useRef(null);
@@ -23,8 +25,21 @@ function Login(props) {
   const [confPasswordError, setConfPasswordError] = useState(false)
   const [typeError, setTypeError] = useState(false)
   const [regSuccess, setRegSuccess] = useState(false)
+  const [imgFile, setImgFile] = useState()
   const navigate = useNavigate()
   const routerDetails = useLocation()
+
+  const fileParams = ({ meta }) => {
+    return { url: 'https://httpbin.org/post' }
+  }
+
+  const onFileChange = ({ meta, file }, status) => { 
+      if (FileReader) {
+          var fr = new FileReader();
+          fr.readAsDataURL(file);
+      }
+      setImgFile(file)
+  }
 
   const onFormChange = (e, updatedAt) => {
     const name = e.target.name;
@@ -44,9 +59,11 @@ function Login(props) {
           if(response.status == 200){
             props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
+            console.log(response.data)
             localStorage.setItem('account', JSON.stringify({
               user_id:response.data.user_id,
               username:response.data.username,
+              img:response.data.img
             }));
             window.dispatchEvent(new Event("storage"));
 
@@ -121,15 +138,16 @@ function Login(props) {
           }
 
           if(formPassed){
-            console.log(loginDetails.regType)
+            let form_data = new FormData();
+            form_data.append('image', imgFile);
+            form_data.append('username',loginDetails.regUser);
+            form_data.append('email',loginDetails.regEmail);
+            form_data.append('password',loginDetails.regPw);
+            form_data.append('type',loginDetails.regType);
+
             var queryString = "http://127.0.0.1:8000/api/register"
             axios
-              .post(queryString, {
-                username:loginDetails.regUser,
-                email:loginDetails.regEmail,
-                password:loginDetails.regPw,
-                type:loginDetails.regType
-              })
+              .post(queryString, form_data)
               .then(response => {
                 if(response.status == 200){
                   setRegSuccess(true)
@@ -337,7 +355,23 @@ function Login(props) {
                         </Form.Group>
                       </Col>
                     </Row>
-                    <Button variant="primary" type="submit">
+                    <Row>
+                      <Col style={{display:'flex', justifyContent:'center'}}>
+                      <Dropzone
+                            getUploadParams={fileParams}
+                            onChangeStatus={onFileChange}
+                            accept="image/*"
+                            maxFiles={1}
+                            inputContent="Drop A File"
+                            styles={{
+                                dropzone: { width: '80%', height: 100, marginTop:'1%' },
+                                dropzoneActive: { borderColor: 'green' },
+                            }}            
+                        />
+                      </Col>
+                    </Row>
+
+                    <Button variant="primary" type="submit" style={{marginTop:'3%'}}>
                       Submit
                     </Button>
                     <h5 style={{paddingTop:'5%'}}>

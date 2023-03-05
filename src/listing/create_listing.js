@@ -8,10 +8,6 @@ import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import './listing.css'
-import ListingImgOne from '../img/listing_1.jpg';
-import ListingImgTwo from '../img/listing_2.jpg';
-import ListingImgThree from '../img/listing_3.jpg';
-import ListingImgFour from '../img/listing_4.jpg';
 import { Button } from 'react-bootstrap';
 import Dropzone from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'

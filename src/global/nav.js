@@ -11,6 +11,7 @@ import { Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Avatar from '../img/img_avatar.png'
 
 function Header(props) {
   const [isOpen, setOpen] = useState(false)
@@ -22,22 +23,12 @@ function Header(props) {
   const navigate = useNavigate()
 
   window.addEventListener('storage', () => {
-    console.log("Change to local storage!");
     setAccount(JSON.parse(localStorage.getItem("account")))
-})
+  })
 
   useEffect(()=>{
     setUserDetails(props.details)
   },[props.details])
-
-  function handleOpenDrawerButton() {
-    setDrawerOpen(!drawerOpen);
-  }
-
-  function handleBackdropClick() {
-    setDrawerOpen(false);
-    setOpen(false);
-  }
 
   const showDropdown = (e)=>{
     setLoginDrop(!loginDrop);
@@ -86,27 +77,6 @@ function Header(props) {
     props.close()
   }
 
-  
-  const handleOnSearch = (string, results) => {
-    console.log(string, results);
-  };
-
-  const handleOnHover = (result) => {
-    console.log(result);
-  };
-
-  const handleOnSelect = (item) => {
-    window.location = `/products/${item.id}`;
-  };
-
-  const handleOnFocus = () => {
-    console.log("Focused");
-  };
-
-  const handleOnClear = () => {
-    console.log("Cleared");
-  };
-
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'1%', paddingTop:'0.5%', backgroundColor:'#d5ecd5'}}>
           <div style={{width:'100%', padding:'0.5%'}}>
@@ -125,9 +95,14 @@ function Header(props) {
                       id="nav-dropdown-dark-example"
                       title={
                       <div id="profDiv">
-                        <AiOutlineUser size={40} color='black'/>
+                        <img
+                          src={
+                            account.img === null? Avatar:`http://127.0.0.1:8000${account.img}`
+                          }
+                          style={{width:'40px', height:'40px',borderRadius:'100px'}}
+                        />
                         <h5 id="userName">{account.username}</h5>
-                        <AiOutlineArrowDown size={15} color='black' id='profArrow'/>
+                        <AiOutlineArrowDown size={20} color='black' id='profArrow'/>
                       </div>}
                       menuVariant="dark"
                       show={loginDrop}
@@ -165,9 +140,6 @@ function Header(props) {
                 </div>
               }
           </div>
-
-
-        
       </div>
     );
   }
