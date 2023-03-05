@@ -45,6 +45,7 @@ function CommunityFridge() {
 
   const clearSearch = () => {
       setSearchFilter('')
+      setFridgeLocations(allFridges)
       setToSearch(false)
   }
 
