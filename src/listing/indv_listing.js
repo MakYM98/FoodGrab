@@ -31,6 +31,7 @@ function IndvListing() {
     }
 
     const profileFunc = () => {
+        console.log(routerLoc.state)
         navigate(`/profile/${routerLoc.state.user_name}`, {
             state:{
                 username:routerLoc.state.user_name,

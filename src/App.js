@@ -42,6 +42,7 @@ function App() {
   }
 
   const logInFunc = (e, details) => {
+    console.log(e)
     setLoggedIn(e)
     setUserDetails(details)
   }

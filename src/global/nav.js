@@ -21,6 +21,11 @@ function Header(props) {
 
   const navigate = useNavigate()
 
+  window.addEventListener('storage', () => {
+    console.log("Change to local storage!");
+    setAccount(JSON.parse(localStorage.getItem("account")))
+})
+
   useEffect(()=>{
     setUserDetails(props.details)
   },[props.details])

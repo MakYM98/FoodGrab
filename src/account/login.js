@@ -14,13 +14,15 @@ function Login(props) {
   const [loginDetails, setLoginDetails] = useState({})
   const [positionLeft, setPositionLeft] = useState(true)
 
+  const [status, setStatus] = useState('login')
+
   // Register Validation
   const [userNameError, setUserNameError] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [confPasswordError, setConfPasswordError] = useState(false)
   const [typeError, setTypeError] = useState(false)
-  const [regForm, setRegForm] = useState()
+  const [regSuccess, setRegSuccess] = useState(false)
   const navigate = useNavigate()
   const routerDetails = useLocation()
 
@@ -39,7 +41,6 @@ function Login(props) {
           pw:loginDetails.loginPw
         })
         .then(response => {
-          console.log(response.data)
           if(response.status == 200){
             props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
@@ -47,6 +48,7 @@ function Login(props) {
               user_id:response.data.user_id,
               username:response.data.username,
             }));
+            window.dispatchEvent(new Event("storage"));
 
             navigate(redirect_url, {
               state:{
@@ -129,9 +131,9 @@ function Login(props) {
                 type:loginDetails.regType
               })
               .then(response => {
-                console.log(response.status)
                 if(response.status == 200){
-                  myMove()
+                  setRegSuccess(true)
+                  setStatus('login')
                 }
               })
               .catch(error => console.error(`Error retrieving Registering: ${error}`))
@@ -148,8 +150,10 @@ function Login(props) {
   useEffect(()=>{
     console.log(routerDetails.state.type)
     if(routerDetails.state.type == 'login'){
+      setStatus('login')
       setPositionLeft(true)
     }else{
+      setStatus('register')
       setPositionLeft(false)
     }
   },[])
@@ -159,36 +163,84 @@ function Login(props) {
   }
 
     return (
-        <Container className="vh-100 d-flex flex-column" fluid style={{margin:0, padding:0, alignContent:'center'}}>
+        <Container style={{maxWidth:'none', padding:0, height:'100vh'}}>
           <Row className="h-100" style={{padding:0,margin:0}}>
-            {/* Area that Slides */}
-            <Col className='align-items-center' xs={6} style={{padding:0, display:'grid'}}> 
-              <div id="columnCover" className={positionLeft?'null':'right'} onClick={myMove}>
-                {
-                  positionLeft == true ?
-                  <div style={{display:"table",height:'100%',width:'100%'}}>
-                    <div style={{display:"table-cell",verticalAlign:'middle'}}>
-                      <h1>Don't have an account?</h1>
-                      <p>Click the button below to register for one now!</p>
-                      <button className="btn btn-primary" onClick={myMove}>Register Now!</button>
-                    </div>
-                  </div>
-                  :
-                  <div style={{display:"table",height:'100%',width:'100%'}}>
-                    <div style={{display:"table-cell",verticalAlign:'middle'}}>
-                      <h1>Have an account already?</h1>
-                      <p>Click the button below to login now!</p>
-                      <button className="btn btn-primary" onClick={myMove}>Login</button>
-                    </div>
-                    
-                  </div>
-                }
+            <Col style={{display:'flex', justifyContent:'left', alignItems:'center',backgroundColor:'#d5ecd5'}}>
+            <div style={{paddingLeft:'5%'}}>
+                <div style={{textAlign:'left'}}>
+                  <h1 id="homeTitle">Reduce Food Waste.</h1>
+                  <h1 id="homeTitle">Donate or Sell your surplus.</h1>
+                  <h5 id="homeSubtitle">
+                  Sign up today to make an impact in fighting against Food Wastage!
+                  </h5>
+                </div>
               </div>
+            </Col>
+
+            <Col style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <div style={{width:'100%'}}>
+            {
+              status == 'login'?
+                <Form onSubmit={fetchLogin}>  
+                  <Container>
+                    {/* Email Form */}
+                    <Row>
+                    <h1 style={{padding:0}}>Login</h1>
+                      {
+                        regSuccess? <h5 style={{paddingTop:'1%', paddigBottom:'1%'}}>
+                          Registered Successfully. You may now log into your
+                          account
+                        </h5>:
+                        <div></div>
+                      }
+
+                      <Col style={{display:'flex', justifyContent:'center',padding:0}}>
+                        <Form.Group className="mb-4" controlId="loginEmail" style={{width:'80%', textAlign:'left'}}>
+                          <Form.Label>Email address</Form.Label>
+                          <Form.Control 
+                            name="loginEmail" 
+                            type="email" 
+                            placeholder="Enter email" 
+                            onChange={onFormChange} 
+                            required
+                            isInvalid={accountError}/>
+                          <Form.Text className="text-muted">
+                            We'll never share your email with anyone else.
+                          </Form.Text>
+                          <Form.Control.Feedback type="invalid">
+                            Invalid Email/Password
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    {/* Password Form */}
+                    <Row style={{width:'100%'}}>
+                      <Col style={{display:'flex', justifyContent:'center'}}>
+                        <Form.Group className="mb-3" controlId="loginPassword" style={{width:'80%', textAlign:'left'}}>
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control name="loginPw" type="password" placeholder="Password" onChange={onFormChange} required isInvalid={accountError}/>
+                          <Form.Control.Feedback type="invalid">
+                            Invalid Email/Password
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Button variant="primary" type="submit">
+                      Submit
+                    </Button>
+                  </Container>
+                  <h5 style={{paddingTop:'5%'}}>
+                      Don't have an account? <span onClick={()=>{setStatus('register')}}>
+                        Register Now
+                      </span>
+                    </h5>
+                </Form>   
+              :
               <Form onSubmit={registerAcc}>
                 <Container>
                     {/* Username Form */}
                     <Row>
-                      <h1 style={{marginBottom:'5%'}}>Create Account</h1>
+                      <h1 style={{marginBottom:'5%'}}>Create Account</h1>    
                       <Col style={{display:'flex', justifyContent:'center'}} ref={ref}>
                         <Form.Group className="mb-3" controlId="regUser" style={{width:'80%', textAlign:'left'}}>
                           <Form.Label style={{display:'flex'}}>Username</Form.Label>
@@ -288,55 +340,21 @@ function Login(props) {
                     <Button variant="primary" type="submit">
                       Submit
                     </Button>
+                    <h5 style={{paddingTop:'5%'}}>
+                      Have an account already? <span onClick={()=>{setStatus('login')}}>
+                        Login Now
+                      </span>
+                    </h5>
                 </Container>
               </Form>
-            </Col>
+            }
+            </div>
             
-            {/* Login Form */}
-            <Col className='align-items-center' style={{backgroundColor:'', paddingRight:0, paddingLeft:0, display:'grid'}} xs={6}>
-              <Form onSubmit={fetchLogin}>  
-                <Container>
-                  {/* Email Form */}
-                  <Row>
-                  <h1 style={{padding:0}}>Login</h1>
-                    <Col style={{display:'flex', justifyContent:'center',padding:0}}>
-                      <Form.Group className="mb-4" controlId="loginEmail" style={{width:'80%', textAlign:'left'}}>
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control 
-                          name="loginEmail" 
-                          type="email" 
-                          placeholder="Enter email" 
-                          onChange={onFormChange} 
-                          required
-                          isInvalid={accountError}/>
-                        <Form.Text className="text-muted">
-                          We'll never share your email with anyone else.
-                        </Form.Text>
-                        <Form.Control.Feedback type="invalid">
-                          Invalid Email/Password
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {/* Password Form */}
-                  <Row style={{width:'100%'}}>
-                    <Col style={{display:'flex', justifyContent:'center'}}>
-                      <Form.Group className="mb-3" controlId="loginPassword" style={{width:'80%', textAlign:'left'}}>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control name="loginPw" type="password" placeholder="Password" onChange={onFormChange} required isInvalid={accountError}/>
-                        <Form.Control.Feedback type="invalid">
-                          Invalid Email/Password
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                </Container>
-              </Form>      
+              <div>
+
+              </div>
             </Col>
-          </Row>
+            </Row>
         </Container>
     );
   }
