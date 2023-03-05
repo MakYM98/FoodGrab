@@ -110,15 +110,15 @@ function Header(props) {
 
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'1%', paddingTop:'0.5%', backgroundColor:'#d5ecd5'}}>
-          <div style={{width:'100%'}}>
+          <div style={{width:'100%', padding:'0.5%'}}>
               {
                 localStorage.getItem('account') !== null? 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <div id="navArea">
-                  <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
-                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
-                  <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
+                    <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
                   </div>
                   
                   <Nav onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
@@ -155,7 +155,10 @@ function Header(props) {
                 : 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <div id="navArea">
-                  <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                    <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
+                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
                   </div>
                   
                   <h4 onClick={()=>{redirect('login')}} className="accountBtn" id="loginBtn">Login</h4>

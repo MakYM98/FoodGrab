@@ -31,22 +31,20 @@ function IndvListing() {
     }
 
     const profileFunc = () => {
-        console.log(routerLoc.state)
-        if(localStorage.getItem('account') !== null){
-            navigate(`/profile/${routerLoc.state.user_name}`, {
-                state:{
-                  username:routerLoc.state.user_name,
-                  type: routerLoc.state.user_type,
-                  rating:routerLoc.state.user_rating,
-                }
-              });
-        }
+        navigate(`/profile/${routerLoc.state.user_name}`, {
+            state:{
+                username:routerLoc.state.user_name,
+                type: routerLoc.state.user_type,
+                rating:routerLoc.state.user_rating,
+            }
+            });
+        
     }
 
     return (
-      <div style={{display:'flex', justifyContent:'center', marginTop:'3%', height:'800px'}}>
-        <div style={{width:'90%'}}>
-        <Container>
+      <div style={{display:'flex', justifyContent:'center', marginTop:'1%', height:'800px'}}>
+        <div style={{width:'100%'}}>
+        <Container style={{maxWidth:'none'}}>
         <h4 id="backButton"onClick={()=>{navigate('/listings')}}><AiOutlineArrowLeft/>Back</h4>
             <Row>
                 
@@ -70,24 +68,37 @@ function IndvListing() {
                         </p>
                     </div>
                     <div style={{border:'1px solid #eae8e4'}}>
-                        <div style={{padding:'2%'}}>
+                        <div style={{padding:'1%'}}>
                             <h4 style={{textAlign:'left'}}>Seller</h4>
                             <div >
-                                <div onClick={profileFunc}>
+                                <div >
                                     <p style={{textAlign:'left'}} >
-                                        <BiUser size={28}/>
+                                        {/* User Profile */}
+                                        <span onClick={profileFunc} style={{cursor:'pointer'}}>
+                                            <BiUser size={28}/>
                                             User: {routerLoc.state.user_name}
                                             ({routerLoc.state.user_rating}
-                                            <BsStarFill size={14}
-                                            style={{marginBottom:'1%'}}/>)
-                                        <SiGooglemybusiness size={28} style={{marginLeft:'5%'}}/>
-                                        Type: {routerLoc.state.user_type}
+                                                <BsStarFill size={14}
+                                                style={{marginBottom:'1%'}}/>)
+                                        </span>
+                                        {/* Account Type */}
+                                        <span style={{marginLeft:'5%'}}>
+                                            <SiGooglemybusiness size={28} />
+                                            Type: {routerLoc.state.user_type}
+                                        </span>
+                                        <span style={{marginLeft:'5%'}}>
+                                            <ImLocation size={28}/>
+                                            Location: {routerLoc.state.location}
+                                        </span>
+                                        <span style={{marginLeft:'5%'}}>
+                                            Price: ${routerLoc.state.price}
+                                        </span>
                                     </p>
+                                    <p style={{textAlign:'left'}}>
+                                </p>
                                 </div>
                                 
-                                <p style={{textAlign:'left'}}><ImLocation size={28}/>
-                                    Location: {routerLoc.state.location}
-                                </p>
+                                
                                 <a onClick={chatFunc}>Chat Now</a>
                             </div>
                         </div>
