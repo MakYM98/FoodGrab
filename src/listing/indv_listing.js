@@ -35,6 +35,7 @@ function IndvListing() {
         navigate(`/profile/${routerLoc.state.user_name}`, {
             state:{
                 username:routerLoc.state.user_name,
+                user_id: routerLoc.state.user_id,
                 type: routerLoc.state.user_type,
                 rating:routerLoc.state.user_rating,
             }

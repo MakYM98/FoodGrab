@@ -24,6 +24,7 @@ import CreatedListing from './listing/listing_created';
 import Chats from './chat/chats';
 import { BsFillChatFill } from 'react-icons/bs';
 import { useNavigate } from "react-router-dom";
+import OtherProfile from './account/other_profile';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState()
@@ -62,7 +63,8 @@ function App() {
             <Route path="/listings" element={<FoodListings/>}/>
             <Route path="/indvListing/:listing" element={<IndvListing/>}/>
             <Route path="/aboutus" element={<AboutUs/>}/>
-            <Route path="/profile/:username" element={<Profile/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile/:username" element={<OtherProfile/>}/>
             <Route path="/article/:articleid" element={<Article/>}/>
             <Route path="/sell" element={<Sell/>}/>
             <Route path="/created" element={<CreatedListing/>}/>

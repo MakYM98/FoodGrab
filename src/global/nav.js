@@ -78,13 +78,7 @@ function Header(props) {
   }
 
   function profileFunc(){
-    navigate(`/profile/${account.username}`, {
-      state:{
-        username:account.username,
-        user_id: account.user_id,
-        listing_id:null,
-      }
-    });
+    navigate(`/profile`);
   }
 
   const navigateFunc = (loc) => {

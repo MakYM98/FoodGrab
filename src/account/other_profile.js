@@ -8,19 +8,26 @@ import ReviewCard from "../global/review_card";
 import Avatar from '../img/img_avatar.png'
 import { useLocation } from "react-router-dom";
 import Rating from '../global/rating_system';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-function Profile(props) {
+function OtherProfile(props) {
     const [latestListing, setLatestListing] = useState([])
     const [latestReview, setLatestReview] = useState([])
-    const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+    const routerLoc = useLocation()
     const [accountDetails, setAccountDetails] = useState({
         username:'',
         rating:0,
         type:''
     })
+    const navigate = useNavigate()
 
     useEffect(()=>{
+        var account = JSON.parse(localStorage.getItem("account"))
+        if(routerLoc.state.user_id == account.user_id){
+            navigate('/profile')
+        }
+        console.log(routerLoc.state)
         fetchUserDetails()
         fetchReviews()
         fetchListings()
@@ -28,7 +35,7 @@ function Profile(props) {
 
     const fetchListings = async () => {
         var params = new URLSearchParams();
-        params.append('user', account.user_id)
+        params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/user_listing"
         axios
             .get(queryString,{
@@ -43,7 +50,7 @@ function Profile(props) {
 
     const fetchReviews = async () => {
         var params = new URLSearchParams();
-        params.append('user', account.user_id)
+        params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/review"
         axios
             .get(queryString,{
@@ -57,7 +64,7 @@ function Profile(props) {
 
     const fetchUserDetails = async () => {
         var params = new URLSearchParams();
-        params.append('user', account.user_id)
+        params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/profile"
         axios
             .get(queryString,{
@@ -147,4 +154,4 @@ function Profile(props) {
     );
   }
   
-  export default Profile;
+  export default OtherProfile;
