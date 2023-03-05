@@ -62,8 +62,8 @@ function CommunityFridge() {
   },[toSearch])
 
   return (
-    <div style={{display:'flex', justifyContent:'center', marginTop:'3%'}}>
-      <div style={{width:'80%'}}>
+    <div style={{display:'flex', justifyContent:'center', marginTop:'1%'}}>
+      <div style={{width:'95%'}}>
         <MapContainer center={singaporePostion} zoom={12} scrollWheelZoom={false} style={{ height: '60vh', width: '60wh!important' }}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -80,7 +80,7 @@ function CommunityFridge() {
           }
         </MapContainer>
 
-        <div style={{marginTop:'5%', marginBottom:'5%'}}>
+        <div style={{marginTop:'3%', marginBottom:'5%'}}>
           <h3 style={{textAlign:'left'}}>List of Locations</h3>
           <InputGroup className="mb-3">
                 <Form.Control

@@ -26,6 +26,7 @@ function Home() {
         .then(response => {
           console.log(response.data)
             var newListings = response.data.slice(0,8).map(element => {
+              
               return {
                 name: element.seller['username'],
                 title: element.title,
@@ -33,7 +34,8 @@ function Home() {
                 price: element.price,
                 location: element.location,
                 id: element.listing_id,
-                seller_id:element.seller.user_id
+                seller_id:element.seller.user_id,
+                image:element.image
               }
             })
             setLatestListings(newListings)
@@ -61,8 +63,13 @@ function Home() {
                 <div style={{textAlign:'left'}}>
                   <h1 style={{fontSize:100}}>FoodGrab</h1>
                   <h1 id="homeTitle">Help Fight Against<br/> Food Wastage</h1>
-                  <h5 id="homeSubtitle">Sell or Donate your leftovers</h5>
-                  <h5>Learn More</h5>
+                  <h5 id="homeSubtitle">
+                    Every food matters, join us in fighting against 
+                    Food Wastage. Click <span id="homeHere"
+                    onClick={()=>{navigate('/aboutus')}}>
+                      here
+                    </span> to learn more. 
+                  </h5>
                 </div>
               </div>
               
@@ -81,28 +88,33 @@ function Home() {
           </Row>
 
           <Row id="recentRow" style={{backgroundColor:'white'}}>
-            <h1 id="recentHeader" style={{textAlign:'center', fontSize:50}}>Recent Listings</h1>
-                {
-                  latestListings.length == 0? <h5>
-                  There are not listings for the time being, please check
-                  back again later! Alternatively, you can 
-                  click <span id="listingHere" onClick={()=>{
-                      navigate('/sell')}
-                  }>here</span> to create a listing!
+            <h1 id="recentHeader" style={{textAlign:'center', fontSize:50}}>
+              Recent Listings
+            </h1>
+            {
+              latestListings.length == 0? <h5>
+                There are not listings for the time being, please check
+                back again later! Alternatively, you can 
+                click <span id="listingHere" onClick={()=>{
+                    navigate('/sell')}
+                }>here</span> to create a listing!
               </h5>:
               <Slider {...settings}>
                 {
                   latestListings.map(listing => 
-                      <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
-                                  price={listing["price"]} location={listing["location"]} id={listing["id"]}
-                                  user_id={listing["seller_id"]}/>
+                      <ListingCard name={listing["name"]} 
+                                          title={listing["title"]} 
+                                          description={listing["description"]}
+                                          price={listing["price"]} 
+                                          location={listing["location"]} 
+                                          id={listing["id"]}
+                                          image={listing["image"]}
+                                          user_id={listing["seller_id"]}/>
                   )
                 }
               </Slider>
             }
-
           </Row>
-
         </Container>
       </div>
     );

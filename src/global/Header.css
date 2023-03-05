@@ -89,9 +89,11 @@
 #recentHeader{
   text-align: center;
   font-size: 50px;
+  margin-bottom: 2%;
 }
 
 #recentRow{
   background-color: white;
   padding-top: 1%;
+  padding-bottom: 2%;
 }

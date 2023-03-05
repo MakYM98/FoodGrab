@@ -74,7 +74,7 @@ function Profile(props) {
 
     return (
        <div style={{marginTop:'2%',marginBottom:'2%'}}>
-            <Container>
+            <Container style={{maxWidth:'none'}}>
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
                     <img src={Avatar} style={{borderRadius:"50%", height:'70%',width:'70%'}}/>
@@ -88,17 +88,17 @@ function Profile(props) {
                         {accountDetails.type.name}
                         </h5>
                     </Col>
-                    <Col xs={9}>
+                    <Col xs={9} style={{padding:0}}>
                     <div>
                         <h1 style={{textAlign:"left"}}>Recent Listings</h1>
-                        <Container>
+                        <Container style={{paddingLeft:0}}>
                             <Row>
                             {
                                 latestListing.length == 0? 
                                 <h5>User has not posted any listing yet</h5>
                                 :
                                 latestListing.map(listing => 
-                                    <Col xs={3} style={{marginRight:'7%'}}>
+                                    <Col xs={3} style={{marginRight:'1%'}}>
                                         <ListingCard 
                                             user_id={listing["seller"]['user_id']} 
                                             name={listing["seller"]['username']} 
@@ -106,6 +106,7 @@ function Profile(props) {
                                             description={listing["description"]}
                                             price={listing["price"]} 
                                             location={listing["location"]} 
+                                            image={listing["image"]} 
                                             id={listing["listing_id"]}/>
                                     </Col>
                                     

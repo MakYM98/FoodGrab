@@ -27,9 +27,9 @@ function ListingCard(props) {
     }
 
     return (
-      <Card style={{ width: '300px', height:'511px' }} onClick={function(){selectFunc()}}>
+      <Card style={{ width: '300px', height:'511px', padding:0}} onClick={function(){selectFunc()}}>
         <CardHeader>{props.name}</CardHeader>
-        <Card.Img style={{width:'282px', height:'282px'}} variant="top" src={`http://127.0.0.1:8000${props.image}`}/>
+        <Card.Img style={{width:'100%', height:'282px', borderRadius:0 }} variant="top" src={`http://127.0.0.1:8000${props.image}`}/>
         <Card.Body>
           <Card.Title style={{textAlign:'left'}}>{props.title}</Card.Title>
           <Card.Text style={{textAlign:'left'}}>
