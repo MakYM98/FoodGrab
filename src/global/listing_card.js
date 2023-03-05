@@ -7,7 +7,7 @@ import CardImage from '../img/slideshow_1.jpg';
 function ListingCard(props) {
     var desc = props.description.substring(0,25) + '...'
     const navigate = useNavigate()
-
+    console.log(props)
     const selectFunc = () =>{
       var redirect_url = "/indvListing/" + props.id
       navigate(redirect_url, {
@@ -27,9 +27,9 @@ function ListingCard(props) {
     }
 
     return (
-      <Card style={{ width: '300px' }} onClick={function(){selectFunc()}}>
+      <Card style={{ width: '300px', height:'511px' }} onClick={function(){selectFunc()}}>
         <CardHeader>{props.name}</CardHeader>
-        <Card.Img variant="top" src="http://127.0.0.1:8000/media/post_images/anh-nguyen-kcA-c3f_3FE-unsplash.jpg" />
+        <Card.Img style={{width:'282px', height:'282px'}} variant="top" src={`http://127.0.0.1:8000${props.image}`}/>
         <Card.Body>
           <Card.Title style={{textAlign:'left'}}>{props.title}</Card.Title>
           <Card.Text style={{textAlign:'left'}}>
@@ -37,7 +37,7 @@ function ListingCard(props) {
           </Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroup.Item style={{textAlign:'left'}}>Price: {props.price}</ListGroup.Item>
+          <ListGroup.Item style={{textAlign:'left'}}>Price: {props.price==0?'Free': `$${props.price}`}</ListGroup.Item>
           <ListGroup.Item style={{textAlign:'left'}}>Location: {props.location}</ListGroup.Item>
         </ListGroup>
       </Card>

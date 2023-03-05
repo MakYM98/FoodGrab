@@ -9,6 +9,8 @@ import { CardGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import HomeImg from '../img/home.png'
+import HomeImg1 from '../img/home1.png'
 
 function Home() {
   const [latestListings, setLatestListings] = useState([]);
@@ -50,39 +52,57 @@ function Home() {
     };
 
     return (
-      <div style={{marginTop:'1%', marginBottom:'5%'}}>
-        <Container>
+      <div style={{height:'100%',backgroundColor:'#d5ecd5'}}>
+        <Container style={{maxWidth:'none', height:'100%'}}>
           <Row>
-            <Col>
-              <HomeCarousel/>
-            </Col>
-          </Row>
-          <Row style={{marginTop:'3%'}}>
-            <Col>
-              <h5 style={{textAlign:'left'}}>Discounted Food Near You</h5>
-              {
-                latestListings.length == 0? <h5>
-                There are not listings for the time being, please check
-                back again later! Alternatively, you can 
-                click <span id="listingHere" onClick={()=>{
-                    navigate('/sell')}
-                }>here</span> to create a listing!
-            </h5>:
-            <Slider {...settings}>
-            {
-              latestListings.map(listing => 
-                  <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
-                              price={listing["price"]} location={listing["location"]} id={listing["id"]}
-                              user_id={listing["seller_id"]}/>
-              )
-            }
-          </Slider>
-              }
-
-
+            <Col xs={3} style={{display:'flex', justifyContent:'left', alignItems:'center',marginLeft:'5%'}}>
+              {/* <HomeCarousel/> */}
+              <div>
+                <div style={{textAlign:'left'}}>
+                  <h1 style={{fontSize:100}}>FoodGrab</h1>
+                  <h1 id="homeTitle">Help Fight Against<br/> Food Wastage</h1>
+                  <h5 id="homeSubtitle">Sell or Donate your leftovers</h5>
+                  <h5>Learn More</h5>
+                </div>
+              </div>
+              
               
             </Col>
+            <Col style={{display:'flex', justifyContent:'end'}}>
+              {/* <HomeCarousel/> */}
+              <div style={{width:'85%'}}>
+                <img
+                  className="d-block w-100"
+                  src={HomeImg}
+                  alt="First slide"
+                />
+              </div>
+            </Col>
           </Row>
+
+          <Row id="recentRow" style={{backgroundColor:'white'}}>
+            <h1 id="recentHeader" style={{textAlign:'center', fontSize:50}}>Recent Listings</h1>
+                {
+                  latestListings.length == 0? <h5>
+                  There are not listings for the time being, please check
+                  back again later! Alternatively, you can 
+                  click <span id="listingHere" onClick={()=>{
+                      navigate('/sell')}
+                  }>here</span> to create a listing!
+              </h5>:
+              <Slider {...settings}>
+                {
+                  latestListings.map(listing => 
+                      <ListingCard name={listing["name"]} title={listing["title"]} description={listing["description"]}
+                                  price={listing["price"]} location={listing["location"]} id={listing["id"]}
+                                  user_id={listing["seller_id"]}/>
+                  )
+                }
+              </Slider>
+            }
+
+          </Row>
+
         </Container>
       </div>
     );

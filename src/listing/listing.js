@@ -55,6 +55,7 @@ function FoodListings() {
             .get(queryString)
             .then(response => {
                 setAvailableData(response.data)
+                console.log(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
@@ -71,7 +72,10 @@ function FoodListings() {
         }
 
         if(sortFilter === null || sortFilter == 'Recent'){
-            allData = allData.sort((a,b) => (a.date_posted > b.date_posted) ? 1 : ((b.date_posted > a.date_posted) ? -1 : 0))
+            allData = allData.sort(
+                (a,b) => (a.date_posted > b.date_posted) ? 1 : 
+                ((b.date_posted > a.date_posted) ? -1 : 0)
+            )
         }else if(sortFilter == 'Price - Low to High'){
             allData = allData.sort((a,b) => (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0))
         }else if(sortFilter == 'Price - High to Low'){
@@ -102,7 +106,7 @@ function FoodListings() {
             const chunk = allData.slice(i, i + chunkSize);
             dataInChunks.push(chunk)
         }
-        
+        console.log(dataInChunks)
         setFilteredData(dataInChunks)
     },[availableData, sortFilter, locFilter, priceFilter, toSearch])
 
@@ -252,7 +256,7 @@ function FoodListings() {
                                             name={listing["seller"]['username']}
                                             title={listing["title"]} 
                                             description={listing["description"]}
-                                            price={'$' + String(listing["price"])} 
+                                            price={listing["price"]} 
                                             location={listing["location"]} 
                                             id={listing["listing_id"]}
                                             image={listing["image"]}

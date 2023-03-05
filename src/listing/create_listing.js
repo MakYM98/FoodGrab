@@ -24,6 +24,7 @@ function Sell(props) {
   const [listingDetails, setListingDetails] = useState({})
   const [imgFile, setImgFile] = useState()
   const [imgDisplay, setImgDisplay] = useState()
+  const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
   const navigate = useNavigate()
 
     const fileParams = ({ meta }) => {
@@ -66,7 +67,7 @@ function Sell(props) {
     }else{
         var price = 0
     }
-
+    
     let form_data = new FormData();
     form_data.append('image', imgFile);
     form_data.append('title',listingDetails.title);
@@ -74,7 +75,7 @@ function Sell(props) {
     form_data.append('location',listingDetails.location);
     form_data.append('price',price);
     form_data.append('date_posted',new Date().toLocaleDateString());
-    form_data.append('seller',routerCreate.state.user_id);
+    form_data.append('seller',account.user_id);
 
     axios
         .post(queryString,form_data)
@@ -88,7 +89,7 @@ function Sell(props) {
                         location:listingDetails.location,
                         price:price,
                         image:imgFile,
-                        seller:routerCreate.state.username,
+                        seller:account.username,
                     }
                 })
             }

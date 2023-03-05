@@ -68,8 +68,8 @@ function App() {
             <Route path="/chats" element={<Chats/>}/>
           </Routes>
         </div>
-        <BsFillChatFill id="chatBubble" size={50} onClick={()=>{chatPage()}}/>
-      <Footer/>
+        {/* <BsFillChatFill id="chatBubble" size={50} onClick={()=>{chatPage()}}/> */}
+      {/* <Footer/> */}
       
       
     </div>

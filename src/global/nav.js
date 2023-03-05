@@ -109,17 +109,13 @@ function Header(props) {
   };
 
     return (
-      <div style={{display:'flex', width:'100%', paddingLeft:'5%', paddingTop:'1%',backgroundColor:'#5F9EA0'}}>
-
-
+      <div style={{display:'flex', width:'100%', paddingLeft:'1%', paddingTop:'0.5%', backgroundColor:'#d5ecd5'}}>
           <div style={{width:'100%'}}>
               {
                 localStorage.getItem('account') !== null? 
-
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <div id="navArea">
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                  <h5 id="homeHeader" onClick={()=>{navigateFunc('/')}}>Home</h5>
                   <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
                   <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
                   <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
@@ -130,9 +126,9 @@ function Header(props) {
                       id="nav-dropdown-dark-example"
                       title={
                       <div id="profDiv">
-                        <AiOutlineUser size={40} color='white'/>
+                        <AiOutlineUser size={40} color='black'/>
                         <h5 id="userName">{account.username}</h5>
-                        <AiOutlineArrowDown size={15} color='white' id='profArrow'/>
+                        <AiOutlineArrowDown size={15} color='black' id='profArrow'/>
                       </div>}
                       menuVariant="dark"
                       show={loginDrop}
@@ -153,14 +149,14 @@ function Header(props) {
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
-
-
                   <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                   </div>
                 </div>
                 : 
                 <div style={{display:'flex', justifyContent:'end'}}>
+                  <div id="navArea">
                   <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
+                  </div>
                   
                   <h4 onClick={()=>{redirect('login')}} className="accountBtn" id="loginBtn">Login</h4>
                   <h4 onClick={()=>{redirect('register')}} className="accountBtn" id="regBtn">Register</h4>

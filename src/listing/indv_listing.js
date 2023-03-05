@@ -53,7 +53,7 @@ function IndvListing() {
                 <Col style={{borderRight:"1px solid #eae8e4"}}>
                     <img
                         className="d-block w-100"
-                        src={ListingImage}
+                        src={`http://127.0.0.1:8000${routerLoc.state.image}`}
                         alt="First slide"
                         height='750px'
                         />

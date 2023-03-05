@@ -104,7 +104,7 @@ function Profile(props) {
                                             name={listing["seller"]['username']} 
                                             title={listing["title"]} 
                                             description={listing["description"]}
-                                            price={'$' + String(listing["price"])} 
+                                            price={listing["price"]} 
                                             location={listing["location"]} 
                                             id={listing["listing_id"]}/>
                                     </Col>
