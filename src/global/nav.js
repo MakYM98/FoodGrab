@@ -97,9 +97,14 @@ function Header(props) {
                       <div id="profDiv">
                         <img
                           src={
-                            account.img === null? Avatar:`http://127.0.0.1:8000${account.img}`
+                            account.img === null? Avatar:
+                              `http://127.0.0.1:8000${account.img}`
                           }
-                          style={{width:'40px', height:'40px',borderRadius:'100px'}}
+                          style={{width:'40px', 
+                                  height:'40px',
+                                  borderRadius:'100px',
+                                  marginRight:'10px'
+                                }}
                         />
                         <h5 id="userName">{account.username}</h5>
                         <AiOutlineArrowDown size={20} color='black' id='profArrow'/>
@@ -123,7 +128,8 @@ function Header(props) {
                       </NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
-                  <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
+                  <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} 
+                  onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                   </div>
                 </div>
                 : 

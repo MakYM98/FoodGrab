@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import HomeImg from '../img/home.png'
-import HomeImg1 from '../img/home1.png'
 
 function Home() {
   const [latestListings, setLatestListings] = useState([]);
+  const [missingCol, setMissingCol] = useState(0);
   const navigate = useNavigate()
   useEffect(()=>{
     fetchListingsAll()
@@ -26,7 +26,6 @@ function Home() {
         .then(response => {
           console.log(response.data)
             var newListings = response.data.slice(0,8).map(element => {
-              
               return {
                 name: element.seller['username'],
                 title: element.title,
@@ -38,6 +37,11 @@ function Home() {
                 image:element.image
               }
             })
+            
+            if(newListings.length < 4){
+              var emptyCount = 4-newListings.length
+              setMissingCol(Array.from(Array(emptyCount).keys()))
+            }
             setLatestListings(newListings)
         })
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
@@ -111,6 +115,11 @@ function Home() {
                                           image={listing["image"]}
                                           user_id={listing["seller_id"]}/>
                   )
+                }
+                {
+                  missingCol ==0 ? null:missingCol.map(element=>
+                      <div></div>
+                    )
                 }
               </Slider>
             }

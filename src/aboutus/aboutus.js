@@ -1,11 +1,12 @@
 import React from 'react';
-import AboutUsOne from '../img/aboutus1.jpg'
 import './aboutus.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import HomeImg from '../img/home.png'
-import HomeImg1 from '../img/home1.png'
+import AboutUs1 from '../img/aboutus1.png'
+import AboutUs2 from '../img/aboutus2.png'
+import AboutUs3 from '../img/test.png'
+import AboutUs4 from '../img/aboutus4.png'
 import { useNavigate } from "react-router-dom";
 
 function AboutUs() {
@@ -50,7 +51,7 @@ function AboutUs() {
             <div style={{width:'85%'}}>
               <img
                 className="d-block w-100"
-                src={HomeImg1}
+                src={AboutUs3}
                 alt="First slide"
               />
             </div>
@@ -63,7 +64,7 @@ function AboutUs() {
             <div style={{width:'85%'}}>
               <img
                 className="d-block w-100"
-                src={HomeImg}
+                src={AboutUs4}
                 alt="First slide"
               />
             </div>
@@ -121,7 +122,7 @@ function AboutUs() {
             <div style={{width:'85%'}}>
               <img
                 className="d-block w-100"
-                src={HomeImg}
+                src={AboutUs2}
                 alt="First slide"
               />
             </div>
@@ -133,8 +134,9 @@ function AboutUs() {
             <div style={{width:'85%'}}>
               <img
                 className="d-block w-100"
-                src={HomeImg1}
+                src={AboutUs1}
                 alt="First slide"
+                style={{width:'100%'}}
               />
             </div>
             
