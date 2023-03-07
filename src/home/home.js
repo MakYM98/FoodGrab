@@ -49,12 +49,20 @@ function Home() {
 
 
     var settings = {
+      // dots: true,
+      // infinite: false,
+      // speed: 500,
+      // slidesToShow: 4,
+      // slidesToScroll: 4,
+      // width:'310px',
+      // initialSlide: 0,
+      className: "slider variable-width",
       dots: true,
       infinite: false,
-      speed: 500,
-      slidesToShow: 4,
+      centerMode: false,
+      slidesToShow: 1,
       slidesToScroll: 4,
-      initialSlide: 0,
+      variableWidth: true
     };
 
     return (
@@ -62,7 +70,6 @@ function Home() {
         <Container style={{maxWidth:'none', height:'100%'}}>
           <Row>
             <Col xs={3} style={{display:'flex', justifyContent:'left', alignItems:'center',marginLeft:'5%'}}>
-              {/* <HomeCarousel/> */}
               <div>
                 <div style={{textAlign:'left'}}>
                   <h1 style={{fontSize:100}}>FoodGrab</h1>
@@ -80,7 +87,6 @@ function Home() {
               
             </Col>
             <Col style={{display:'flex', justifyContent:'end'}}>
-              {/* <HomeCarousel/> */}
               <div style={{width:'85%'}}>
                 <img
                   className="d-block w-100"
@@ -103,7 +109,9 @@ function Home() {
                     navigate('/sell')}
                 }>here</span> to create a listing!
               </h5>:
-              <Slider {...settings}>
+              <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
+                <div style={{width:'95%'}}>
+                <Slider {...settings}>
                 {
                   latestListings.map(listing => 
                       <ListingCard name={listing["name"]} 
@@ -122,6 +130,10 @@ function Home() {
                     )
                 }
               </Slider>
+                </div>
+                
+              </div>
+              
             }
           </Row>
         </Container>

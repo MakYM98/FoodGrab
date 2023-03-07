@@ -34,3 +34,15 @@
     color: blue;
     cursor: pointer;
 }
+
+.slick-next:before {
+    color: black;
+  }
+
+.slick-prev:before {
+color: black;
+}
+
+.slick-initialized .slick-slide{
+    padding:5px;
+}
