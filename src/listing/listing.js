@@ -86,7 +86,10 @@ function FoodListings() {
         }else if(sortFilter == 'Price - High to Low'){
             allData = allData.sort((a,b) => (a.price < b.price) ? 1 : ((b.price < a.price) ? -1 : 0))
         }else if(sortFilter == 'Location'){
-            allData = allData.sort((a,b) => (a.location > b.location) ? 1 : ((b.location > a.location) ? -1 : 0))
+            // allData = allData.sort((a,b) => (a.location > b.location) ? 1 : ((b.location > a.location) ? -1 : 0))
+            allData = allData.sort(function(a, b) {
+                return a.location.localeCompare(b.location)
+              })
         }
 
         if(locFilter.length !=0){
@@ -182,7 +185,7 @@ function FoodListings() {
 
     return (
       <div style={{marginTop:'1%', marginBottom:'3%', width:'100%', display:'flex', justifyContent:'center'}}>
-        <div>
+        <div style={{width:'95%'}}>
             <h2 style={{textAlign:'left'}}>Food Listings</h2>
 
             <InputGroup className="mb-3">
