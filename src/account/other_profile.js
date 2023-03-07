@@ -83,7 +83,12 @@ function OtherProfile(props) {
             <Container style={{maxWidth:'none'}}>
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
-                    <img src={Avatar} style={{borderRadius:"50%", height:'70%',width:'70%'}}/>
+                    <img 
+                        src={
+                            accountDetails['img'] === null? Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
+                        } 
+                        style={{borderRadius:"50%", height:'70%',width:'70%'}}
+                        />
                     <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
                         {accountDetails.username}
                     </h1>
@@ -97,14 +102,13 @@ function OtherProfile(props) {
                     <Col xs={9} style={{padding:0}}>
                     <div>
                         <h1 style={{textAlign:"left"}}>Recent Listings</h1>
-                        <Container style={{paddingLeft:0}}>
-                            <Row>
-                            {
+                        <div style={{display:'flex', justifyContent:'start'}}>
+                        {
                                 latestListing.length == 0? 
                                 <h5>User has not posted any listing yet</h5>
                                 :
                                 latestListing.map(listing => 
-                                    <Col xs={3} style={{marginRight:'1%'}}>
+                                    <div style={{paddingRight:'10px'}}>
                                         <ListingCard 
                                             user_id={listing["seller"]['user_id']} 
                                             name={listing["seller"]['username']} 
@@ -114,11 +118,12 @@ function OtherProfile(props) {
                                             location={listing["location"]} 
                                             image={listing["image"]} 
                                             id={listing["listing_id"]}/>
-                                    </Col>
+                                    </div>
+                                        
+
                                     
                             )}
-                            </Row>
-                        </Container>
+                        </div>
                     </div>
                     </Col>
                 </Row>
@@ -129,23 +134,21 @@ function OtherProfile(props) {
                     <Col xs={9}>
                     <div style={{marginTop:'3%'}}>
                         <h1 style={{textAlign:"left"}}>User Reviews</h1>
-                        <Container>
-                            <Row>
+                        <div style={{display:'flex', justifyContent:'start'}}>
                             {latestReview.length == 0? 
                                 <h5>User has not receive any reviews yet</h5>
                                 :
                                 latestReview.map(listing => 
-                                    <Col xs={3} style={{marginRight:'7%'}}>
+                                    <div style={{paddingRight:'10px'}}>
                                         <ReviewCard
                                             user={listing['reviewer_id']['username']}
                                             rating={listing['rating']}
                                             comment={listing['comment']}
                                         />
-                                    </Col>
+                                    </div>
                                     
                             )}
-                            </Row>
-                        </Container>
+                        </div>
                     </div>
                     </Col>
                 </Row>

@@ -252,7 +252,7 @@ function Chats(props){
                 chat_id={selectedDetails['chat_id']}/>
             }
 
-{
+            {
                 selectedDetails == null? <div></div>:<CompleteModal 
                 visible={completeVisible} 
                 openFunc={openComplete}

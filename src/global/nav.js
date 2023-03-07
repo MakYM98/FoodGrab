@@ -76,7 +76,7 @@ function Header(props) {
     navigate(loc)
     props.close()
   }
-
+  console.log(account)
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'1%', paddingTop:'0.5%', backgroundColor:'#d5ecd5'}}>
           <div style={{width:'100%', padding:'0.5%'}}>
@@ -97,8 +97,10 @@ function Header(props) {
                       <div id="profDiv">
                         <img
                           src={
-                            account.img === null? Avatar:
-                              `http://127.0.0.1:8000${account.img}`
+                            account.img === null | account.img === undefined? 
+                            Avatar
+                            :
+                            `http://127.0.0.1:8000${account.img}`
                           }
                           style={{width:'40px', 
                                   height:'40px',

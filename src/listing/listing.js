@@ -114,9 +114,7 @@ function FoodListings() {
 
         var lastRow = dataInChunks.slice(-1)
         if(lastRow.length < chunkSize){
-            console.log(chunkSize-lastRow.length)
             setEmptySpots(Array.from(Array(chunkSize-lastRow.length).keys()))
-            console.log(Array.from(chunkSize-lastRow.length).keys())
         }
         setFilteredData(dataInChunks)
     },[availableData, sortFilter, locFilter, priceFilter, toSearch])
