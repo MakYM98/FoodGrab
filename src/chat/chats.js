@@ -52,7 +52,6 @@ function Chats(props){
             setSelectedDetails(filtered)
             fetchMessages(filtered.chat_id)
         }
-        
     },[selectedChat])
 
     const fetchChats = async () => {
@@ -80,7 +79,6 @@ function Chats(props){
                             v['receiver_id']['user_id'] == chatData.user_id)
                         ))
                     })
-                    console.log(filtered)
                     if(filtered.length > 0) {
                         console.log("Chat available")
                     }else{
@@ -153,7 +151,7 @@ function Chats(props){
         <div id="chatInner">
             <Container id="chatContainer">
                 <Row style={{height:'100%'}}>
-                    <Col id="cardCol" xs={4}>
+                    <Col id="cardCol" xs={3}>
                         <h4 className="chatTitle">Chats</h4>
                         {
                             chats.map(chat => 
@@ -168,24 +166,31 @@ function Chats(props){
                         }
                         
                     </Col>
-                    <Col id="boxCol" xs={8}>
+                    <Col id="boxCol" xs={9}>
                         {
                             selectedDetails == null? <div></div>:
                             <Container id="boxCon" style={{minWidth:'100%'}}>
-                                <Row id="boxDetails" style={{height:'20%'}}>
+                                <Row id="boxDetails" style={{height:'25%'}}>
                                     <Col xs={2} id="imgCol" style={{maxWidth:140}}>
-                                        <img src={ListingImgOne} style={{maxWidth:120}}/>
+                                        <img 
+                                            src={`http://127.0.0.1:8000${selectedDetails['listing']['image']}`} 
+                                            style={{maxWidth:120}}/>
                                     </Col>
 
                                     <Col xs={10} id="detailsCol">
                                         <h4 className="chatDetails">
                                             {selectedDetails['receiver_id']['username']}
                                         </h4>
-                                        <h4 className="chatDetails">
+                                        <h5 className="chatDetails">
                                             {selectedDetails['listing']['title']}
-                                        </h4>
-                                        <div>
-                                            <ReviewButton
+                                        </h5>
+                                        <div style={{display:'flex'}}>
+                                            <h5>$1.99</h5>
+    
+                                            
+                                            
+                                        </div>
+                                        <ReviewButton
                                                 listing={selectedDetails['listing']['listing_id']}
                                                 seller={selectedDetails['receiver_id']['user_id']}
                                                 buyer={selectedDetails['sender_id']['user_id']}
@@ -197,10 +202,9 @@ function Chats(props){
                                                 openAccept={openAccept}
                                                 openComplete={openComplete}
                                             />
-                                        </div>
                                     </Col>
                                 </Row>
-                                <Row xs={8} style={{height:'80%'}}>
+                                <Row xs={8} style={{height:'75%'}}>
                                     <ChatBox 
                                         chatRoom={chatDetails.chat_id}
                                         pastMsgs={allMessages}/>

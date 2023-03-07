@@ -16,13 +16,15 @@ import ReserveModal from "./reserve_modal";
 // import useWebSocket, { ReadyState } from "react-use-websocket";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-function ChatBox(props){
+function ChatSocket(props){
     // const [client, setClient] = useState()
     // For Chat Box
     const [messages, setMessages] = useState([])
     const [value, setValue] = useState('')
+    const [time, setTime] = useState(Date.now());
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("account")))
-    const [serverMessage, setServerMessage] = useState({})
+    // const client = React.useRef(new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`));
+    // const client = useRef(null)
     const [websocket, setWebSocket]= useState(new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`))
 
     useEffect(()=>{
@@ -52,8 +54,16 @@ function ChatBox(props){
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
+    const getMessages = () => {
+        return messages
+    }
+
+    useEffect(()=>{
+        console.log(messages)
+    },[messages])
 
     useEffect(()=>{     
+        // client.current = new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`);
         websocket.onopen = () => console.log("ws opened");
         websocket.onclose = () => console.log("ws closed");
 
@@ -61,25 +71,12 @@ function ChatBox(props){
             websocket.onmessage = (message) => {
                 const dataFromServer = JSON.parse(message.data);
                 if (dataFromServer) {
+                    console.log(getMessages())
                     setMessages(messages => {
-                        let messagesCopy = [...messages];
-
-                        messagesCopy.push({
-                            message:dataFromServer.message,
-                            name:dataFromServer.username
-                        })
-                        return messagesCopy
+                        console.log(messages)
                     });
 
-                    setServerMessage({
-                        message:dataFromServer.message,
-                        name:dataFromServer.username
-                    })
-                    // Ensure that only messages sent by loggeed in user is
-                    // stored as past messages. This is to avoid duplicates
-                    if(dataFromServer.username == user.user_id){
-                        newMessage(dataFromServer)
-                    }
+                    newMessage(dataFromServer)
                 }
             }
         }
@@ -105,45 +102,6 @@ function ChatBox(props){
         }
     }
 
-  return (
-    <div style={{height:'100%'}}>
-        <div style={{height:'88%'}}>
-            <div id="messageOuter">
-                <div id="messageArea">
-                    <div style={{width:'100%', maxHeight:'500px',minHeight:50}}>
-                        {
-                            messages.map(message => 
-                                <MessageBubble 
-                                    user={
-                                        message.name == 
-                                        user['user_id']? 'me': 'seller'
-                                    } 
-                                    message={message.message}
-                                />
-                            )
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div style={{height:'10%',marginTop:'10px'}}>
-            <Form.Group className="mb-3" controlId="message" >
-                <Form.Control 
-                    name="message" 
-                    type="text" 
-                    placeholder="Message"
-                    required
-                    value={value}
-                    onKeyDown={onButtonClicked}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                    }}
-                />
-            </Form.Group>
-        </div>
-    </div>
-  );
 };
 
-export default ChatBox;
+export default ChatSocket;
