@@ -7,6 +7,9 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const dropdownStyles = {
     control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
@@ -40,6 +43,8 @@ function FoodListings() {
     const [moreData, setMoreData] = useState(true)  
     // Store all Dropdown values for Location Filter
     const [locationOptions, setLocationOptions] = useState([])
+    // Store Empty Spot Count
+    const [emptySpots, setEmptySpots] = useState(0)
     const navigate = useNavigate()
     const chunkSize = 4;
 
@@ -106,7 +111,13 @@ function FoodListings() {
             const chunk = allData.slice(i, i + chunkSize);
             dataInChunks.push(chunk)
         }
-        console.log(dataInChunks)
+
+        var lastRow = dataInChunks.slice(-1)
+        if(lastRow.length < chunkSize){
+            console.log(chunkSize-lastRow.length)
+            setEmptySpots(Array.from(Array(chunkSize-lastRow.length).keys()))
+            console.log(Array.from(chunkSize-lastRow.length).keys())
+        }
         setFilteredData(dataInChunks)
     },[availableData, sortFilter, locFilter, priceFilter, toSearch])
 
@@ -172,9 +183,9 @@ function FoodListings() {
     }
 
     return (
-      <div style={{display:'flex', justifyContent:'center', marginTop:'3%', marginBottom:'3%'}}>
-        <div style={{width:'80%'}}>
-            <h3 style={{textAlign:'left'}}>Food Listings</h3>
+      <div style={{marginTop:'1%', marginBottom:'3%', width:'100%', display:'flex', justifyContent:'center'}}>
+        <div>
+            <h2 style={{textAlign:'left'}}>Food Listings</h2>
 
             <InputGroup className="mb-3">
                 <Form.Control
@@ -201,7 +212,7 @@ function FoodListings() {
             </InputGroup>
 
             <div style={{display:'flex', marginBottom:'2%'}}>
-                <div style={{minWidth:200}}>
+                <div >
                     <Select 
                         options={sortOptions} 
                         name="Sorting" 
@@ -215,7 +226,7 @@ function FoodListings() {
                 {/* Filter */}
                 <div style={{border:'1px solid black', marginLeft:'2%'}}/>
                 <div style={{display:'flex', marginLeft:'2%'}}>
-                    <div style={{minWidth:200, maxWidth:400}}>
+                    <div >
                         <Select 
                             options={locationOptions} 
                             isMulti 
@@ -224,7 +235,7 @@ function FoodListings() {
                             onChange={(e)=>{locationFilterFunc(e)}}
                             />
                     </div>
-                    <div style={{marginLeft:'2%',minWidth:200}}>
+                    <div >
                         <Select 
                             options={priceOptions} 
                             name="Price" 
@@ -237,7 +248,8 @@ function FoodListings() {
                 </div>
 
             </div>
-            <Table>
+
+                <Container>
                 {
                     visibleData.length == 0 ? <h2>
                         There are not listings for the time being, please check
@@ -247,10 +259,10 @@ function FoodListings() {
                         }>here</span> to create a listing!
                     </h2>:
                     visibleData.map(listingList => 
-                        <tr>
+                        <Row style={{marginTop:'1%'}}>
                             {
                                 listingList.map(listing => 
-                                    <td>
+                                    <Col style={{display:'flex', justifyContent:'center'}}>
                                         <ListingCard 
                                             user_id={listing["seller"]['user_id']}
                                             name={listing["seller"]['username']}
@@ -263,13 +275,21 @@ function FoodListings() {
                                             user_rating={listing['seller']['rating']}
                                             type={listing['seller']['type']['name']}
                                         />
-                                    </td>
+                                    </Col>
                                 )
                             }
-                        </tr>  
+                            {
+                                emptySpots.length == 0? 
+                                null:
+                                emptySpots.map(
+                                    element => <Col></Col>
+                                )
+                            }
+                        </Row>  
                     )
                 }
-            </Table>
+                </Container>
+
             <div>
                 {
                     moreData == false? <div></div>:

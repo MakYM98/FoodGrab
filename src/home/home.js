@@ -49,13 +49,6 @@ function Home() {
 
 
     var settings = {
-      // dots: true,
-      // infinite: false,
-      // speed: 500,
-      // slidesToShow: 4,
-      // slidesToScroll: 4,
-      // width:'310px',
-      // initialSlide: 0,
       className: "slider variable-width",
       dots: true,
       infinite: false,
