@@ -18,7 +18,6 @@ import React, {useState} from 'react';
 import IndvListing from './listing/indv_listing'
 import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
-import Article from './home/article';
 import Sell from './listing/create_listing';
 import CreatedListing from './listing/listing_created';
 import Chats from './chat/chats';
@@ -65,7 +64,6 @@ function App() {
             <Route path="/aboutus" element={<AboutUs/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/profile/:username" element={<OtherProfile/>}/>
-            <Route path="/article/:articleid" element={<Article/>}/>
             <Route path="/sell" element={<Sell/>}/>
             <Route path="/created" element={<CreatedListing/>}/>
             <Route path="/chats" element={<Chats/>}/>

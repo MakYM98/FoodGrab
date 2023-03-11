@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Table from 'react-bootstrap/Table';
 import ListingCard from '../global/listing_card';
 import Container from 'react-bootstrap/Container';
@@ -11,14 +11,16 @@ import {SiGooglemybusiness} from 'react-icons/si';
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsStarFill} from 'react-icons/bs';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { Button } from 'react-bootstrap';
+import DeleteModal from "./confirm_delete.js";
 
 function IndvListing() {
+    const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+    const [deleteVisible, setDeleteVisible] = useState(false)
     const routerLoc = useLocation()
     const navigate = useNavigate()
 
     const chatFunc = () => {
-        var account = JSON.parse(localStorage.getItem("account"));
-        console.log(routerLoc.state)
         if(localStorage.getItem('account') !== null){
             navigate('/chats', {
                 state:{
@@ -29,9 +31,7 @@ function IndvListing() {
               });
         }
     }
-
     const profileFunc = () => {
-        console.log(routerLoc.state)
         navigate(`/profile/${routerLoc.state.user_name}`, {
             state:{
                 username:routerLoc.state.user_name,
@@ -41,6 +41,10 @@ function IndvListing() {
             }
             });
         
+    }
+
+    const openDelete = (visible) => {
+        setDeleteVisible(visible)
     }
 
     return (
@@ -99,9 +103,17 @@ function IndvListing() {
                                     <p style={{textAlign:'left'}}>
                                 </p>
                                 </div>
+                                {
+                                    routerLoc.state.user_id == account.user_id?
+                                    <Button onClick={()=>{openDelete(true)}} variant="danger">
+                                        Delete Listing
+                                    </Button>
+                                    :
+                                    <Button onClick={chatFunc}>
+                                        Chat Now
+                                    </Button>
+                                }
                                 
-                                
-                                <a onClick={chatFunc}>Chat Now</a>
                             </div>
                         </div>
                         
@@ -109,6 +121,18 @@ function IndvListing() {
                 </Col>
             </Row>
         </Container>
+        
+        {
+            routerLoc.state.user_id == account.user_id?
+            <DeleteModal 
+                visible={deleteVisible} 
+                listing={routerLoc.state.listing_id}
+                openFunc={openDelete}/>
+            :
+            <div></div>
+        }
+            
+            
         </div>
       </div>
     )

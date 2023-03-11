@@ -335,7 +335,11 @@ function FoodListings() {
                 <Tab eventKey="followingListings" title="Followings">
                 <Container>
                         {
-                            visibleData.length == 0 ? <h2>
+                            visibleData.length == 0 ? 
+                            account == null?
+                            <h2>Please Login to Access Following Section</h2>
+                            :
+                            <h2>
                                 There are not listings for the time being, please check
                                 back again later! Alternatively, you can 
                                 click <span id="listingHere" onClick={()=>{

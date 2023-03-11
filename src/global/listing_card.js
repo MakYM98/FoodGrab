@@ -9,20 +9,31 @@ function ListingCard(props) {
     const navigate = useNavigate()
     const selectFunc = () =>{
       var redirect_url = "/indvListing/" + props.id
-      navigate(redirect_url, {
-        state:{
-          listing_id:props.id,
-          title:props.title,
-          description:props.description,
-          image:props.image,
-          price:props.price,
-          location:props.location,
-          user_id:props.user_id,
-          user_rating:props.user_rating,
-          user_name:props.name,
-          user_type:props.type
-        }
-      });
+      var account=JSON.parse(localStorage.getItem("account"))
+      console.log(account)
+
+      if(account != null){
+        navigate(redirect_url, {
+          state:{
+            listing_id:props.id,
+            title:props.title,
+            description:props.description,
+            image:props.image,
+            price:props.price,
+            location:props.location,
+            user_id:props.user_id,
+            user_rating:props.user_rating,
+            user_name:props.name,
+            user_type:props.type
+          }
+        });
+      }else{
+        navigate('/login',{
+          state:{
+            type:'login'
+          }
+        })
+      }
     }
 
     return (

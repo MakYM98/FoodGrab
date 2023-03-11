@@ -1,5 +1,3 @@
-import HomeCarousel from "./home_carousel";
-import Nearby from "./home_nearby";
 import ListingCard from "../global/listing_card";
 import Slider from "react-slick";
 import Container from 'react-bootstrap/Container';
@@ -104,7 +102,6 @@ function Home() {
               </h5>:
               <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
                 <div style={{width:'95%'}}>
-                  {/* <h6 style={{textAlign:'right'}}>View All</h6> */}
                   <Slider {...settings}>
                     {
                       latestListings.map(listing => 

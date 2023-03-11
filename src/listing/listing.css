@@ -33,3 +33,8 @@
     color: blue;
     cursor: pointer;
 }
+
+#backButton{
+    text-align: left;
+    color:blue;
+}

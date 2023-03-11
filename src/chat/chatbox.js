@@ -95,12 +95,6 @@ function ChatBox(props){
                     sender:user["user_id"]
                 })
             )
-            // var curMessages = messages
-            // curMessages.push({
-            //     message: value,
-            //     name: user["user_id"]
-            // })
-            // setMessages(curMessages)
             setValue('')
         }
     }
