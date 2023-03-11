@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 const dropdownStyles = {
     control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
@@ -45,6 +47,13 @@ function FoodListings() {
     const [locationOptions, setLocationOptions] = useState([])
     // Store Empty Spot Count
     const [emptySpots, setEmptySpots] = useState(0)
+    // All Data & Friends Data
+    const [allData, setAllData] = useState([])
+    const [followingData, setFollowingData] = useState([])
+    // Active Tab
+    const [activeTab, setActiveTab] = useState('allListings')
+    const[account, setAccount] = useState(
+        JSON.parse(localStorage.getItem("account")))
     const navigate = useNavigate()
     const chunkSize = 4;
 
@@ -52,15 +61,36 @@ function FoodListings() {
     useEffect(()=>{
         fetchAvailableLocation()
         fetchListingsAll()
+        fetchListingsFollowing()
     },[])
+
+    useEffect(()=>{
+        if(activeTab=='followingListings'){
+            setAvailableData(followingData)
+        }else{
+            setAvailableData(allData)
+        }
+    },[activeTab])
 
     const fetchListingsAll = async () => {
         var queryString = "http://127.0.0.1:8000/api/listing"
         axios
-            .get(queryString)
+            .get(queryString,)
             .then(response => {
+                setAllData(response.data)
                 setAvailableData(response.data)
-                console.log(response.data)
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+      }
+
+    const fetchListingsFollowing = async () => {
+        var queryString = "http://127.0.0.1:8000/api/listing_following"
+        var params = new URLSearchParams();
+        params.append('user', account.user_id)
+        axios
+            .get(queryString,{params:params})
+            .then(response => {
+                setFollowingData(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
@@ -151,7 +181,6 @@ function FoodListings() {
         }else{
             setSortFilter(sort.value)
         }
-        
     }
 
     const locationFilterFunc = (filters) => {
@@ -180,6 +209,10 @@ function FoodListings() {
     const clearSearch = () => {
         setSearchFilter('')
         setToSearch(false)
+    }
+
+    const tabSelected = (key) =>{
+        setActiveTab(key)
     }
 
     return (
@@ -248,47 +281,102 @@ function FoodListings() {
                 </div>
 
             </div>
-
+            
+            <Tabs
+                defaultActiveKey="allListings"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+                style={{display:'flex', justifyContent:'center'}}
+                onSelect={(key)=>{tabSelected(key)}}
+                fill
+            >
+                <Tab eventKey="allListings" title="All Listings">
+                    <Container>
+                        {
+                            visibleData.length == 0 ? <h2>
+                                There are not listings for the time being, please check
+                                back again later! Alternatively, you can 
+                                click <span id="listingHere" onClick={()=>{
+                                    navigate('/sell')}
+                                }>here</span> to create a listing!
+                            </h2>:
+                            visibleData.map(listingList => 
+                                <Row style={{marginTop:'1%'}}>
+                                    {
+                                        listingList.map(listing => 
+                                            <Col style={{display:'flex', justifyContent:'center'}}>
+                                                <ListingCard 
+                                                    user_id={listing["seller"]['user_id']}
+                                                    name={listing["seller"]['username']}
+                                                    title={listing["title"]} 
+                                                    description={listing["description"]}
+                                                    price={listing["price"]} 
+                                                    location={listing["location"]} 
+                                                    id={listing["listing_id"]}
+                                                    image={listing["image"]}
+                                                    user_rating={listing['seller']['rating']}
+                                                    type={listing['seller']['type']['name']}
+                                                />
+                                            </Col>
+                                        )
+                                    }
+                                    {
+                                        emptySpots.length == 0? 
+                                        null:
+                                        emptySpots.map(
+                                            element => <Col></Col>
+                                        )
+                                    }
+                                </Row>  
+                            )
+                        }
+                    </Container>
+                </Tab>
+                <Tab eventKey="followingListings" title="Followings">
                 <Container>
-                {
-                    visibleData.length == 0 ? <h2>
-                        There are not listings for the time being, please check
-                        back again later! Alternatively, you can 
-                        click <span id="listingHere" onClick={()=>{
-                            navigate('/sell')}
-                        }>here</span> to create a listing!
-                    </h2>:
-                    visibleData.map(listingList => 
-                        <Row style={{marginTop:'1%'}}>
-                            {
-                                listingList.map(listing => 
-                                    <Col style={{display:'flex', justifyContent:'center'}}>
-                                        <ListingCard 
-                                            user_id={listing["seller"]['user_id']}
-                                            name={listing["seller"]['username']}
-                                            title={listing["title"]} 
-                                            description={listing["description"]}
-                                            price={listing["price"]} 
-                                            location={listing["location"]} 
-                                            id={listing["listing_id"]}
-                                            image={listing["image"]}
-                                            user_rating={listing['seller']['rating']}
-                                            type={listing['seller']['type']['name']}
-                                        />
-                                    </Col>
-                                )
-                            }
-                            {
-                                emptySpots.length == 0? 
-                                null:
-                                emptySpots.map(
-                                    element => <Col></Col>
-                                )
-                            }
-                        </Row>  
-                    )
-                }
-                </Container>
+                        {
+                            visibleData.length == 0 ? <h2>
+                                There are not listings for the time being, please check
+                                back again later! Alternatively, you can 
+                                click <span id="listingHere" onClick={()=>{
+                                    navigate('/sell')}
+                                }>here</span> to create a listing!
+                            </h2>:
+                            visibleData.map(listingList => 
+                                <Row style={{marginTop:'1%'}}>
+                                    {
+                                        listingList.map(listing => 
+                                            <Col style={{display:'flex', justifyContent:'center'}}>
+                                                <ListingCard 
+                                                    user_id={listing["seller"]['user_id']}
+                                                    name={listing["seller"]['username']}
+                                                    title={listing["title"]} 
+                                                    description={listing["description"]}
+                                                    price={listing["price"]} 
+                                                    location={listing["location"]} 
+                                                    id={listing["listing_id"]}
+                                                    image={listing["image"]}
+                                                    user_rating={listing['seller']['rating']}
+                                                    type={listing['seller']['type']['name']}
+                                                />
+                                            </Col>
+                                        )
+                                    }
+                                    {
+                                        emptySpots.length == 0? 
+                                        null:
+                                        emptySpots.map(
+                                            element => <Col></Col>
+                                        )
+                                    }
+                                </Row>  
+                            )
+                        }
+                    </Container>
+                </Tab>
+            </Tabs>
+
+                
 
             <div>
                 {

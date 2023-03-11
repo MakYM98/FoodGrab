@@ -21,6 +21,11 @@ function Sell(props) {
   const [imgFile, setImgFile] = useState()
   const [imgDisplay, setImgDisplay] = useState()
   const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+  // Form Validation
+  const [titleInvalid, setTitleInvalid] = useState()
+  const [descInvalid, setDescInvalid] = useState()
+  const [locInvalid, setLocInvalid] = useState()
+  const [imgInvalid, setImgInvalid] = useState()
   const navigate = useNavigate()
 
     const fileParams = ({ meta }) => {
@@ -63,34 +68,51 @@ function Sell(props) {
     }else{
         var price = 0
     }
-    
-    let form_data = new FormData();
-    form_data.append('image', imgFile);
-    form_data.append('title',listingDetails.title);
-    form_data.append('description',listingDetails.description);
-    form_data.append('location',listingDetails.location);
-    form_data.append('price',price);
-    form_data.append('date_posted',new Date().toLocaleDateString());
-    form_data.append('seller',account.user_id);
 
-    axios
-        .post(queryString,form_data)
-        .then(response => {
-            console.log(listingDetails)
-            if(response.status == 200){
-                navigate('/created', {
-                    state:{
-                        title:listingDetails.title,
-                        description:listingDetails.description,
-                        location:listingDetails.location,
-                        price:price,
-                        image:imgFile,
-                        seller:account.username,
-                    }
-                })
-            }
-        })
-        .catch(error => console.error(`Error retrieving Registering: ${error}`))
+    var formPassed = true
+
+    if(listingDetails.title === undefined){
+        formPassed = false
+        setTitleInvalid(true)
+    }
+
+    if(listingDetails.description === undefined){
+        formPassed = false
+        setDescInvalid(true)
+    }
+
+    if(listingDetails.location === undefined){
+        formPassed = false
+        setLocInvalid(true)
+    }
+
+    if(imgFile === null || imgFile === undefined){
+        formPassed = false
+        setImgInvalid(true)
+    }
+    
+    if(formPassed){
+        let form_data = new FormData();
+        form_data.append('image', imgFile);
+        form_data.append('title',listingDetails.title);
+        form_data.append('description',listingDetails.description);
+        form_data.append('location',listingDetails.location);
+        form_data.append('price',price);
+        form_data.append('date_posted',new Date().toLocaleDateString());
+        form_data.append('seller',account.user_id);
+
+        axios
+            .post(queryString,form_data)
+            .then(response => {
+                console.log(listingDetails)
+                if(response.status == 200){
+                    navigate('/listings')
+                }
+                alert('Listing Created')
+            })
+            .catch(error => console.error(`Error retrieving creating: ${error}`))
+    }
+    
   }
 
   return (
@@ -118,8 +140,14 @@ function Sell(props) {
                                 dropzoneActive: { borderColor: 'green' },
                             }}            
                         />
-                        
-
+                        {
+                            imgInvalid? 
+                            <h5 style={{color:'red'}}>
+                                No Image Detected. Please upload an image
+                            </h5>
+                            :
+                            null
+                        }
                     </div>
                 </Col>
                 <Col style={{borderLeft:'1px #eae8e4 solid'}} xs={7}>
@@ -133,6 +161,7 @@ function Sell(props) {
                             type="text" 
                             placeholder="Listing Title"
                             onChange={onFormChange} 
+                            isInvalid={titleInvalid}
                             required/>
                         </Form.Group>
                         {/* Item Details Area */}
@@ -172,6 +201,8 @@ function Sell(props) {
                                 as="textarea"
                                 onChange={onFormChange} 
                                 rows={15}
+                                isInvalid={descInvalid}
+
                                 placeholder="Describe about your product" 
                                 required/>
                             </Form.Group>
@@ -182,6 +213,7 @@ function Sell(props) {
                                 name="location" 
                                 type="text"
                                 onChange={onFormChange} 
+                                isInvalid={locInvalid}
                                 placeholder="Item Collection Point" 
                                 required/>
                             </Form.Group>

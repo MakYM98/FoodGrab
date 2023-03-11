@@ -7,7 +7,6 @@ import CardImage from '../img/slideshow_1.jpg';
 function ListingCard(props) {
     var desc = props.description.substring(0,25) + '...'
     const navigate = useNavigate()
-    console.log(props)
     const selectFunc = () =>{
       var redirect_url = "/indvListing/" + props.id
       navigate(redirect_url, {
