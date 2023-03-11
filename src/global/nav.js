@@ -4,9 +4,8 @@ import data from "../products";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import Hamburger from 'hamburger-react'
-import { AiOutlineUser } from 'react-icons/ai';
-import { IoChatboxOutline } from 'react-icons/io5';
-import { AiOutlineArrowDown } from 'react-icons/ai';
+import { IoChatboxOutline, IoLogOutOutline } from 'react-icons/io5';
+import { AiOutlineArrowDown, AiOutlineUser } from 'react-icons/ai';
 import { Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -76,6 +75,7 @@ function Header(props) {
     navigate(loc)
     props.close()
   }
+
   console.log(account)
     return (
       <div style={{display:'flex', width:'100%', paddingLeft:'1%', paddingTop:'0.5%', backgroundColor:'#d5ecd5'}}>
@@ -83,17 +83,27 @@ function Header(props) {
               {
                 localStorage.getItem('account') !== null? 
                 <div style={{display:'flex', justifyContent:'end'}}>
+                  {/* Area for all Navigation Buttons */}
                   <div id="navArea">
-                    <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
+                    <h1 id="navHeader" onClick={()=>{navigateFunc('/')}}>FoodGrab</h1>
+                    {/* Nav Header for About Us Page */}
+                    <h5 className="allHeaders"  id="aboutUsNav"
+                        onClick={()=>{navigateFunc('/aboutus')}}
+                        style={{paddingLeft:'3%'}}>
+                          About Us
+                    </h5>
+                    {/* Nav Header for Community Fridge Page */}
+                    <h5 className="allHeaders" id="fridgeNav"
+                        onClick={()=>{navigateFunc('/communityfridge')}}>
+                          Community Fridge
+                    
+                    </h5>
+                    {/* Nav Header for Listing Page */}
+                    <h5 className="allHeaders" id="listingNav"
+                        onClick={()=>{navigateFunc('/listings')}}>
+                          Food Listings
+                    </h5>
                   </div>
-                  
-                  <Nav onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
-                    <NavDropdown
-                      id="nav-dropdown-dark-example"
-                      title={
                       <div id="profDiv">
                         <img
                           src={
@@ -108,28 +118,34 @@ function Header(props) {
                                   marginRight:'10px'
                                 }}
                         />
+                        {/* User Name */}
                         <h5 id="userName">{account.username}</h5>
-                        <AiOutlineArrowDown size={20} color='black' id='profArrow'/>
-                      </div>}
-                      menuVariant="dark"
-                      show={loginDrop}
-                      
-                    >
-                      <NavDropdown.Item onClick={()=>{profileFunc()}}>
-                        Profile
-                      </NavDropdown.Item>
-                      <NavDropdown.Item onClick={()=>{chatPage()}}>
-                        Chats
-                      </NavDropdown.Item>
-                      <NavDropdown.Item onClick={()=>{sellPage()}}>
-                        Sell
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item onClick={()=>{logoutFunc()}}>
-                        Logout
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                  </Nav>
+                        {/* Profile Icons */}
+                        <div className="navIcons">
+                          <AiOutlineUser size={25} color='black'
+                                        onClick={()=>{profileFunc()}}
+                                        />
+                          <span class="tooltiptext">Profile</span>
+                        </div>
+                        {/* Chat Box Icons */}
+                        <div className="navIcons">
+                        <IoChatboxOutline size={25} color='black'
+                                      onClick={()=>{chatPage()}}
+                                      className="navIcons"/>
+                          <span class="tooltiptext">Chats</span>
+                        </div>
+                        {/* Log Out Icons */}
+                        <div className="navIcons">
+                        <IoLogOutOutline size={25} color='black'
+                                      onClick={()=>{logoutFunc()}}
+                                      className="navIcons"/>
+                          <span class="tooltiptext">Logout</span>
+                        </div>
+                        {/* Sell Button */}
+                        <Button onClick={()=>{sellPage()}}>
+                            Sell
+                        </Button>
+                      </div>
                   <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} 
                   onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                   </div>

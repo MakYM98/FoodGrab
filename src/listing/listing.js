@@ -86,7 +86,6 @@ function FoodListings() {
         }else if(sortFilter == 'Price - High to Low'){
             allData = allData.sort((a,b) => (a.price < b.price) ? 1 : ((b.price < a.price) ? -1 : 0))
         }else if(sortFilter == 'Location'){
-            // allData = allData.sort((a,b) => (a.location > b.location) ? 1 : ((b.location > a.location) ? -1 : 0))
             allData = allData.sort(function(a, b) {
                 return a.location.localeCompare(b.location)
               })

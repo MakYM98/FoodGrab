@@ -35,12 +35,13 @@
   align-items: center;
   color:black;
   margin:0;
-  margin-right:5%;
+  margin-right:1%;
 }
 
 #navHeader{
   color:black;
   justify-content: center;
+  cursor: pointer;
 }
 
 .sideBarName{
@@ -56,6 +57,34 @@
   align-items: center;
 }
 
+.navIcons{
+  margin-right: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navIcons .tooltiptext{
+  visibility: hidden;
+  width: 80px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+  /* left: 50%; */
+  /* margin-left: -60px; */
+}
+.navIcons:hover .tooltiptext {
+  visibility: visible;
+}
+
 #homeHeader{
   margin-left: 3%;
   color: black;
@@ -64,21 +93,23 @@
 
 .allHeaders{
   margin-left: 1%;
-  color: black;
+  color: darkgray;
   cursor: pointer;
+}
+
+.allHeaders:hover{
+  color: black;
 }
 
 .dropdown-toggle::after{
   display: none;
 }
 
-#profDiv:hover #profArrow{
-  transform: scaleY(-1);
-}
-
 #profDiv{
   display: flex;
   align-items: center;
+  justify-content: end;
+  width:100%;
 }
 
 #homeTitle{
