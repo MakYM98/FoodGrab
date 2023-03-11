@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import Rating from '../global/rating_system';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 function OtherProfile(props) {
     const [latestListing, setLatestListing] = useState([])
@@ -20,14 +21,16 @@ function OtherProfile(props) {
         rating:0,
         type:''
     })
+    const[account, setAccount] = useState(
+                                    JSON.parse(localStorage.getItem("account")))
+    const [following, setFollowing] = useState(false)
     const navigate = useNavigate()
 
     useEffect(()=>{
-        var account = JSON.parse(localStorage.getItem("account"))
         if(routerLoc.state.user_id == account.user_id){
             navigate('/profile')
         }
-        console.log(routerLoc.state)
+        checkFollowing()
         fetchUserDetails()
         fetchReviews()
         fetchListings()
@@ -44,6 +47,26 @@ function OtherProfile(props) {
             .then(response => {
                 console.log(response.data)
               setLatestListing(response.data)
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
+    const checkFollowing = async () => {
+        var params = new URLSearchParams();
+        params.append('follower', account.user_id)
+        params.append('followee', routerLoc.state.user_id)
+        var queryString = "http://127.0.0.1:8000/api/check_follow"
+        axios
+            .get(queryString,{
+              params:params
+            })
+            .then(response => {
+                console.log(response.data)
+                if(response.data == 0) {
+                    setFollowing(false)
+                }else{
+                    setFollowing(true)
+                }
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
@@ -77,6 +100,20 @@ function OtherProfile(props) {
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
 
+    const postFollow = (follow) => {
+        var queryString = "http://127.0.0.1:8000/api/follow"
+        axios
+            .post(queryString,{
+                follower: account.user_id,
+                followee:routerLoc.state.user_id,
+                follow: follow
+            })
+            .then(response => {
+              setFollowing(follow)
+            })
+            .catch(error => console.error(`Error retrieving Login Info: ${error}`))
+    }
+
 
     return (
        <div style={{marginTop:'2%',marginBottom:'2%'}}>
@@ -95,9 +132,20 @@ function OtherProfile(props) {
                     <div>
                         <Rating rating={accountDetails.rating}/>
                     </div>
-                        <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                    <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
                         {accountDetails.type.name}
-                        </h5>
+                    </h5>
+                    {
+                        following==true?
+                            <Button onClick={()=>{postFollow(false)}}>
+                                Following
+                            </Button>
+                        :
+                            <Button onClick={()=>{postFollow(true)}}>
+                                Follow
+                            </Button>
+                        }
+                    
                     </Col>
                     <Col xs={9} style={{padding:0}}>
                     <div>
