@@ -51,10 +51,10 @@ function Home() {
     var settings = {
       className: "slider variable-width",
       dots: true,
-      infinite: false,
+      infinite: true,
       centerMode: false,
       slidesToShow: 1,
-      slidesToScroll: 4,
+      slidesToScroll: 1,
       variableWidth: true
     };
 
@@ -104,27 +104,28 @@ function Home() {
               </h5>:
               <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
                 <div style={{width:'95%'}}>
-                <Slider {...settings}>
-                {
-                  latestListings.map(listing => 
-                      <ListingCard name={listing["name"]} 
-                                          title={listing["title"]} 
-                                          description={listing["description"]}
-                                          price={listing["price"]} 
-                                          location={listing["location"]} 
-                                          id={listing["id"]}
-                                          image={listing["image"]}
-                                          user_id={listing["seller_id"]}/>
-                  )
-                }
-                {
-                  missingCol ==0 ? null:missingCol.map(element=>
-                      <div></div>
-                    )
-                }
-              </Slider>
+                  {/* <h6 style={{textAlign:'right'}}>View All</h6> */}
+                  <Slider {...settings}>
+                    {
+                      latestListings.map(listing => 
+                          <ListingCard name={listing["name"]} 
+                                              title={listing["title"]} 
+                                              description={listing["description"]}
+                                              price={listing["price"]} 
+                                              location={listing["location"]} 
+                                              id={listing["id"]}
+                                              image={listing["image"]}
+                                              user_id={listing["seller_id"]}/>
+                      )
+                    }
+                    <div>
+                      <h6 style={{'width':'300px', 'height':'511px', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer'}}
+                          onClick={()=>{navigate('/listings')}}>
+                        Show More
+                      </h6>
+                    </div>
+                  </Slider>
                 </div>
-                
               </div>
               
             }
