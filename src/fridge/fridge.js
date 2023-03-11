@@ -49,6 +49,18 @@ function CommunityFridge() {
       setToSearch(false)
   }
 
+  const searchBarChange = (e) => {
+    setSearchFilter(e)
+    setToSearch(false)
+  }
+
+  const keyDownFunc = (e) => {
+    if(e.key == "Enter"){
+      searchFunc()
+      setToSearch(true)
+    }
+  }
+
   useEffect(()=>{
     if(toSearch){
       var existingFridges = allFridges
@@ -87,8 +99,9 @@ function CommunityFridge() {
                 <Form.Control
                     placeholder="Search for Fridge"
                     aria-label="Search"
-                    onChange={(e) => {setSearchFilter(e.target.value)}}
+                    onChange={(e) => {searchBarChange(e.target.value)}}
                     value={searchFilter}
+                    onKeyDown={(e) =>{keyDownFunc(e)}}
                 />
                 {
                     toSearch === false? 

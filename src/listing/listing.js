@@ -215,6 +215,18 @@ function FoodListings() {
         setActiveTab(key)
     }
 
+    const searchBarChange = (e) => {
+        setSearchFilter(e)
+        setToSearch(false)
+      }
+    
+      const keyDownFunc = (e) => {
+        if(e.key == "Enter"){
+          searchFunc()
+          setToSearch(true)
+        }
+      }
+
     return (
       <div style={{marginTop:'1%', marginBottom:'3%', width:'100%', display:'flex', justifyContent:'center'}}>
         <div style={{width:'95%'}}>
@@ -224,8 +236,9 @@ function FoodListings() {
                 <Form.Control
                     placeholder="Search for Products"
                     aria-label="Search"
-                    onChange={(e) => {setSearchFilter(e.target.value)}}
+                    onChange={(e) => {searchBarChange(e.target.value)}}
                     value={searchFilter}
+                    onKeyDown={(e) =>{keyDownFunc(e)}}
                 />
                 {
                     toSearch === false? 
