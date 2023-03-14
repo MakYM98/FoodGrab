@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import HomeImg from '../img/home.png'
+import './home.css'
 
 function Home() {
   const [latestListings, setLatestListings] = useState([]);
