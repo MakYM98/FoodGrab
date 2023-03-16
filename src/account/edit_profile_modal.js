@@ -55,6 +55,7 @@ export default function EditProfileModal(props){
                 form_data.append('username',newUsername);
                 form_data.append('user_id',props.id);
                 form_data.append('type',newType);
+                form_data.append('clear_img', removeImg)
                 var queryString = "http://127.0.0.1:8000/api/update_profile"
                 axios
                   .post(queryString,form_data)
@@ -68,6 +69,7 @@ export default function EditProfileModal(props){
                         props.fetchUser()
                         localStorage.setItem('account', JSON.stringify(updatedAcc));
                         window.dispatchEvent(new Event("storage"));
+                        setRemoveImg(false)
                     }
                   })
                   .catch(error => console.error(`Error retrieving Registering: ${error}`))
