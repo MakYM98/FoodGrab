@@ -107,7 +107,7 @@ function Profile(props) {
                     <Col xs={3} style={{marginTop:'3%'}}>
                         <img 
                             src={
-                                accountDetails['img'] === null | accountDetails['img'] === undefined? 
+                                accountDetails['img'] === null | accountDetails['img'] === undefined | account.img=='/media/undefined'?
                                 Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
                             } 
                             style={{borderRadius:"50%", height:'300px',

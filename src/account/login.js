@@ -59,7 +59,6 @@ function Login(props) {
           if(response.status == 200){
             props.loginFunc(true, response.data)
             var redirect_url = "/profile/" + response.data.username
-            console.log(response.data)
             localStorage.setItem('account', JSON.stringify({
               user_id:response.data.user_id,
               username:response.data.username,
@@ -337,18 +336,16 @@ function Login(props) {
                       <Col style={{display:'flex', justifyContent:'center'}}>
                         <Form.Group className="mb-3" controlId="regType" style={{width:'80%'}}>
                           <Form.Label style={{display:'flex'}}>Type</Form.Label>
-                          <Form.Control 
-                            as="select" 
+                          <Form.Select 
                             name="regType" 
                             onChange={onFormChange} 
                             placeholder="Account Type" 
                             required
                             isInvalid={typeError}
                             >
-                            <option key='blankChoice' hidden value />
                             <option value="individual">Individual</option>
                             <option value="business">Business</option>
-                          </Form.Control>
+                          </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             Please select an account type
                         </Form.Control.Feedback> 

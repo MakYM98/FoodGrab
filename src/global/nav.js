@@ -118,7 +118,7 @@ function Header(props) {
                       <div id="profDiv">
                         <img
                           src={
-                            account.img === null | account.img === undefined? 
+                            account.img === null | account.img === undefined | account.img=='/media/undefined'?
                             Avatar
                             :
                             `http://127.0.0.1:8000${account.img}`

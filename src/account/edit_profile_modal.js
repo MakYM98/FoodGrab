@@ -21,6 +21,7 @@ export default function EditProfileModal(props){
     const [imgFile, setImgFile] = useState()
     const [userNameError, setUserNameError] = useState(false)
     const [typeError, setTypeError] = useState(false)
+    const [removeImg, setRemoveImg] = useState(false)
 
     useEffect(()=>{setShow(props.visible)},[props.visible])
 
@@ -99,6 +100,11 @@ export default function EditProfileModal(props){
         setImgFile(file)
     }
 
+    const removeImgFunc =(e)=>{
+      e.preventDefault()
+      setRemoveImg(!removeImg)
+    }
+
     return (
         <Modal show={show} >
         <Modal.Header>
@@ -120,28 +126,23 @@ export default function EditProfileModal(props){
                     isInvalid={userNameError}/>
                     <Form.Control.Feedback type="invalid">
                     Username Taken
-                </Form.Control.Feedback>  
+                </Form.Control.Feedback>
+                  
                 </Form.Group>
-                    {/* Type of Account */}
-                        <Form.Group className="mb-3" controlId="newType" style={{width:'80%'}}>
-                          <Form.Label style={{display:'flex'}}>Type</Form.Label>
-                          <Form.Control 
-                            as="select" 
-                            name="newType" 
-                            onChange={onFormChange} 
-                            defaultValue={props.type}
-                            placeholder="Account Type" 
-                            required
-                            isInvalid={typeError}
-                            >
-                            <option key='blankChoice' hidden value />
-                            <option value="individual">Individual</option>
-                            <option value="business">Business</option>
-                          </Form.Control>
-                          <Form.Control.Feedback type="invalid">
-                            Please select an account type
-                        </Form.Control.Feedback> 
-                        </Form.Group>
+
+                <Form.Group className="mb-3" controlId="newUser" style={{width:'80%', textAlign:'left'}}>
+                    <Form.Label style={{display:'flex'}}>Type</Form.Label>
+                    <Form.Select 
+                      name='newType'
+                      type="select"
+                      defaultValue={props.type}
+                      onChange={onFormChange} 
+                    >
+                      <option value="Individual">Individual</option>
+                      <option value="Business">Business</option>
+                  </Form.Select>
+                </Form.Group>
+                  
                         <Dropzone
                             getUploadParams={fileParams}
                             onChangeStatus={onFileChange}
@@ -153,6 +154,18 @@ export default function EditProfileModal(props){
                                 dropzoneActive: { borderColor: 'green' },
                             }}            
                         />
+                      <Form.Group className="mb-3" controlId="newUser" style={{width:'80%', textAlign:'left', display:'flex', marginTop:'3%'}}>
+                        <h6 style={{display:'flex', alignItems:'center', margin:0}}>
+                          Remove Image
+                        </h6>
+                        <Form.Check
+                          disabled
+                          type={'checkbox'}
+                          id={`disabled-default-checkbox`}
+                          style={{marginLeft:'2%'}}
+                          checked={removeImg}
+                        />
+                    </Form.Group>
                       <div style={{display:'flex', justifyContent:'center',
                                     alignItems:'center', marginTop:'5%'}}>
                         <Button variant="primary" 
@@ -160,7 +173,8 @@ export default function EditProfileModal(props){
                           Exit
                         </Button>
                         <Button variant="primary" type="submit"
-                                style={{marginRight:'10%', marginLeft:'10%'}}>
+                                style={{marginRight:'10%', marginLeft:'10%'}}
+                                onClick={(e)=>{removeImgFunc(e)}}>
                           Clear Image
                         </Button>
                         <Button variant="primary" type="submit">
