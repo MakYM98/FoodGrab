@@ -18,6 +18,7 @@ function Header(props) {
   const [userDetails, setUserDetails] = useState(props.details)
   const [loginDrop, setLoginDrop] = useState(false)
   const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+  const [page, setPage] = useState('')
 
   const navigate = useNavigate()
 
@@ -37,6 +38,7 @@ function Header(props) {
   }
 
   function redirect(type){
+    setPage('')
     navigate('/login', {
       state:{
         type:type
@@ -45,6 +47,7 @@ function Header(props) {
   }
 
   function sellPage(){
+    setPage('')
     navigate('/sell', {
       state:{
         user_id:account.user_id
@@ -53,6 +56,7 @@ function Header(props) {
   }
 
   function chatPage(){
+    setPage('')
     navigate('/chats', {
       state:{
         seller_id:null,
@@ -65,14 +69,17 @@ function Header(props) {
   function logoutFunc(){
     localStorage.removeItem("account");
     navigate('/');
+    setPage('')
   }
 
   function profileFunc(){
     navigate(`/profile`);
+    setPage('')
   }
 
-  const navigateFunc = (loc) => {
+  const navigateFunc = (loc, pageName) => {
     navigate(loc)
+    setPage(pageName)
     props.close()
   }
 
@@ -85,22 +92,26 @@ function Header(props) {
                 <div style={{display:'flex', justifyContent:'end'}}>
                   {/* Area for all Navigation Buttons */}
                   <div id="navArea">
-                    <h1 id="navHeader" onClick={()=>{navigateFunc('/')}}>FoodGrab</h1>
+                    <h1 id="navHeader" onClick={()=>{navigateFunc('/')}}>
+                      FoodGrab
+                    </h1>
                     {/* Nav Header for About Us Page */}
                     <h5 className="allHeaders"  id="aboutUsNav"
-                        onClick={()=>{navigateFunc('/aboutus')}}
-                        style={{paddingLeft:'3%'}}>
+                        onClick={()=>{navigateFunc('/aboutus', 'au')}}
+                        style={{paddingLeft:'3%', color:page=='au'?'black':'darkgray'}}>
                           About Us
                     </h5>
                     {/* Nav Header for Community Fridge Page */}
                     <h5 className="allHeaders" id="fridgeNav"
-                        onClick={()=>{navigateFunc('/communityfridge')}}>
+                        style={{color:page=='cf'?'black':'darkgray'}}
+                        onClick={()=>{navigateFunc('/communityfridge', 'cf')}}>
                           Community Fridge
                     
                     </h5>
                     {/* Nav Header for Listing Page */}
                     <h5 className="allHeaders" id="listingNav"
-                        onClick={()=>{navigateFunc('/listings')}}>
+                        style={{color:page=='ls'?'black':'darkgray'}}
+                        onClick={()=>{navigateFunc('/listings','ls')}}>
                           Food Listings
                     </h5>
                   </div>

@@ -93,7 +93,7 @@
 
 .allHeaders{
   margin-left: 1%;
-  color: darkgray;
+  /* color: darkgray; */
   cursor: pointer;
 }
 
