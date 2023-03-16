@@ -116,6 +116,7 @@ function Header(props) {
                                   height:'40px',
                                   borderRadius:'100px',
                                   marginRight:'10px'
+                                  , border:'1px solid lightgray'
                                 }}
                         />
                         {/* User Name */}
@@ -147,7 +148,7 @@ function Header(props) {
                         </Button>
                       </div>
                   <div style={{display:'flex', marginRight:'1%', alignItems:'center'}} 
-                  onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
+                    onMouseEnter={showDropdown} onMouseLeave={hideDropdown}>
                   </div>
                 </div>
                 : 

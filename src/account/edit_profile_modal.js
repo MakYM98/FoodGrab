@@ -49,7 +49,6 @@ export default function EditProfileModal(props){
               if(formPassed){
                 var newUsername = newAccDetails.newUser===undefined? props.username: newAccDetails.newUser
                 var newType = newAccDetails.newType===undefined? props.type: newAccDetails.newType
-                console.log(props.id)
                 let form_data = new FormData();
                 form_data.append('image', imgFile);
                 form_data.append('username',newUsername);
@@ -59,7 +58,6 @@ export default function EditProfileModal(props){
                 axios
                   .post(queryString,form_data)
                   .then(response => {
-                    console.log(response)
                     if(response.status == 200){
                       props.openFunc(false)
                         var updatedAcc = {
@@ -101,11 +99,9 @@ export default function EditProfileModal(props){
         setImgFile(file)
     }
 
-
     return (
-
         <Modal show={show} >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>
             Edit Profile
           </Modal.Title>
@@ -126,9 +122,7 @@ export default function EditProfileModal(props){
                     Username Taken
                 </Form.Control.Feedback>  
                 </Form.Group>
-
                     {/* Type of Account */}
-
                         <Form.Group className="mb-3" controlId="newType" style={{width:'80%'}}>
                           <Form.Label style={{display:'flex'}}>Type</Form.Label>
                           <Form.Control 
@@ -159,19 +153,23 @@ export default function EditProfileModal(props){
                                 dropzoneActive: { borderColor: 'green' },
                             }}            
                         />
-                    <Button variant="primary" type="submit">
-                      Submit
-                    </Button>
+                      <div style={{display:'flex', justifyContent:'center',
+                                    alignItems:'center', marginTop:'5%'}}>
+                        <Button variant="primary" 
+                                onClick={()=>{handleClose()}}>
+                          Exit
+                        </Button>
+                        <Button variant="primary" type="submit"
+                                style={{marginRight:'10%', marginLeft:'10%'}}>
+                          Clear Image
+                        </Button>
+                        <Button variant="primary" type="submit">
+                          Submit
+                        </Button>
+                      </div>
+                    
               </Form>
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={()=>handleClose()}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={()=>completeFunc()}>
-            Confirm
-          </Button>
-        </Modal.Footer> */}
       </Modal>
 
         

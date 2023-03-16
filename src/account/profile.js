@@ -110,20 +110,27 @@ function Profile(props) {
                                 accountDetails['img'] === null | accountDetails['img'] === undefined? 
                                 Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
                             } 
-                            style={{borderRadius:"50%", height:'300px',width:'300px'}}
+                            style={{borderRadius:"50%", height:'300px',
+                                    width:'300px', border:'1px solid lightgray'}}
                         />
                         <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
                             {accountDetails.username}
                         </h1>
-                        <div>
+                        <div style={{marginTop:'1%'}}>
                             <Rating rating={accountDetails.rating}/>
                         </div>
-                        <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                        <h5 style={{display:'block', 
+                                    marginTop:'1%', 
+                                    textAlign:'center'}}>
                             {accountDetails.type.name}
                         </h5>
-                        <h5 onClick={()=>{setEditVisible(true)}}>
+                        <Button onClick={()=>{setEditVisible(true)}}>
                             Edit Profile
-                        </h5>
+                        </Button>
+
+                        {/* <h5 onClick={()=>{setEditVisible(true)}}>
+                            Edit Profile
+                        </h5> */}
                     </Col>
                     <Col xs={9} style={{padding:0}}>
                     <div>

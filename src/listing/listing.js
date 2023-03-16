@@ -271,27 +271,29 @@ function FoodListings() {
                 
                 {/* Filter */}
                 <div style={{border:'1px solid black', marginLeft:'2%'}}/>
-                <div style={{display:'flex', marginLeft:'2%'}}>
-                    <div >
-                        <Select 
-                            options={locationOptions} 
-                            isMulti 
-                            styles={dropdownStyles}
-                            placeholder='Location'
-                            onChange={(e)=>{locationFilterFunc(e)}}
-                            />
+                    <div style={{display:'flex', marginLeft:'2%'}}>
+                        <div style={{width:'150px', marginRight:'2%'}}>
+                            <Select 
+                                options={locationOptions} 
+                                isMulti 
+                                styles={dropdownStyles}
+                                placeholder='Location'
+                                onChange={(e)=>{locationFilterFunc(e)}}
+                                classname="filterOptions"
+                                />
+                        </div>
+                        <div style={{width:'150px'}}>
+                            <Select 
+                                options={priceOptions} 
+                                name="Price" 
+                                styles={dropdownStyles}
+                                placeholder='Price'
+                                isClearable={true}
+                                onChange={(e) => {priceFilterFunc(e)}}
+                                
+                            /> 
+                        </div>
                     </div>
-                    <div >
-                        <Select 
-                            options={priceOptions} 
-                            name="Price" 
-                            styles={dropdownStyles}
-                            placeholder='Price'
-                            isClearable={true}
-                            onChange={(e) => {priceFilterFunc(e)}}
-                        /> 
-                    </div>
-                </div>
 
             </div>
             

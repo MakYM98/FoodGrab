@@ -124,7 +124,7 @@ function OtherProfile(props) {
                         src={
                             accountDetails['img'] === null? Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
                         } 
-                        style={{borderRadius:"50%", height:'70%',width:'70%'}}
+                        style={{borderRadius:"50%", height:'70%',width:'70%', border:'1px solid lightgray'}}
                         />
                     <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
                         {accountDetails.username}
@@ -167,9 +167,6 @@ function OtherProfile(props) {
                                             image={listing["image"]} 
                                             id={listing["listing_id"]}/>
                                     </div>
-                                        
-
-                                    
                             )}
                         </div>
                     </div>
