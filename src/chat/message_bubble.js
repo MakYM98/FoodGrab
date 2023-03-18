@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './chat.css'
 
 function MessageBubble(props){
+    // Message Bubble if sent by Logged in User
     if(props.user == 'me'){
         return(
             <div id="messageDiv">
@@ -16,6 +17,7 @@ function MessageBubble(props){
             
         )
     }else{
+        // Message Bubble if sent by Other Users
         return(
             <p id="messagePara" className="from-them">
                 {props.message}

@@ -13,6 +13,7 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
 function OtherProfile(props) {
+    // States for Other User's Profile
     const [latestListing, setLatestListing] = useState([])
     const [latestReview, setLatestReview] = useState([])
     const routerLoc = useLocation()
@@ -25,18 +26,23 @@ function OtherProfile(props) {
                                     JSON.parse(localStorage.getItem("account")))
     const [following, setFollowing] = useState(false)
     const navigate = useNavigate()
-
+    
+    // Initial Render
     useEffect(()=>{
+        // If user_id same as logged in user, go back to user profile
         if(routerLoc.state.user_id == account.user_id){
             navigate('/profile')
         }
+        // Initial Data Fetching
         checkFollowing()
         fetchUserDetails()
         fetchReviews()
         fetchListings()
     },[])
 
+    // Fetch latest User's Listings
     const fetchListings = async () => {
+        // GET Query Parameters
         var params = new URLSearchParams();
         params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/user_listing"
@@ -45,13 +51,14 @@ function OtherProfile(props) {
               params:params
             })
             .then(response => {
-                console.log(response.data)
+              // Update state with latest Listings
               setLatestListing(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
+    // Check if Logged in User is following this User
     const checkFollowing = async () => {
+        // GET Query Parameters
         var params = new URLSearchParams();
         params.append('follower', account.user_id)
         params.append('followee', routerLoc.state.user_id)
@@ -61,7 +68,7 @@ function OtherProfile(props) {
               params:params
             })
             .then(response => {
-                console.log(response.data)
+                // If response returns empty array, means not following
                 if(response.data == 0) {
                     setFollowing(false)
                 }else{
@@ -70,8 +77,9 @@ function OtherProfile(props) {
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
+    // Fetch latest User's Reviews
     const fetchReviews = async () => {
+        // GET Query Parameters
         var params = new URLSearchParams();
         params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/review"
@@ -80,12 +88,14 @@ function OtherProfile(props) {
               params:params
             })
             .then(response => {
+              // Update State with latest reviews
               setLatestReview(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
+    // Fetch User's Information
     const fetchUserDetails = async () => {
+        // GET Query Parameters
         var params = new URLSearchParams();
         params.append('user', routerLoc.state.user_id)
         var queryString = "http://127.0.0.1:8000/api/profile"
@@ -94,12 +104,12 @@ function OtherProfile(props) {
               params:params
             })
             .then(response => {
+              // Update State with User Details
               setAccountDetails(response.data)
-              console.log(response.data)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
+    // Function to Follow this user
     const postFollow = (follow) => {
         var queryString = "http://127.0.0.1:8000/api/follow"
         axios
@@ -109,6 +119,7 @@ function OtherProfile(props) {
                 follow: follow
             })
             .then(response => {
+            //   Update State to show that Logged In User is following this User
               setFollowing(follow)
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
@@ -120,22 +131,31 @@ function OtherProfile(props) {
             <Container style={{maxWidth:'none'}}>
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
+                    {/* Check if User has a profile Image */}
                     <img 
                         src={
-                            accountDetails['img'] === null? Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
-                        } 
-                        style={{borderRadius:"50%", height:'70%',width:'70%', border:'1px solid lightgray'}}
+                            accountDetails['img'] === null? 
+                            Avatar
+                            :
+                            `http://127.0.0.1:8000${accountDetails['img']}`
+                        }
+                        id="userProfImg"
                         />
-                    <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                    {/* User's Username */}
+                    <h1 id="usernameText">
                         {accountDetails.username}
                     </h1>
+                    {/* User's Rating */}
                     <div>
                         <Rating rating={accountDetails.rating}/>
                     </div>
-                    <h5 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                    {/* User's Account Type */}
+                    <h5 id="typeText">
                         {accountDetails.type.name}
                     </h5>
-                    {
+                    {/* Check if Logged in User is Following this User*/}
+                    {  
+                        // Depending on situation, give different Buttons.
                         following==true?
                             <Button onClick={()=>{postFollow(false)}}>
                                 Following
@@ -148,10 +168,13 @@ function OtherProfile(props) {
                     
                     </Col>
                     <Col xs={9} style={{padding:0}}>
+                    {/* User's Recent Listings */}
                     <div>
                         <h1 style={{textAlign:"left"}}>Recent Listings</h1>
                         <div style={{display:'flex', justifyContent:'start'}}>
+                        {/* Check if user has listed anything */}
                         {
+                                // Depending on situation, show listing/text
                                 latestListing.length == 0? 
                                 <h5>User has not posted any listing yet</h5>
                                 :
@@ -172,7 +195,7 @@ function OtherProfile(props) {
                     </div>
                     </Col>
                 </Row>
-
+                {/* User's Received Reviews */}
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
                     </Col>
@@ -180,6 +203,7 @@ function OtherProfile(props) {
                     <div style={{marginTop:'3%'}}>
                         <h1 style={{textAlign:"left"}}>User Reviews</h1>
                         <div style={{display:'flex', justifyContent:'start'}}>
+                            {/* Check if User has received any reviews */}
                             {latestReview.length == 0? 
                                 <h5>User has not receive any reviews yet</h5>
                                 :

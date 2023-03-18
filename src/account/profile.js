@@ -16,6 +16,7 @@ import 'react-dropzone-uploader/dist/styles.css'
 import EditProfileModal from './edit_profile_modal'
 
 function Profile(props) {
+    // State for Logged In Users
     const ref = useRef(null);
     const [latestListing, setLatestListing] = useState([])
     const [latestReview, setLatestReview] = useState([])
@@ -25,11 +26,6 @@ function Profile(props) {
         rating:0,
         type:''
     })
-    const [editProf, setEditProf] = useState(false)
-    const [newAccDetails, setNewAccDetails] = useState({})
-    const [imgFile, setImgFile] = useState()
-    const [userNameError, setUserNameError] = useState(false)
-    const [typeError, setTypeError] = useState(false)
     const [editVisible, setEditVisible] = useState(false)
 
     // Initial Render, Query for User's Details/Reviews/Listings
@@ -39,22 +35,26 @@ function Profile(props) {
         fetchListings()
     },[])
 
+    // Detect if User's Details have changed
     useEffect(()=>{
-        console.log(accountDetails.name)
+        // Update Local Storage 
         localStorage.setItem('account', JSON.stringify({
             user_id:accountDetails.user_id,
             username:accountDetails.username,
             img:accountDetails.img
         }));
+        // Trigger Window Event
         window.dispatchEvent(new Event("storage"));
     },[accountDetails])
 
+    // Control whether Edit Modal visible
     const openEdit = (visible) => {
         setEditVisible(visible)
     }
 
     // Query for User's Listings
     const fetchListings = async () => {
+        // Get Query Parameters
         var params = new URLSearchParams();
         params.append('user', account.user_id)
         var queryString = "http://127.0.0.1:8000/api/user_listing"
@@ -70,6 +70,7 @@ function Profile(props) {
 
     // Query for User's Reviews
     const fetchReviews = async () => {
+        // Get Query Parameters
         var params = new URLSearchParams();
         params.append('user', account.user_id)
         var queryString = "http://127.0.0.1:8000/api/review"
@@ -85,6 +86,7 @@ function Profile(props) {
 
     // Query for User's Details
     const fetchUserDetails = async () => {
+        // Get Query Parameters
         var params = new URLSearchParams();
         params.append('user', account.user_id)
         var queryString = "http://127.0.0.1:8000/api/profile"
@@ -93,9 +95,7 @@ function Profile(props) {
               params:params
             })
             .then(response => {
-                
               setAccountDetails(response.data)
-              
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
@@ -105,38 +105,40 @@ function Profile(props) {
             <Container style={{maxWidth:'none'}}>
                 <Row>
                     <Col xs={3} style={{marginTop:'3%'}}>
+                        {/* User Profile Image */}
                         <img 
                             src={
-                                accountDetails['img'] === null | accountDetails['img'] === undefined | account.img=='/media/undefined'?
-                                Avatar:`http://127.0.0.1:8000${accountDetails['img']}`
+                                // Check if User has Profile Image
+                                accountDetails['img'] === null | 
+                                accountDetails['img'] === undefined | 
+                                account.img=='/media/undefined'?
+                                Avatar
+                                :
+                                `http://127.0.0.1:8000${accountDetails['img']}`
                             } 
-                            style={{borderRadius:"50%", height:'300px',
-                                    width:'300px', border:'1px solid lightgray'}}
+                            id="userProfImg"
                         />
-                        <h1 style={{display:'block', margin:'auto', textAlign:'center'}}>
+                        <h1 id="usernameText">
                             {accountDetails.username}
                         </h1>
                         <div style={{marginTop:'1%'}}>
                             <Rating rating={accountDetails.rating}/>
                         </div>
-                        <h5 style={{display:'block', 
-                                    marginTop:'1%', 
-                                    textAlign:'center'}}>
+                        <h5 id="typeText">
                             {accountDetails.type.name}
                         </h5>
+                        {/* Button to open Edit Modal */}
                         <Button onClick={()=>{setEditVisible(true)}}>
                             Edit Profile
                         </Button>
-
-                        {/* <h5 onClick={()=>{setEditVisible(true)}}>
-                            Edit Profile
-                        </h5> */}
                     </Col>
                     <Col xs={9} style={{padding:0}}>
                     <div>
                         <h1 style={{textAlign:"left"}}>Recent Listings</h1>
                         <div style={{display:'flex', justifyContent:'start'}}>
+                        {/* Check if User has listed anything */}
                         {
+                                // Depending on situation, show listings/text
                                 latestListing.length == 0? 
                                 <h5>User has not posted any listing yet</h5>
                                 :
@@ -168,7 +170,9 @@ function Profile(props) {
                         
                         <h1 style={{textAlign:"left"}}>User Reviews</h1>
                         <div style={{display:'flex', justifyContent:'start'}}>
+                            {/* Check if User has received any reviews */}
                             {latestReview.length == 0? 
+                                // Depending on situation, show reviews/text
                                 <h5>User has not receive any reviews yet</h5>
                                 :
                                 latestReview.map(listing => 
@@ -179,7 +183,6 @@ function Profile(props) {
                                             comment={listing['comment']}
                                         />
                                     </div>
-                                    
                             )}
                         </div>
                     </div>

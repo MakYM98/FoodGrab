@@ -17,27 +17,30 @@ import ReserveModal from "./reserve_modal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 function ChatBox(props){
-    // const [client, setClient] = useState()
-    // For Chat Box
+    // States for Chat Box
     const [messages, setMessages] = useState([])
     const [value, setValue] = useState('')
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("account")))
     const [serverMessage, setServerMessage] = useState({})
-    const [websocket, setWebSocket]= useState(new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`))
+    const [websocket, setWebSocket]= useState(
+        new W3CWebSocket(`ws://127.0.0.1:8000/ws/${props.chatRoom}/`)
+    )
 
+    // Reset message when user select a different chat room
     useEffect(()=>{
         setMessages([])
     },[props.chatRoom])
 
+    // Update chat box with past messages
     useEffect(()=>{
         if(props.pastMsgs.length!=0){
             var allMessages = props.pastMsgs.concat(messages)
             setMessages(allMessages)
         }
     },[props.pastMsgs])
-
+    
+    // Function to update database with new message
     const newMessage = (dataFromServer) => {
-
         var queryString = "http://127.0.0.1:8000/api/new_message"
         axios
             .post(queryString,{
@@ -52,25 +55,29 @@ function ChatBox(props){
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
-    useEffect(()=>{     
+    
+    // Initial Render
+    useEffect(()=>{
+        // For checking if Web Socket is open/closed
         websocket.onopen = () => console.log("ws opened");
         websocket.onclose = () => console.log("ws closed");
-
+        // Check if socket exists
         if(websocket!=undefined){
+            // Web Socket on message function
             websocket.onmessage = (message) => {
                 const dataFromServer = JSON.parse(message.data);
+                // If new message
                 if (dataFromServer) {
+                    // Update list of messages with new message
                     setMessages(messages => {
                         let messagesCopy = [...messages];
-
                         messagesCopy.push({
                             message:dataFromServer.message,
                             name:dataFromServer.username
                         })
                         return messagesCopy
                     });
-
+                    // Store new message 
                     setServerMessage({
                         message:dataFromServer.message,
                         name:dataFromServer.username
@@ -84,10 +91,11 @@ function ChatBox(props){
             }
         }
     },[])
-
+    // On Submit Function
     const onButtonClicked = (e) => {
+        // Check if user pressed "Enter Key"
         if(e.code == "Enter"){
-            // e.prevenDefault()
+            // Send New Message
             websocket.send(
                 JSON.stringify({
                     type:"message",
@@ -105,6 +113,7 @@ function ChatBox(props){
             <div id="messageOuter">
                 <div id="messageArea">
                     <div style={{width:'100%', maxHeight:'500px',minHeight:50}}>
+                        {/* Iterate through all messages, create a bubble */}
                         {
                             messages.map(message => 
                                 <MessageBubble 
@@ -120,7 +129,7 @@ function ChatBox(props){
                 </div>
             </div>
         </div>
-
+        {/* Message Input Box */}
         <div style={{height:'10%',marginTop:'10px'}}>
             <Form.Group className="mb-3" controlId="message" >
                 <Form.Control 

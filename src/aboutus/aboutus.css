@@ -1,3 +1,12 @@
+#abousUsDiv{
+    height:100%;
+    background-color:#d5ecd5;
+}
+
+.aboutUsImgColDiv{
+    width: 85%;
+}
+
 #aboutTitle {
     font-weight: 300;
     display: inline-block;

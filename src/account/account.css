@@ -20,3 +20,22 @@
 #profilePic{
     border-radius: 50%;
 }
+
+#userProfImg{
+    border-radius: 50%;
+    height: 300px;
+    width: 300px;
+    border: 1px solid lightgray;
+}
+
+#usernameText{
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+#typeText{
+    display: block;
+    margin-top: 1%;
+    text-align: center;
+}

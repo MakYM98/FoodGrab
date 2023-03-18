@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
-import data from "../products";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import Hamburger from 'hamburger-react'

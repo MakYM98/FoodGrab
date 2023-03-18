@@ -13,24 +13,23 @@ import Dropzone from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'
 
 function Sell(props) {
-  const routerCreate = useLocation()
-  const [checked, setChecked] = useState(false);
-  const [radioValue, setRadioValue] = useState('For Sale');
-  const [imgValue, setImgValue] = useState(1)
-  const [listingDetails, setListingDetails] = useState({})
-  const [imgFile, setImgFile] = useState()
-  const [imgDisplay, setImgDisplay] = useState()
-  const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
-  // Form Validation
-  const [titleInvalid, setTitleInvalid] = useState()
-  const [descInvalid, setDescInvalid] = useState()
-  const [locInvalid, setLocInvalid] = useState()
-  const [imgInvalid, setImgInvalid] = useState()
-  const navigate = useNavigate()
-
+    // States for Create Listing
+    const [radioValue, setRadioValue] = useState('For Sale');
+    const [listingDetails, setListingDetails] = useState({})
+    const [imgFile, setImgFile] = useState()
+    const [imgDisplay, setImgDisplay] = useState()
+    const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
+    // Form Validation
+    const [titleInvalid, setTitleInvalid] = useState()
+    const [descInvalid, setDescInvalid] = useState()
+    const [locInvalid, setLocInvalid] = useState()
+    const [imgInvalid, setImgInvalid] = useState()
+    const navigate = useNavigate()
+    // Upload User's Image
     const fileParams = ({ meta }) => {
         return { url: 'https://httpbin.org/post' }
     }
+    // Detect if user uploaded an image
     const onFileChange = ({ meta, file }, status) => { 
         if (FileReader) {
             var fr = new FileReader();
@@ -41,79 +40,72 @@ function Sell(props) {
         }
         setImgFile(file)
     }
+    // Radio Selection to determine if free or on sale
+    const radios = [
+        { name: 'For Sale', value: 'For Sale' },
+        { name: 'For Free', value: 'For Free' }
+    ];
+    // Detect for changes in inputs
+    const onFormChange = (e, updatedAt) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setListingDetails({ ...listingDetails, [name]: value });
+    };
 
-  const radios = [
-    { name: 'For Sale', value: 'For Sale' },
-    { name: 'For Free', value: 'For Free' }
-  ];
+    // Function to create new listing
+    const createFunc = () => {
+        var queryString = "http://127.0.0.1:8000/api/create"
+        if('price' in listingDetails){
+            var price = listingDetails.price
+        }else{
+            var price = 0
+        }
 
-  const imgRadios = [
-    { name: 1, value: 1 },
-    { name: 2, value: 2 },
-    { name: 3, value: 3 },
-    { name: 4, value: 4 },
-  ]
+        var formPassed = true
 
-  const onFormChange = (e, updatedAt) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setListingDetails({ ...listingDetails, [name]: value });
-  };
+        if(listingDetails.title === undefined){
+            formPassed = false
+            setTitleInvalid(true)
+        }
 
+        if(listingDetails.description === undefined){
+            formPassed = false
+            setDescInvalid(true)
+        }
 
-  const createFunc = () => {
-    var queryString = "http://127.0.0.1:8000/api/create"
-    if('price' in listingDetails){
-        var price = listingDetails.price
-    }else{
-        var price = 0
+        if(listingDetails.location === undefined){
+            formPassed = false
+            setLocInvalid(true)
+        }
+
+        if(imgFile === null || imgFile === undefined){
+            formPassed = false
+            setImgInvalid(true)
+        }
+        
+        if(formPassed){
+            let form_data = new FormData();
+            form_data.append('image', imgFile);
+            form_data.append('title',listingDetails.title);
+            form_data.append('description',listingDetails.description);
+            form_data.append('location',listingDetails.location);
+            form_data.append('price',price);
+            form_data.append('date_posted',new Date().toLocaleDateString());
+            form_data.append('seller',account.user_id);
+
+            axios
+                .post(queryString,form_data)
+                .then(response => {
+                    console.log(listingDetails)
+                    if(response.status == 200){
+                        navigate('/listings')
+                    }
+                    alert('Listing Created')
+                })
+                .catch(error => console.error(`Error retrieving creating: ${error}`))
+        }
+        
     }
-
-    var formPassed = true
-
-    if(listingDetails.title === undefined){
-        formPassed = false
-        setTitleInvalid(true)
-    }
-
-    if(listingDetails.description === undefined){
-        formPassed = false
-        setDescInvalid(true)
-    }
-
-    if(listingDetails.location === undefined){
-        formPassed = false
-        setLocInvalid(true)
-    }
-
-    if(imgFile === null || imgFile === undefined){
-        formPassed = false
-        setImgInvalid(true)
-    }
-    
-    if(formPassed){
-        let form_data = new FormData();
-        form_data.append('image', imgFile);
-        form_data.append('title',listingDetails.title);
-        form_data.append('description',listingDetails.description);
-        form_data.append('location',listingDetails.location);
-        form_data.append('price',price);
-        form_data.append('date_posted',new Date().toLocaleDateString());
-        form_data.append('seller',account.user_id);
-
-        axios
-            .post(queryString,form_data)
-            .then(response => {
-                console.log(listingDetails)
-                if(response.status == 200){
-                    navigate('/listings')
-                }
-                alert('Listing Created')
-            })
-            .catch(error => console.error(`Error retrieving creating: ${error}`))
-    }
-    
-  }
 
   return (
     <div id="createListing">
