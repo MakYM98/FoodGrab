@@ -26,33 +26,23 @@ import { useNavigate } from "react-router-dom";
 import OtherProfile from './account/other_profile';
 
 function App() {
+  // States for root page
   const [loggedIn, setLoggedIn] = useState()
   const [userDetails, setUserDetails] = useState()
-  const navigate = useNavigate()
-
-  function chatPage(){
-    var account = JSON.parse(localStorage.getItem("account"))
-    navigate('/chats', {
-      state:{
-        seller_id:null,
-        user_id: account.user_id,
-        listing_id:null,
-      }
-    });
-  }
-
+  // Function for Login
   const logInFunc = (e, details) => {
     console.log(e)
     setLoggedIn(e)
     setUserDetails(details)
   }
-
+  // Function to check if user is logged in
   const getLoggedIn =()=>{
     return loggedIn
   }
 
   return (
     <div className="App">
+      {/* Acts as a form of navigation and show what page the route displays */}
       <Header loggedIn={loggedIn} loginFunc={getLoggedIn} details={userDetails}/>
         <div>
           <Routes>
@@ -69,10 +59,6 @@ function App() {
             <Route path="/chats" element={<Chats/>}/>
           </Routes>
         </div>
-        {/* <BsFillChatFill id="chatBubble" size={50} onClick={()=>{chatPage()}}/> */}
-      {/* <Footer/> */}
-      
-      
     </div>
   );
 }

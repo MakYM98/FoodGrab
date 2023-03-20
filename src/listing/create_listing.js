@@ -55,6 +55,7 @@ function Sell(props) {
     // Function to create new listing
     const createFunc = () => {
         var queryString = "http://127.0.0.1:8000/api/create"
+        // Check if price is in details (Won't exist if its free)
         if('price' in listingDetails){
             var price = listingDetails.price
         }else{
@@ -62,27 +63,27 @@ function Sell(props) {
         }
 
         var formPassed = true
-
+        // Check if Title is Empty
         if(listingDetails.title === undefined){
             formPassed = false
             setTitleInvalid(true)
         }
-
+        // Check if Description is Empty
         if(listingDetails.description === undefined){
             formPassed = false
             setDescInvalid(true)
         }
-
+        // Check if Location is Empty
         if(listingDetails.location === undefined){
             formPassed = false
             setLocInvalid(true)
         }
-
+        // Check if Image is Empty
         if(imgFile === null || imgFile === undefined){
             formPassed = false
             setImgInvalid(true)
         }
-        
+        // If no issues, use FormData to create parameters
         if(formPassed){
             let form_data = new FormData();
             form_data.append('image', imgFile);
@@ -92,11 +93,10 @@ function Sell(props) {
             form_data.append('price',price);
             form_data.append('date_posted',new Date().toLocaleDateString());
             form_data.append('seller',account.user_id);
-
             axios
                 .post(queryString,form_data)
                 .then(response => {
-                    console.log(listingDetails)
+                    // If Successful, navigate to listings page.
                     if(response.status == 200){
                         navigate('/listings')
                     }
@@ -114,13 +114,13 @@ function Sell(props) {
                 <Col  xs={5}>
                     <div id="imageArea">
                         <h4 style={{textAlign:'left'}}>Item Image</h4>
+                        {/* To display user uploaded image */}
                         <img 
                             id="imgDisplay"
-                            // src={imgFile!==null? imgFile: null}
                             src={imgDisplay}
                             width={400}
                         />
-
+                        {/* Drop area to upload image file */}
                         <Dropzone
                             onChangeStatus={onFileChange}
                             getUploadParams={fileParams}
@@ -132,6 +132,7 @@ function Sell(props) {
                                 dropzoneActive: { borderColor: 'green' },
                             }}            
                         />
+                        {/* Error message if user did not upload */}
                         {
                             imgInvalid? 
                             <h5 style={{color:'red'}}>
@@ -176,6 +177,7 @@ function Sell(props) {
                                 </ToggleButton>
                                 ))}
                             </ButtonGroup>
+                            {/* Price Input */}
                             <Form.Group className="mb-3" controlId="regType">
                             <Form.Control 
                                 name="price" 
@@ -185,7 +187,7 @@ function Sell(props) {
                                 disabled={radioValue=='For Sale'? false:true}
                                 required/>
                             </Form.Group>
-
+                            {/* Description Input Area */}
                             <Form.Group className="mb-3" controlId="regConfPassword">
                             <h5 style={{textAlign:'left'}}>Description</h5>
                             <Form.Control 
@@ -194,11 +196,10 @@ function Sell(props) {
                                 onChange={onFormChange} 
                                 rows={15}
                                 isInvalid={descInvalid}
-
                                 placeholder="Describe about your product" 
                                 required/>
                             </Form.Group>
-
+                            {/* Location Input Area */}
                             <Form.Group className="mb-3" controlId="regConfPassword">
                             <h5 style={{textAlign:'left'}}>Location</h5>
                             <Form.Control 
@@ -210,6 +211,7 @@ function Sell(props) {
                                 required/>
                             </Form.Group>
                         </div>
+                        {/* Button to submit */}
                         <Button type="submit" onClick={createFunc}>
                             Create
                         </Button>

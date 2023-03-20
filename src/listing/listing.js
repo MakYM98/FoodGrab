@@ -13,24 +13,25 @@ import Col from 'react-bootstrap/Col';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
+// Styles for the Dropdowns
 const dropdownStyles = {
     control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
 }
-
+// Options for Sorting
 const sortOptions = [
     {value:'Recent', label:'Recent'},
     {value:'Price - Low to High', label:'Price - Low to High'},
     {value:'Price - High to Low', label:'Price - High to Low'},
     {value:'Location', label:'Location'},
 ]
-
+// Options for Price Dropdown
 const priceOptions = [
     {value:'For Sale', label:'For Sale'},
     {value:'For Free', label:'For Free'},
 ]
 
-// Sort By(Location, Price) Filter By(Location, Price)
 function FoodListings() {
+    // States for Food Listing Page
     const [availableData, setAvailableData] = useState([])
     const [filteredData, setFilteredData] = useState([])
     const [visibleData, setVisibleData] = useState([])
@@ -64,6 +65,7 @@ function FoodListings() {
         fetchListingsFollowing()
     },[])
 
+    // Determine the data to show depending on the tab selected
     useEffect(()=>{
         if(activeTab=='followingListings'){
             setAvailableData(followingData)
@@ -71,7 +73,7 @@ function FoodListings() {
             setAvailableData(allData)
         }
     },[activeTab])
-
+    // Get All Listings from Database
     const fetchListingsAll = async () => {
         var queryString = "http://127.0.0.1:8000/api/listing"
         axios
@@ -82,7 +84,7 @@ function FoodListings() {
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
-
+    // Fetch Listings uploaded by User's Following from Database
     const fetchListingsFollowing = async () => {
         var queryString = "http://127.0.0.1:8000/api/listing_following"
         var params = new URLSearchParams();
@@ -94,10 +96,10 @@ function FoodListings() {
             })
             .catch(error => console.error(`Error retrieving Login Info: ${error}`))
       }
-
+    // Filter/Sort Data whenever user change input or when data update
     useEffect(()=>{
         var allData = availableData
-        
+        // Filter Data Visible based on User Search Input
         if(setToSearch){
             var searchText = searchFilter.toLowerCase()
             allData = allData.filter((element) => {
@@ -105,7 +107,7 @@ function FoodListings() {
                         element.description.toLowerCase().includes(searchText))
             })
         }
-
+        // Sort Data based on User's Choice
         if(sortFilter === null || sortFilter == 'Recent'){
             allData = allData.sort(
                 (a,b) => (a.date_posted > b.date_posted) ? 1 : 
@@ -120,13 +122,13 @@ function FoodListings() {
                 return a.location.localeCompare(b.location)
               })
         }
-
+        // Filter data based on locations selected
         if(locFilter.length !=0){
             allData = allData.filter((element) => {
                 return locFilter.includes(element.location) 
             })
         }
-
+        // Filter data based on price filter selected
         if(priceFilter == 'For Sale'){
             allData = allData.filter((element) => {
                 return element.price > 0
@@ -143,14 +145,14 @@ function FoodListings() {
             const chunk = allData.slice(i, i + chunkSize);
             dataInChunks.push(chunk)
         }
-
+        // Fill up empty spots to prevent awkward placements
         var lastRow = dataInChunks.slice(-1)
         if(lastRow.length < chunkSize){
             setEmptySpots(Array.from(Array(chunkSize-lastRow.length).keys()))
         }
         setFilteredData(dataInChunks)
     },[availableData, sortFilter, locFilter, priceFilter, toSearch])
-
+    // Show more data when user click show more
     useEffect(()=>{
         if(filteredData.length > chunkCount){
             setMoreData(true)
@@ -159,7 +161,7 @@ function FoodListings() {
         }
         setVisibleData(filteredData.slice(0,chunkCount))
     },[filteredData, chunkCount])
-
+    // Get All Locations from Datbase
     const fetchAvailableLocation = async () => {
     var queryString = "http://127.0.0.1:8000/api/locations"
     axios
@@ -173,7 +175,7 @@ function FoodListings() {
         })
         .catch(error => console.error(`Error retrieving Login Info: ${error}`))
     }
-
+    // Function to perform Sorting 
     const sortFunc = (sort) => {
         if(sort === null){
             setChunkCount(2)
@@ -182,7 +184,7 @@ function FoodListings() {
             setSortFilter(sort.value)
         }
     }
-
+    // Function to Filter Listings based on Locations
     const locationFilterFunc = (filters) => {
         if(filters.length == 0){
             setChunkCount(2)
@@ -192,7 +194,7 @@ function FoodListings() {
             setLocFilter(newLoc)
         }
     }
-
+    // Function to Filter Listings based on Price
     const priceFilterFunc = (filters) => {
         if(filters===null){
             setChunkCount(2)
@@ -201,37 +203,38 @@ function FoodListings() {
             setPriceFilter(filters.value)
         }
     }
-
+    // Set Search State
     const searchFunc = ()=>{
         setToSearch(true)
     }
-
+    // Clear Search Input
     const clearSearch = () => {
         setSearchFilter('')
         setToSearch(false)
     }
-
+    // Set Tab Selected
     const tabSelected = (key) =>{
         setActiveTab(key)
     }
-
+    // Detect Search Bar Changes
     const searchBarChange = (e) => {
         setSearchFilter(e)
         setToSearch(false)
       }
-    
-      const keyDownFunc = (e) => {
+    // Function when user press a key
+    const keyDownFunc = (e) => {
         if(e.key == "Enter"){
-          searchFunc()
-          setToSearch(true)
+            searchFunc()
+            setToSearch(true)
         }
-      }
+    }
 
     return (
-      <div style={{marginTop:'1%', marginBottom:'3%', width:'100%', display:'flex', justifyContent:'center'}}>
+      <div style={{marginTop:'1%', marginBottom:'3%', width:'100%', 
+                    display:'flex', justifyContent:'center'}}>
         <div style={{width:'95%'}}>
             <h2 style={{textAlign:'left'}}>Food Listings</h2>
-
+            {/* Search Bar Input */}
             <InputGroup className="mb-3">
                 <Form.Control
                     placeholder="Search for Products"
@@ -240,6 +243,7 @@ function FoodListings() {
                     value={searchFilter}
                     onKeyDown={(e) =>{keyDownFunc(e)}}
                 />
+                {/* Detect whether user is using the search bar */}
                 {
                     toSearch === false? 
                     <Button type="submit" id="button-addon2"
@@ -254,9 +258,8 @@ function FoodListings() {
                         Clear
                     </Button>
                 }
-                
             </InputGroup>
-
+            {/* Sorting Dropdown */}
             <div style={{display:'flex', marginBottom:'2%'}}>
                 <div >
                     <Select 
@@ -272,6 +275,7 @@ function FoodListings() {
                 {/* Filter */}
                 <div style={{border:'1px solid black', marginLeft:'2%'}}/>
                     <div style={{display:'flex', marginLeft:'2%'}}>
+                        {/* Location Dropdown */}
                         <div style={{width:'150px', marginRight:'2%'}}>
                             <Select 
                                 options={locationOptions} 
@@ -282,6 +286,7 @@ function FoodListings() {
                                 classname="filterOptions"
                                 />
                         </div>
+                        {/* Price Dropdown */}
                         <div style={{width:'150px'}}>
                             <Select 
                                 options={priceOptions} 
@@ -290,13 +295,12 @@ function FoodListings() {
                                 placeholder='Price'
                                 isClearable={true}
                                 onChange={(e) => {priceFilterFunc(e)}}
-                                
                             /> 
                         </div>
                     </div>
 
             </div>
-            
+            {/* Tabs to show ALL and Following ONLY */}
             <Tabs
                 defaultActiveKey="allListings"
                 id="uncontrolled-tab-example"
@@ -305,21 +309,25 @@ function FoodListings() {
                 onSelect={(key)=>{tabSelected(key)}}
                 fill
             >
+                {/* ALL Listings Tab */}
                 <Tab eventKey="allListings" title="All Listings">
                     <Container>
+                        {/* Check if there is any listing in database */}
                         {
                             visibleData.length == 0 ? <h2>
-                                There are not listings for the time being, please check
-                                back again later! Alternatively, you can 
-                                click <span id="listingHere" onClick={()=>{
-                                    navigate('/sell')}
-                                }>here</span> to create a listing!
+                                There are not listings for the time being, 
+                                please check back again later! Alternatively, 
+                                you can click <span id="listingHere" 
+                                onClick={()=>{navigate('/sell')}}>here</span> to 
+                                create a listing!
                             </h2>:
+                            // Create a card for every listing
                             visibleData.map(listingList => 
                                 <Row style={{marginTop:'1%'}}>
                                     {
                                         listingList.map(listing => 
-                                            <Col style={{display:'flex', justifyContent:'center'}}>
+                                            <Col style={{display:'flex', 
+                                                    justifyContent:'center'}}>
                                                 <ListingCard 
                                                     user_id={listing["seller"]['user_id']}
                                                     name={listing["seller"]['username']}
@@ -335,6 +343,7 @@ function FoodListings() {
                                             </Col>
                                         )
                                     }
+                                    {/* Check if Row has any empty spots */}
                                     {
                                         emptySpots.length == 0? 
                                         null:
@@ -347,20 +356,23 @@ function FoodListings() {
                         }
                     </Container>
                 </Tab>
+                {/* Tab for Following Listings */}
                 <Tab eventKey="followingListings" title="Followings">
-                <Container>
+                    <Container>
+                        {/* Check if following have any listings */}
                         {
                             visibleData.length == 0 ? 
                             account == null?
                             <h2>Please Login to Access Following Section</h2>
                             :
                             <h2>
-                                There are not listings for the time being, please check
-                                back again later! Alternatively, you can 
-                                click <span id="listingHere" onClick={()=>{
-                                    navigate('/sell')}
-                                }>here</span> to create a listing!
+                                There are not listings for the time being, 
+                                please check back again later! Alternatively, 
+                                you can click <span id="listingHere" 
+                                onClick={()=>{navigate('/sell')}}>here</span> to 
+                                create a listing!
                             </h2>:
+                            // Create a card for each listing
                             visibleData.map(listingList => 
                                 <Row style={{marginTop:'1%'}}>
                                     {
@@ -381,6 +393,7 @@ function FoodListings() {
                                             </Col>
                                         )
                                     }
+                                    {/* Check if row has any empty spot */}
                                     {
                                         emptySpots.length == 0? 
                                         null:
@@ -396,13 +409,15 @@ function FoodListings() {
             </Tabs>
 
                 
-
+            {/* Show More button to show more listings */}
             <div>
                 {
                     moreData == false? <div></div>:
-                    <Button variant="secondary" onClick={() => setChunkCount(chunkCount+1)}>Show More</Button>
+                    <Button variant="secondary" onClick={
+                        () => setChunkCount(chunkCount+1)}>
+                        Show More
+                    </Button>
                 }
-                
             </div>
             
         </div>

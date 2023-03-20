@@ -15,11 +15,15 @@ import { Button } from 'react-bootstrap';
 import DeleteModal from "./confirm_delete.js";
 
 function IndvListing() {
+    // States for Individual Listings
     const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
     const [deleteVisible, setDeleteVisible] = useState(false)
+    // Get details from previous page
     const routerLoc = useLocation()
+    // Create Navigation Object
     const navigate = useNavigate()
 
+    // Navigate to Chat Page and Create Chat
     const chatFunc = () => {
         if(localStorage.getItem('account') !== null){
             navigate('/chats', {
@@ -31,6 +35,7 @@ function IndvListing() {
               });
         }
     }
+    // Navigate to Seller's Profile Page
     const profileFunc = () => {
         navigate(`/profile/${routerLoc.state.user_name}`, {
             state:{
@@ -43,6 +48,7 @@ function IndvListing() {
         
     }
 
+    // Open Delete Modal
     const openDelete = (visible) => {
         setDeleteVisible(visible)
     }
@@ -51,9 +57,11 @@ function IndvListing() {
       <div style={{display:'flex', justifyContent:'center', marginTop:'1%', height:'800px'}}>
         <div style={{width:'100%'}}>
         <Container style={{maxWidth:'none'}}>
-        <h4 id="backButton"onClick={()=>{navigate('/listings')}}><AiOutlineArrowLeft/>Back</h4>
+            <h4 id="backButton"onClick={()=>{navigate('/listings')}}>
+                <AiOutlineArrowLeft/>Back
+            </h4>
             <Row>
-                
+                {/* Listing Image */}
                 <Col style={{borderRight:"1px solid #eae8e4"}}>
                     <img
                         className="d-block w-100"
@@ -62,17 +70,20 @@ function IndvListing() {
                         height='750px'
                         />
                 </Col>
-                
+                {/* Listing Details */}
                 <Col>
+                    {/* Listing Title */}
                     <h3 style={{textAlign:'left', borderBottom:'1px solid #eae8e4'}}>
                         {routerLoc.state.title}
                     </h3>
+                    {/* Listing Description */}
                     <div>
                         <h4 style={{textAlign:'left'}}>Description</h4>
                         <p style={{textAlign:'left', marginBottom:'25%'}}>
                             {routerLoc.state.description}
                         </p>
                     </div>
+                    {/* Listing Seller Details */}
                     <div style={{border:'1px solid #eae8e4'}}>
                         <div style={{padding:'1%'}}>
                             <h4 style={{textAlign:'left'}}>Seller</h4>
@@ -80,7 +91,8 @@ function IndvListing() {
                                 <div >
                                     <p style={{textAlign:'left'}} >
                                         {/* User Profile */}
-                                        <span onClick={profileFunc} style={{cursor:'pointer'}}>
+                                        <span onClick={profileFunc} 
+                                                style={{cursor:'pointer'}}>
                                             <BiUser size={28}/>
                                             User: {routerLoc.state.user_name}
                                             ({routerLoc.state.user_rating}
@@ -92,10 +104,12 @@ function IndvListing() {
                                             <SiGooglemybusiness size={28} />
                                             Type: {routerLoc.state.user_type}
                                         </span>
+                                        {/* Location to collect */}
                                         <span style={{marginLeft:'5%'}}>
                                             <ImLocation size={28}/>
                                             Location: {routerLoc.state.location}
                                         </span>
+                                        {/* Listing Price */}
                                         <span style={{marginLeft:'5%'}}>
                                             Price: ${routerLoc.state.price}
                                         </span>
@@ -103,6 +117,7 @@ function IndvListing() {
                                     <p style={{textAlign:'left'}}>
                                 </p>
                                 </div>
+                                {/* Check if seller is logged in user */}
                                 {
                                     routerLoc.state.user_id == account.user_id?
                                     <Button onClick={()=>{openDelete(true)}} variant="danger">
@@ -122,6 +137,7 @@ function IndvListing() {
             </Row>
         </Container>
         
+        {/* Delete Modal */}
         {
             routerLoc.state.user_id == account.user_id?
             <DeleteModal 
