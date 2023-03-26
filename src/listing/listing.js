@@ -411,7 +411,7 @@ function FoodListings() {
 
                 
             {/* Show More button to show more listings */}
-            <div>
+            <div style={{marginTop:'1%'}}>
                 {
                     moreData == false? <div></div>:
                     <Button variant="secondary" onClick={

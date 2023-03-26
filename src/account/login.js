@@ -412,7 +412,7 @@ function Login(props) {
                             onChangeStatus={onFileChange}
                             accept="image/*"
                             maxFiles={1}
-                            inputContent="Drop A File"
+                            inputContent="Drop a file for your Profile Picture"
                             styles={{
                                 dropzone: { width: '80%', height: 100, 
                                             marginTop:'1%' },
