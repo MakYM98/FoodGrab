@@ -16,13 +16,9 @@ import CommunityFridge from './fridge/fridge';
 import FoodListings from './listing/listing';
 import React, {useState} from 'react';
 import IndvListing from './listing/indv_listing'
-import Footer from './global/footer';
 import AboutUs from './aboutus/aboutus';
 import Sell from './listing/create_listing';
-import CreatedListing from './listing/listing_created';
 import Chats from './chat/chats';
-import { BsFillChatFill } from 'react-icons/bs';
-import { useNavigate } from "react-router-dom";
 import OtherProfile from './account/other_profile';
 
 function App() {
@@ -55,7 +51,6 @@ function App() {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/profile/:username" element={<OtherProfile/>}/>
             <Route path="/sell" element={<Sell/>}/>
-            <Route path="/created" element={<CreatedListing/>}/>
             <Route path="/chats" element={<Chats/>}/>
           </Routes>
         </div>

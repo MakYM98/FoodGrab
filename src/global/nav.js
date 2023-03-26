@@ -1,19 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import Hamburger from 'hamburger-react'
 import { IoChatboxOutline, IoLogOutOutline } from 'react-icons/io5';
 import { AiOutlineArrowDown, AiOutlineUser } from 'react-icons/ai';
 import { Button } from 'react-bootstrap';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Avatar from '../img/img_avatar.png'
 
 function Header(props) {
-  const [isOpen, setOpen] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(props.details)
   const [loginDrop, setLoginDrop] = useState(false)
   const [account, setAccount] = useState(JSON.parse(localStorage.getItem("account")))
@@ -91,7 +84,7 @@ function Header(props) {
                 <div style={{display:'flex', justifyContent:'end'}}>
                   {/* Area for all Navigation Buttons */}
                   <div id="navArea">
-                    <h1 id="navHeader" onClick={()=>{navigateFunc('/')}}>
+                    <h1 id="navHeader" onClick={()=>{navigateFunc('/','')}}>
                       FoodGrab
                     </h1>
                     {/* Nav Header for About Us Page */}
@@ -164,10 +157,24 @@ function Header(props) {
                 : 
                 <div style={{display:'flex', justifyContent:'end'}}>
                   <div id="navArea">
-                    <h1 id="navHeader" onClick={()=>{navigate('/')}}>FoodGrab</h1>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/aboutus')}}>About Us</h5>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/communityfridge')}}>Community Fridge</h5>
-                    <h5 className="allHeaders" onClick={()=>{navigateFunc('/listings')}}>Food Listings</h5>
+                  <h1 id="navHeader" onClick={()=>{navigateFunc('/','')}}>
+                    FoodGrab
+                  </h1>
+                    <h5 className="allHeaders"  id="aboutUsNav"
+                        onClick={()=>{navigateFunc('/aboutus', 'au')}}
+                        style={{paddingLeft:'3%', color:page=='au'?'black':'darkgray'}}>
+                          About Us
+                    </h5>
+                    <h5 className="allHeaders" id="fridgeNav"
+                        style={{color:page=='cf'?'black':'darkgray'}}
+                        onClick={()=>{navigateFunc('/communityfridge', 'cf')}}>
+                      Community Fridge
+                    </h5>
+                    <h5 className="allHeaders" id="listingNav"
+                        style={{color:page=='ls'?'black':'darkgray'}}
+                        onClick={()=>{navigateFunc('/listings','ls')}}>
+                      Food Listings
+                    </h5>
                   </div>
                   
                   <h4 onClick={()=>{redirect('login')}} className="accountBtn" id="loginBtn">Login</h4>

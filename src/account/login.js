@@ -14,7 +14,7 @@ function Login(props) {
   // States for Login Page
   const ref = useRef(null);
   const [accountError, setAccountError] = useState(false)
-  const [loginDetails, setLoginDetails] = useState({})
+  const [loginDetails, setLoginDetails] = useState({'regType':'Individual'})
   const [positionLeft, setPositionLeft] = useState(true)
   const [status, setStatus] = useState('login')
   // Register Validation
@@ -169,6 +169,7 @@ function Login(props) {
                 if(response.status == 200){
                   setRegSuccess(true)
                   setStatus('login')
+                  console.log(loginDetails)
                 }
               })
               .catch(error => console.error(`Error retrieving 
@@ -262,7 +263,7 @@ function Login(props) {
                                   style={{width:'80%', textAlign:'left'}}>
                         <Form.Label>Password</Form.Label>
                         <Form.Control name="loginPw" type="password" 
-                                      placeholder="Password" 
+                                      placeholder="Enter Password" 
                                       onChange={onFormChange} required 
                                       isInvalid={accountError}/>
                         {/* Password Error Message */}
@@ -277,7 +278,9 @@ function Login(props) {
                   </Button>
                 </Container>
                 <h5 style={{paddingTop:'5%'}}>
-                    Don't have an account? <span onClick={
+                    Don't have an account? <span 
+                    className='logRegText'
+                    onClick={
                       ()=>{setStatus('register')}
                     }>
                       Register Now
@@ -391,8 +394,8 @@ function Login(props) {
                           required
                           isInvalid={typeError}
                           >
-                          <option value="individual">Individual</option>
-                          <option value="business">Business</option>
+                          <option value="Individual">Individual</option>
+                          <option value="Business">Business</option>
                         </Form.Select>
                         {/* Type of Account Error */}
                         <Form.Control.Feedback type="invalid">
@@ -424,7 +427,9 @@ function Login(props) {
                   </Button>
                   {/* Area for user to submit */}
                   <h5 style={{paddingTop:'5%'}}>
-                    Have an account already? <span onClick={()=>{
+                    Have an account already? <span 
+                    className='logRegText'
+                    onClick={()=>{
                       setStatus('login')
                     }}>
                       Login Now

@@ -134,7 +134,9 @@ function OtherProfile(props) {
                     {/* Check if User has a profile Image */}
                     <img 
                         src={
-                            accountDetails['img'] === null? 
+                            accountDetails['img'] === null |
+                            accountDetails['img'] === undefined | 
+                            account.img=='/media/undefined'? 
                             Avatar
                             :
                             `http://127.0.0.1:8000${accountDetails['img']}`

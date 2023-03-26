@@ -15,7 +15,8 @@ import Tabs from 'react-bootstrap/Tabs';
 
 // Styles for the Dropdowns
 const dropdownStyles = {
-    control: styles=>({...styles, minHeight:50, borderRadius:20, textAlign:'left'})
+    control: styles=>({...styles, minHeight:50, borderRadius:20, 
+                        textAlign:'left'})
 }
 // Options for Sorting
 const sortOptions = [
@@ -276,7 +277,7 @@ function FoodListings() {
                 <div style={{border:'1px solid black', marginLeft:'2%'}}/>
                     <div style={{display:'flex', marginLeft:'2%'}}>
                         {/* Location Dropdown */}
-                        <div style={{width:'150px', marginRight:'2%'}}>
+                        <div style={{width:'300px', marginRight:'2%'}}>
                             <Select 
                                 options={locationOptions} 
                                 isMulti 
@@ -287,7 +288,7 @@ function FoodListings() {
                                 />
                         </div>
                         {/* Price Dropdown */}
-                        <div style={{width:'150px'}}>
+                        <div style={{width:'180px'}}>
                             <Select 
                                 options={priceOptions} 
                                 name="Price" 

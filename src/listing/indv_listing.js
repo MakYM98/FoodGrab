@@ -99,11 +99,6 @@ function IndvListing() {
                                                 <BsStarFill size={14}
                                                 style={{marginBottom:'1%'}}/>)
                                         </span>
-                                        {/* Account Type */}
-                                        <span style={{marginLeft:'5%'}}>
-                                            <SiGooglemybusiness size={28} />
-                                            Type: {routerLoc.state.user_type}
-                                        </span>
                                         {/* Location to collect */}
                                         <span style={{marginLeft:'5%'}}>
                                             <ImLocation size={28}/>
