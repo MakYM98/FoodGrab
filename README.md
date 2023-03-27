@@ -2,7 +2,7 @@
 
 This project was created through ReactJS and Django.
 
-## Installation for Django
+## Installation for Django (Python 3.8.9)
 
 Step 1: Install Virtual Environment Package through "pip install virtualenvwrapper"<br/>
 Step 2: Make a new virtual environment with these two commands "source /usr/local/bin/virtualenvwrapper.sh" & "mkvirtualenv -p /usr/bin/python3 fyp_env"<br/> 
