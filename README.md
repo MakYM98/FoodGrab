@@ -4,10 +4,10 @@ This project was created through ReactJS and Django.
 
 ## Installation for Django
 
-Step 1: Install Virtual Environment Package through "pip install virtualenvwrapper"
-Step 2: Make a new virtual environment with these two commands "source /usr/local/bin/virtualenvwrapper.sh" & "mkvirtualenv -p /usr/bin/python3 fyp_env" 
-Step 3: Ensure that you have activated the virtual env through "workon fyp_env"
-Step 4: Change directory to the "fyp" folder and perform "pip install -r requirements.txt"
+Step 1: Install Virtual Environment Package through "pip install virtualenvwrapper"<br/>
+Step 2: Make a new virtual environment with these two commands "source /usr/local/bin/virtualenvwrapper.sh" & "mkvirtualenv -p /usr/bin/python3 fyp_env"<br/> 
+Step 3: Ensure that you have activated the virtual env through "workon fyp_env"<br/>
+Step 4: Change directory to the "fyp" folder and perform "pip install -r requirements.txt"<br/>
 
 ## Installation for ReactJS
 
@@ -31,5 +31,5 @@ brew install redis
 
 ## Running the Application
 
-Step 1: Change directory to the "fyp" folder and start the Django API server through "redis-server & python3 manage.py runserver 127.0.0.1:8000"
-Step 2: In a separate terminal, change directory to the root of the project folder and start the application through "npm start".
+Step 1: Change directory to the "fyp" folder and start the Django API server through "redis-server & python3 manage.py runserver 127.0.0.1:8000"<br/>
+Step 2: In a separate terminal, change directory to the root of the project folder and start the application through "npm start".<br/>
