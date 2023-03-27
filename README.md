@@ -17,16 +17,16 @@ Step 2: Install all the packages through "npm install"
 ## Installation for Redis Server
 Ensure you are using your computer's Terminal or Command Prompt
 
-For Ubuntu:
-sudo apt-get update
+For Ubuntu:<br/>
+sudo apt-get update<br/>
 sudo install redis-server
 
-For Windows:
-Install WSL2
-Follow the instructions through this link provided.
+For Windows:<br/>
+Install WSL2<br/>
+Follow the instructions through this link provided.<br/>
 https://redis.io/docs/getting-started/installation/install-redis-on-windows/
 
-For MacOS:
+For MacOS:<br/>
 brew install redis
 
 ## Running the Application
