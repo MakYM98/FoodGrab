@@ -11,7 +11,7 @@ Step 4: Change directory to the "fyp" folder and perform "pip install -r require
 
 ## Installation for ReactJS
 
-Step 1: Change directory to the foodgrab project root folder. \n
+Step 1: Change directory to the foodgrab project root folder.<br/>
 Step 2: Install all the packages through "npm install"
 
 ## Installation for Redis Server
