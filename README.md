@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# Getting Started with FoodGrab
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created through ReactJS and Django.
 
-## Available Scripts
+## Installation for Django
 
-In the project directory, you can run:
+Step 1: Install Virtual Environment Package through "pip install virtualenvwrapper"<br/>
+Step 2: Make a new virtual environment with these two commands "source /usr/local/bin/virtualenvwrapper.sh" & "mkvirtualenv -p /usr/bin/python3 fyp_env"<br/> 
+Step 3: Ensure that you have activated the virtual env through "workon fyp_env"<br/>
+Step 4: Change directory to the "fyp" folder and perform "pip install -r requirements.txt"<br/>
 
-### `npm start`
+## Installation for ReactJS
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Step 1: Change directory to the foodgrab project root folder.<br/>
+Step 2: Install all the packages through "npm install"
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation for Redis Server
+Ensure you are using your computer's Terminal or Command Prompt
 
-### `npm test`
+For Ubuntu:
+sudo apt-get update
+sudo install redis-server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For Windows:
+Install WSL2
+Follow the instructions through this link provided.
+https://redis.io/docs/getting-started/installation/install-redis-on-windows/
 
-### `npm run build`
+For MacOS:
+brew install redis
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running the Application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Step 1: Change directory to the "fyp" folder and start the Django API server through "redis-server & python3 manage.py runserver 127.0.0.1:8000"<br/>
+Step 2: In a separate terminal, change directory to the root of the project folder and start the application through "npm start".<br/>
